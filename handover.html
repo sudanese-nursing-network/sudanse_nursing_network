@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسليم الورديات (SBAR) | شبكة الممرضين السودانيين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .handover-header { background: #8e44ad; color: white; padding: 40px 20px; text-align: center; border-radius: 0 0 30px 30px; border-bottom: 5px solid #9b59b6; }
+        
+        .form-section { background: white; border-radius: 15px; padding: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 5px solid #8e44ad; }
+        .form-section h2 { color: #8e44ad; margin-top: 0; border-bottom: 2px solid #f4f7f6; padding-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+        
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-weight: bold; color: #444; margin-bottom: 5px; }
+        .handover-input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Cairo'; font-size: 1rem; box-sizing: border-box; }
+        .handover-input:focus { border-color: #8e44ad; outline: none; }
+        
+        /* تصميم الحروف S B A R */
+        .sbar-label { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; color: #2c3e50; font-weight: bold; margin-bottom: 5px; }
+        .sbar-letter { background: #8e44ad; color: white; width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; border-radius: 5px; font-size: 1.2rem; }
+        
+        /* جدول القسم */
+        .ward-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .ward-table th, .ward-table td { border: 1px solid #ddd; padding: 12px; text-align: right; }
+        .ward-table th { background: #f8f9fa; color: #2c3e50; font-weight: bold; }
+        .ward-table tr:hover { background: #fdfdfd; }
+        .add-row-btn { background: #27ae60; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-family: 'Cairo'; font-weight: bold; margin-top: 10px; }
+        
+        .action-btns { display: flex; gap: 15px; justify-content: center; margin-top: 30px; }
+        .btn-whatsapp { background: #25D366; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 10px; border: none; cursor: pointer; font-family: 'Cairo'; font-size: 1.1rem; }
+        .btn-print { background: #34495e; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 10px; border: none; cursor: pointer; font-family: 'Cairo'; font-size: 1.1rem; }
+        
+        /* إخفاء الأزرار عند الطباعة */
+        @media print {
+            .navbar, .quick-access-btn, .action-btns, .add-row-btn, .handover-header p { display: none !important; }
+            body { background: white; }
+            .form-section { box-shadow: none; border: 1px solid #ddd; margin-bottom: 20px; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-heart-pulse"></i> شبكة الممرضين <span>السودانيين</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="handover.html" style="color: #8e44ad;"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+            <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> الاستغاثة</a></li>
+            <li><a href="consult.html"><i class="fas fa-comments"></i> الاستشارات</a></li>
+        </ul>
+    </nav>
+
+    <div class="handover-header">
+        <h1><i class="fas fa-clipboard-list"></i> نظام تسليم الورديات الذكي</h1>
+        <p>وثق بيانات مرضاك بدقة واحترافية باستخدام نموذج SBAR العالمي وجدول القسم.</p>
+    </div>
+
+    <section class="section">
+        <div class="container" style="max-width: 1000px;">
+            
+            <div class="form-section fade-element">
+                <h2><i class="fas fa-clock"></i> البيانات الأساسية للوردية</h2>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>تاريخ اليوم</label>
+                        <input type="date" id="hDate" class="handover-input" required>
+                    </div>
+                    <div class="input-group">
+                        <label>نوع الوردية</label>
+                        <select id="hShift" class="handover-input">
+                            <option>صباحية (Morning)</option>
+                            <option>مسائية (Evening)</option>
+                            <option>ليلية (Night)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>المستشفى / القسم</label>
+                        <input type="text" id="hWard" class="handover-input" placeholder="مثال: مستشفى أم درمان التعليمي - قسم الباطنية">
+                    </div>
+                    <div class="input-group">
+                        <label>اسم الممرض (المُسلِّم)</label>
+                        <input type="text" id="hNurse" class="handover-input" placeholder="اسمك">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section fade-element">
+                <h2><i class="fas fa-file-medical"></i> نموذج SBAR (للحالات الحرجة أو المتابعة الدقيقة)</h2>
+                
+                <div class="grid-2" style="margin-bottom: 20px;">
+                    <div class="input-group">
+                        <label>اسم المريض</label>
+                        <input type="text" id="pName" class="handover-input" placeholder="الاسم الرباعي">
+                    </div>
+                    <div class="input-group">
+                        <label>رقم السرير / الغرفة</label>
+                        <input type="text" id="pBed" class="handover-input" placeholder="مثال: سرير 5">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="sbar-label"><span class="sbar-letter">S</span> الموقف الحالي (Situation)</div>
+                    <textarea id="sbarS" class="handover-input" rows="2" placeholder="ما هي مشكلة المريض الآن؟ (مثال: المريض يعاني من ضيق شديد في التنفس)"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <div class="sbar-label"><span class="sbar-letter">B</span> الخلفية التاريخية (Background)</div>
+                    <textarea id="sbarB" class="handover-input" rows="2" placeholder="تاريخ الدخول، التشخيص الطبي، والأمراض المزمنة (مثال: دخل المستشفى أمس بتشخيص التهاب رئوي)"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <div class="sbar-label"><span class="sbar-letter">A</span> التقييم السريري (Assessment)</div>
+                    <textarea id="sbarA" class="handover-input" rows="3" placeholder="العلامات الحيوية الحالية، مستوى الوعي، الملحقات (فراشة، قسطرة بولية، أكسجين)"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <div class="sbar-label"><span class="sbar-letter">R</span> التوصيات والمطلوب (Recommendation)</div>
+                    <textarea id="sbarR" class="handover-input" rows="3" placeholder="ما الذي يجب على ممرض الوردية القادمة فعله؟ (مثال: متابعة نتيجة فحص الدم، إعطاء المضاد الحيوي الساعة 10)"></textarea>
+                </div>
+            </div>
+
+            <div class="form-section fade-element">
+                <h2><i class="fas fa-th-list"></i> جدول مرضى القسم (Overview)</h2>
+                <div style="overflow-x: auto;">
+                    <table class="ward-table" id="wardTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 10%;">السرير</th>
+                                <th style="width: 25%;">اسم المريض</th>
+                                <th style="width: 25%;">التشخيص</th>
+                                <th style="width: 20%;">المحاليل/الأدوية</th>
+                                <th style="width: 20%;">ملاحظات هامة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" class="handover-input" style="padding: 5px;"></td>
+                                <td><input type="text" class="handover-input" style="padding: 5px;"></td>
+                                <td><input type="text" class="handover-input" style="padding: 5px;"></td>
+                                <td><input type="text" class="handover-input" style="padding: 5px;"></td>
+                                <td><input type="text" class="handover-input" style="padding: 5px;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="add-row-btn" onclick="addRow()"><i class="fas fa-plus"></i> إضافة مريض آخر للجدول</button>
+            </div>
+
+            <div class="action-btns">
+                <button class="btn-whatsapp" onclick="shareToWhatsApp()"><i class="fab fa-whatsapp"></i> مشاركة التسليم (واتساب)</button>
+                <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> طباعة التقرير / حفظ PDF</button>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
+        <i class="fas fa-th-large"></i>
+    </div>
+    <div id="quickMenu" class="quick-menu">
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الورديات (SBAR)</a></li>
+            <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+            <li><a href="research.html"><i class="fas fa-book-medical"></i> الأبحاث</a></li>
+            <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة</a></li>
+            <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم</a></li>
+            <li><a href="consult.html"><i class="fas fa-comments"></i> الاستشارات</a></li>
+            <li><a href="training.html"><i class="fas fa-users"></i> التدريب</a></li>
+            <li><a href="join.html"><i class="fas fa-user-plus"></i> العضوية</a></li>
+        </ul>
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 - شبكة الممرضين السودانيين</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // تعيين تاريخ اليوم تلقائياً
+        document.getElementById('hDate').valueAsDate = new Date();
+
+        // إضافة صف جديد لجدول القسم
+        function addRow() {
+            const table = document.getElementById("wardTable").getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+            for(let i=0; i<5; i++) {
+                let cell = newRow.insertCell(i);
+                cell.innerHTML = '<input type="text" class="handover-input" style="padding: 5px;">';
+            }
+        }
+
+        // مشاركة التسليم عبر الواتساب للزملاء
+        function shareToWhatsApp() {
+            let shift = document.getElementById('hShift').value;
+            let ward = document.getElementById('hWard').value;
+            let nurse = document.getElementById('hNurse').value;
+            
+            let pName = document.getElementById('pName').value || "غير محدد";
+            let pBed = document.getElementById('pBed').value || "-";
+            let s = document.getElementById('sbarS').value || "لا توجد تفاصيل";
+            let b = document.getElementById('sbarB').value || "لا توجد تفاصيل";
+            let a = document.getElementById('sbarA').value || "لا توجد تفاصيل";
+            let r = document.getElementById('sbarR').value || "لا توجد تفاصيل";
+
+            let message = `*تسليم وردية (${shift})* 🏥\n`
+                        + `*القسم:* ${ward}\n`
+                        + `*الممرض المُسلِّم:* ${nurse}\n\n`
+                        + `*حالة SBAR للمريض:* ${pName} (سرير: ${pBed})\n`
+                        + `🔴 *S (الموقف):* ${s}\n`
+                        + `🔵 *B (الخلفية):* ${b}\n`
+                        + `🟢 *A (التقييم):* ${a}\n`
+                        + `🟡 *R (التوصيات):* ${r}\n\n`
+                        + `تم التسليم عبر منصة شبكة الممرضين السودانيين.`;
+
+            let whatsappUrl = "https://wa.me/?text=" + encodeURIComponent(message);
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // قائمة الوصول السريع
+        function toggleQuickMenu() {
+            const menu = document.getElementById('quickMenu');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
+    </script>
+    
+    <div id="quickMenu" class="quick-menu">
+    <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
+        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
+        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
+        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
+        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
+        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
+        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
+        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+        
+    </ul>
+</div>
+</body>
+</html>

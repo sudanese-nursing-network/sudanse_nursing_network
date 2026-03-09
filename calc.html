@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الحاسبة التمريضية السريرية | شبكة الممرضين السودانيين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .calc-header { background: #1e272e; color: white; padding: 40px 20px; text-align: center; border-radius: 0 0 30px 30px; border-bottom: 5px solid var(--main-color); }
+        .calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-top: 30px; }
+        
+        .calc-card {
+            background: white; border-radius: 15px; padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08); border-top: 5px solid var(--main-color);
+            position: relative; overflow: hidden;
+        }
+        .calc-card h3 { color: var(--dark-blue); margin-top: 0; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #f4f7f6; padding-bottom: 15px; }
+        .calc-card h3 i { color: var(--main-color); font-size: 1.5rem; }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: bold; color: #555; margin-bottom: 5px; font-size: 0.95rem; }
+        .calc-input, .calc-select {
+            width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 8px;
+            font-family: 'Cairo'; font-size: 1rem; transition: 0.3s; box-sizing: border-box;
+        }
+        .calc-input:focus, .calc-select:focus { border-color: var(--main-color); outline: none; }
+        
+        .btn-calc {
+            width: 100%; background: var(--main-color); color: white; border: none;
+            padding: 12px; border-radius: 8px; font-weight: bold; font-size: 1.1rem;
+            cursor: pointer; transition: 0.3s; margin-top: 10px; font-family: 'Cairo';
+        }
+        .btn-calc:hover { background: #008e6f; }
+        
+        .result-box {
+            background: #e8f6f3; color: #008e6f; padding: 15px; border-radius: 8px;
+            margin-top: 20px; text-align: center; font-weight: bold; font-size: 1.2rem;
+            display: none; border: 1px dashed #008e6f;
+        }
+        .result-box.danger { background: #fadbd8; color: #c0392b; border-color: #c0392b; }
+        .result-box.warning { background: #fcf3cf; color: #d35400; border-color: #f39c12; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-heart-pulse"></i> شبكة الممرضين <span>السودانيين</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="calc.html" style="color: var(--main-color);"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+            <li><a href="drugs.html"><i class="fas fa-pills"></i> الأدوية</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> الاستغاثة</a></li>
+            <li><a href="consult.html"><i class="fas fa-comments"></i> الاستشارات</a></li>
+        </ul>
+    </nav>
+
+    <div class="calc-header">
+        <h1><i class="fas fa-laptop-medical"></i> الحاسبة التمريضية الذكية</h1>
+        <p>أدوات حسابية سريعة ودقيقة لمساعدتك في اتخاذ القرار أثناء الوردية.</p>
+    </div>
+
+    <section class="section">
+        <div class="container">
+            <div class="calc-grid">
+                
+                <div class="calc-card fade-element">
+                    <h3><i class="fas fa-tint"></i> معدل التنقيط الوريدي (IV Drip)</h3>
+                    <div class="form-group">
+                        <label>حجم المحلول (مل - ml)</label>
+                        <input type="number" id="ivVolume" class="calc-input" placeholder="مثال: 500">
+                    </div>
+                    <div class="form-group">
+                        <label>الزمن (بالساعات)</label>
+                        <input type="number" id="ivTime" class="calc-input" placeholder="مثال: 8">
+                    </div>
+                    <div class="form-group">
+                        <label>معامل التنقيط (Drop Factor)</label>
+                        <select id="ivFactor" class="calc-select">
+                            <option value="15">جهاز عادي (15 قطرة/مل)</option>
+                            <option value="20">جهاز عادي (20 قطرة/مل)</option>
+                            <option value="60">جهاز أطفال (60 قطرة/مل - Micro)</option>
+                        </select>
+                    </div>
+                    <button class="btn-calc" onclick="calculateIV()">احسب المعدل</button>
+                    <div id="ivResult" class="result-box"></div>
+                </div>
+
+                <div class="calc-card fade-element" style="border-top-color: #3498db;">
+                    <h3 style="color: #2980b9;"><i class="fas fa-child"></i> جرعات الأطفال بالوزن</h3>
+                    <div class="form-group">
+                        <label>وزن الطفل (كجم - kg)</label>
+                        <input type="number" id="pedWeight" class="calc-input" placeholder="مثال: 12">
+                    </div>
+                    <div class="form-group">
+                        <label>الجرعة المطلوبة (ملجم لكل كجم - mg/kg)</label>
+                        <input type="number" id="pedDosePerKg" class="calc-input" placeholder="مثال: 15 (للباراسيتامول)">
+                    </div>
+                    <button class="btn-calc" style="background: #3498db;" onclick="calculatePedDose()">احسب الجرعة</button>
+                    <div id="pedResult" class="result-box" style="color: #2980b9; border-color: #3498db; background: #ebf5fb;"></div>
+                </div>
+
+                <div class="calc-card fade-element" style="border-top-color: #e74c3c;">
+                    <h3 style="color: #c0392b;"><i class="fas fa-brain"></i> مقياس جلاسكو للغيبوبة (GCS)</h3>
+                    <div class="form-group">
+                        <label>فتح العينين (Eye Opening)</label>
+                        <select id="gcsEye" class="calc-select">
+                            <option value="4">تلقائي (4)</option>
+                            <option value="3">استجابة للصوت (3)</option>
+                            <option value="2">استجابة للألم (2)</option>
+                            <option value="1">لا توجد استجابة (1)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>الاستجابة اللفظية (Verbal)</label>
+                        <select id="gcsVerbal" class="calc-select">
+                            <option value="5">واعي وموجه (5)</option>
+                            <option value="4">مشوش (4)</option>
+                            <option value="3">كلمات غير مناسبة (3)</option>
+                            <option value="2">أصوات غير مفهومة (2)</option>
+                            <option value="1">لا توجد استجابة (1)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>الاستجابة الحركية (Motor)</label>
+                        <select id="gcsMotor" class="calc-select">
+                            <option value="6">يطيع الأوامر (6)</option>
+                            <option value="5">يحدد مكان الألم (5)</option>
+                            <option value="4">يسحب طرفه من الألم (4)</option>
+                            <option value="3">انثناء غير طبيعي (3)</option>
+                            <option value="2">انبساط غير طبيعي (2)</option>
+                            <option value="1">لا توجد استجابة (1)</option>
+                        </select>
+                    </div>
+                    <button class="btn-calc" style="background: #e74c3c;" onclick="calculateGCS()">احسب مستوى الوعي</button>
+                    <div id="gcsResult" class="result-box"></div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
+        <i class="fas fa-th-large"></i>
+    </div>
+    <div id="quickMenu" class="quick-menu">
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+            <li><a href="research.html"><i class="fas fa-book-medical"></i> الأبحاث</a></li>
+            <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة</a></li>
+            <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم</a></li>
+            <li><a href="consult.html"><i class="fas fa-comments"></i> الاستشارات</a></li>
+            <li><a href="training.html"><i class="fas fa-users"></i> التدريب</a></li>
+            <li><a href="join.html"><i class="fas fa-user-plus"></i> العضوية</a></li>
+        </ul>
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 - شبكة الممرضين السودانيين</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // 1. حساب التنقيط الوريدي
+        function calculateIV() {
+            let vol = parseFloat(document.getElementById('ivVolume').value);
+            let timeHours = parseFloat(document.getElementById('ivTime').value);
+            let factor = parseFloat(document.getElementById('ivFactor').value);
+            let resultBox = document.getElementById('ivResult');
+
+            if(!vol || !timeHours) {
+                resultBox.style.display = 'block';
+                resultBox.innerHTML = "يرجى إدخال الحجم والزمن بشكل صحيح.";
+                resultBox.className = "result-box danger";
+                return;
+            }
+
+            let timeMins = timeHours * 60;
+            let dropsPerMin = Math.round((vol * factor) / timeMins);
+            
+            resultBox.style.display = 'block';
+            resultBox.className = "result-box";
+            resultBox.innerHTML = `المعدل المطلوب:<br><span style="font-size:1.8rem;">${dropsPerMin}</span> قطرة / دقيقة`;
+        }
+
+        // 2. حساب جرعة الأطفال
+        function calculatePedDose() {
+            let weight = parseFloat(document.getElementById('pedWeight').value);
+            let dosePkg = parseFloat(document.getElementById('pedDosePerKg').value);
+            let resultBox = document.getElementById('pedResult');
+
+            if(!weight || !dosePkg) {
+                resultBox.style.display = 'block';
+                resultBox.innerHTML = "يرجى إدخال الوزن والجرعة.";
+                return;
+            }
+
+            let totalDose = Math.round(weight * dosePkg * 10) / 10; // تقريب لخانة عشرية واحدة
+            
+            resultBox.style.display = 'block';
+            resultBox.innerHTML = `إجمالي الجرعة المطلوبة:<br><span style="font-size:1.8rem;">${totalDose}</span> ملجم (mg)`;
+        }
+
+        // 3. مقياس جلاسكو (GCS)
+        function calculateGCS() {
+            let eye = parseInt(document.getElementById('gcsEye').value);
+            let verbal = parseInt(document.getElementById('gcsVerbal').value);
+            let motor = parseInt(document.getElementById('gcsMotor').value);
+            let resultBox = document.getElementById('gcsResult');
+
+            let total = eye + verbal + motor;
+            let status = "";
+            let statusClass = "result-box";
+
+            if (total <= 8) {
+                status = "غيبوبة شديدة (يحتاج تنبيب غالباً)";
+                statusClass += " danger";
+            } else if (total >= 9 && total <= 12) {
+                status = "إصابة متوسطة";
+                statusClass += " warning";
+            } else {
+                status = "إصابة خفيفة / وعي طبيعي";
+            }
+            
+            resultBox.style.display = 'block';
+            resultBox.className = statusClass;
+            resultBox.innerHTML = `النتيجة (GCS): <span style="font-size:1.8rem;">${total}/15</span><br><small>${status}</small>`;
+        }
+
+        // قائمة الوصول السريع
+        function toggleQuickMenu() {
+            const menu = document.getElementById('quickMenu');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
+    </script>
+    
+    <div id="quickMenu" class="quick-menu">
+    <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
+        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
+        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
+        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
+        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
+        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
+        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
+        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+        
+    </ul>
+</div>
+</body>
+</html>

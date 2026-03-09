@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أرشيف الأبحاث | شبكة الممرضين السودانيين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .search-filters {
+            background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 40px;
+        }
+        .search-filters input, .search-filters select {
+            flex: 1; min-width: 200px; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: 'Cairo';
+        }
+        .result-card {
+            background: white; padding: 20px; border-radius: 10px; border-right: 5px solid var(--main-color);
+            margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: 0.3s;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
+        }
+        .result-card:hover { transform: translateX(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .result-info h3 { margin: 0 0 10px 0; color: var(--dark-blue); }
+        .result-meta { color: #666; font-size: 0.9rem; display: flex; gap: 15px; flex-wrap: wrap; }
+        .result-meta span { background: #f4f7f6; padding: 5px 10px; border-radius: 5px; }
+        .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 40px; }
+        .page-btn { padding: 10px 15px; border: 1px solid var(--main-color); background: white; color: var(--main-color); border-radius: 5px; cursor: pointer; transition: 0.3s; font-family: 'Cairo'; font-weight: bold;}
+        .page-btn.active, .page-btn:hover { background: var(--main-color); color: white; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-heart-pulse"></i> شبكة الممرضين <span>السودانيين</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+            <li><a href="research.html" style="color: var(--main-color);"><i class="fas fa-book-medical"></i> المكتبة والأبحاث</a></li>
+            <li><a href="index.html#contact"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero" style="height: 30vh; background: linear-gradient(rgba(30, 39, 46, 0.9), rgba(0, 168, 132, 0.9)), url('https://via.placeholder.com/1200x300'); background-size: cover; background-position: center;">
+        <div class="hero-content">
+            <h1>البحث في <span class="highlight">الأرشيف</span></h1>
+            <p>تصفح أكبر قاعدة بيانات للأبحاث التمريضية والإحصائية في السودان.</p>
+        </div>
+    </header>
+
+    <section class="section bg-light">
+        <div class="container" style="max-width: 1000px; margin: auto;">
+            
+            <div class="search-filters fade-element">
+                <input type="text" placeholder="اكتب عنوان البحث أو اسم الباحث...">
+                <select>
+                    <option value="">كل التخصصات</option>
+                    <option value="infection">مكافحة العدوى</option>
+                    <option value="stats">الإحصاء الحيوي</option>
+                    <option value="tech">المعلوماتية الصحية</option>
+                </select>
+                <button class="btn btn-primary" style="margin: 0;"><i class="fas fa-search"></i> تطبيق الفرز</button>
+            </div>
+
+            <div class="result-card fade-element" data-page="1">
+                <div class="result-info">
+                    <h3>معرفة الممرضين ودورهم في طرق انتقال العدوى والوقاية منها</h3>
+                    <div class="result-meta">
+                        <span><i class="fas fa-user-graduate"></i> الباحث: الرشيد</span>
+                        <span><i class="fas fa-map-marker-alt"></i> مستشفى أم درمان التعليمي</span>
+                    </div>
+                </div>
+                <div class="result-action">
+                    <button class="btn btn-primary" onclick="openSummary('مكافحة العدوى', 'دراسة تقييمية للوعي بخطوط نقل العدوى ودور التمريض في كسر سلسلة العدوى وتطبيق المعايير الوقائية الأساسية داخل أقسام مستشفى أم درمان التعليمي.')"><i class="fas fa-eye"></i> قراءة الملخص</button>
+                </div>
+            </div>
+
+            <div class="result-card fade-element" data-page="1" style="border-right-color: #f39c12;">
+                <div class="result-info">
+                    <h3 style="color: #f39c12;">تصميم نظام إلكتروني (VB.NET) لإدارة وجرد المستلزمات الطبية</h3>
+                    <div class="result-meta"><span><i class="fas fa-laptop-medical"></i> المعلوماتية الصحية</span></div>
+                </div>
+                <div class="result-action">
+                    <button class="btn btn-secondary" style="border-color: #f39c12; color: #f39c12;" onclick="openSummary('تطبيقات VB.NET في التمريض', 'بحث برمجي يوضح كيفية بناء واجهات تطبيق بلغة VB.NET لعمل نظام جرد متكامل للمكتبات الطبية ومخازن الأدوية لتوفير الوقت والجهد.')"><i class="fas fa-eye"></i> قراءة الملخص</button>
+                </div>
+            </div>
+
+            <div class="result-card fade-element" data-page="1" style="border-right-color: var(--dark-blue);">
+                <div class="result-info">
+                    <h3 style="color: var(--dark-blue);">التحليل الإحصائي (SPSS) لرضا المرضى عن الرعاية التمريضية</h3>
+                    <div class="result-meta"><span><i class="fas fa-chart-pie"></i> الإحصاء الحيوي</span></div>
+                </div>
+                <div class="result-action">
+                    <button class="btn btn-secondary" style="border-color: var(--dark-blue); color: var(--dark-blue);" onclick="openSummary('تحليل البيانات بـ SPSS', 'استخدام برنامج التحليل الإحصائي SPSS لمعالجة بيانات استبيانات وزعت على 200 مريض، للخروج بمؤشرات دقيقة حول جودة الأداء التمريضي.')"><i class="fas fa-eye"></i> قراءة الملخص</button>
+                </div>
+            </div>
+
+            <div class="result-card fade-element" data-page="1" style="border-right-color: #8e44ad;">
+                <div class="result-info">
+                    <h3 style="color: #8e44ad;">تأثير الإرهاق الوظيفي على جودة الأداء التمريضي</h3>
+                    <div class="result-meta"><span><i class="fas fa-user-md"></i> الإدارة التمريضية</span><span><i class="fas fa-map-marker-alt"></i> مستشفيات ولاية الخرطوم</span></div>
+                </div>
+                <div class="result-action">
+                    <button class="btn btn-secondary" style="border-color: #8e44ad; color: #8e44ad;" onclick="openSummary('الإرهاق الوظيفي', 'دراسة مقطعية تبحث في أسباب الاحتراق الوظيفي وساعات العمل الطويلة، وتأثيرها المباشر على الأخطاء الطبية وجودة رعاية المريض.')"><i class="fas fa-eye"></i> قراءة الملخص</button>
+                </div>
+            </div>
+
+            <div class="result-card" data-page="2" style="display: none; border-right-color: #27ae60;">
+                <div class="result-info">
+                    <h3 style="color: #27ae60;">دور التمريض في إدارة الكوارث والطوارئ والإصابات الجماعية</h3>
+                    <div class="result-meta"><span><i class="fas fa-ambulance"></i> تمريض الطوارئ</span></div>
+                </div>
+                <div class="result-action">
+                    <button class="btn btn-secondary" style="border-color: #27ae60; color: #27ae60;" onclick="openSummary('إدارة الكوارث', 'تقييم مدى جاهزية أقسام الطوارئ والكوادر التمريضية للتعامل مع تدفق أعداد كبيرة من المصابين واستخدام نظام الفرز الطبي (Triage).')"><i class="fas fa-eye"></i> قراءة الملخص</button>
+                </div>
+            </div>
+
+            <div class="result-card" data-page="2" style="display: none; border-right-color: #e74c3c;">
+                <div class="result-info">
+                    <h3 style="color: #e74c3c;">أخلاقيات مهنة التمريض والتحديات في العناية المكثفة (ICU)</h3>
+                    <div class="result-meta"><span><i class="fas fa-heartbeat"></i> العناية المكثفة</span></div>
+                </div>
+                <div class="result-action">
+                    <button class="btn btn-secondary" style="border-color: #e74c3c; color: #e74c3c;" onclick="openSummary('أخلاقيات العناية المكثفة', 'ورقة علمية تسلط الضوء على المعضلات الأخلاقية التي تواجه الممرضين عند التعامل مع مرضى الحالات الحرجة وقرارات إنعاش القلب.')"><i class="fas fa-eye"></i> قراءة الملخص</button>
+                </div>
+            </div>
+
+            <div class="result-card" data-page="2" style="display: none; border-right-color: var(--main-color);">
+                <div class="result-info">
+                    <h3>تقييم الممارسات التمريضية لمنع تقرحات الفراش</h3>
+                    <div class="result-meta"><span><i class="fas fa-bed"></i> التمريض الباطني والجراحي</span></div>
+                </div>
+                <div class="result-action">
+                    <button class="btn btn-secondary" style="border-color: var(--main-color); color: var(--main-color);" onclick="openSummary('تقرحات الفراش', 'دراسة تداخلية حول أهمية التقليب الدوري والعناية بالجلد للمرضى طريحي الفراش لتقليل نسبة حدوث التقرحات السريرية.')"><i class="fas fa-eye"></i> قراءة الملخص</button>
+                </div>
+            </div>
+
+            <div class="result-card" data-page="2" style="display: none; border-right-color: var(--dark-blue);">
+                <div class="result-info">
+                    <h3 style="color: var(--dark-blue);">المعالجة الإحصائية (SPSS) لأسباب تسرب الكوادر التمريضية</h3>
+                    <div class="result-meta"><span><i class="fas fa-chart-line"></i> الإحصاء الحيوي والإدارة</span></div>
+                </div>
+                <div class="result-action">
+                    <button class="btn btn-secondary" style="border-color: var(--dark-blue); color: var(--dark-blue);" onclick="openSummary('إحصائيات التسرب الوظيفي', 'استخدام أدوات SPSS الإحصائية لعمل تحليل الانحدار الخطي وتحديد أبرز العوامل المادية والنفسية المؤدية لهجرة وتسرب الممرضين.')"><i class="fas fa-eye"></i> قراءة الملخص</button>
+                </div>
+            </div>
+
+            <div class="result-card" data-page="3" style="display: none; border-right-color: #34495e;">
+                <div class="result-info">
+                    <h3 style="color: #34495e;">التثقيف الصحي للأمهات حول الرضاعة الطبيعية باستخدام التطبيقات الذكية</h3>
+                    <div class="result-meta"><span><i class="fas fa-baby"></i> تمريض صحة الأم والطفل</span></div>
+                </div>
+                <div class="result-action">
+                    <button class="btn btn-secondary" style="border-color: #34495e; color: #34495e;" onclick="openSummary('تطبيقات صحة الأم', 'قياس مدى فاعلية استخدام الهواتف الذكية في تقديم إرشادات صحية مستمرة للأمهات الجدد لرفع معدلات الرضاعة الطبيعية الحصرية.')"><i class="fas fa-eye"></i> قراءة الملخص</button>
+                </div>
+            </div>
+
+            <div class="result-card" data-page="3" style="display: none; border-right-color: var(--main-color);">
+                <div class="result-info">
+                    <h3>مدى التزام طاقم التمريض بتوثيق السجلات الطبية إلكترونياً</h3>
+                    <div class="result-meta"><span><i class="fas fa-file-medical"></i> المعلوماتية الصحية</span></div>
+                </div>
+                <div class="result-action">
+                    <button class="btn btn-secondary" style="border-color: var(--main-color); color: var(--main-color);" onclick="openSummary('التوثيق الإلكتروني', 'بحث يقيم انتقال المستشفيات من النظام الورقي إلى الإلكتروني، والتحديات التي يواجهها الممرضون في التوثيق الدقيق للعلامات الحيوية والعلاجات.')"><i class="fas fa-eye"></i> قراءة الملخص</button>
+                </div>
+            </div>
+
+            <div class="result-card" data-page="3" style="display: none; border-right-color: #e67e22;">
+                <div class="result-info">
+                    <h3 style="color: #e67e22;">دور التمريض النفسي في دعم مرضى الأورام</h3>
+                    <div class="result-meta"><span><i class="fas fa-brain"></i> التمريض النفسي</span></div>
+                </div>
+                <div class="result-action">
+                    <button class="btn btn-secondary" style="border-color: #e67e22; color: #e67e22;" onclick="openSummary('الدعم النفسي لمرضى السرطان', 'تسليط الضوء على أهمية الرعاية التلطيفية والدعم النفسي المستمر في تحسين جودة الحياة وتقليل مستويات القلق والاكتئاب لدى مرضى الأورام.')"><i class="fas fa-eye"></i> قراءة الملخص</button>
+                </div>
+            </div>
+
+            <div class="result-card" data-page="3" style="display: none; border-right-color: #2c3e50;">
+                <div class="result-info">
+                    <h3 style="color: #2c3e50;">بروتوكولات مكافحة العدوى في غرف العمليات الجراحية</h3>
+                    <div class="result-meta"><span><i class="fas fa-syringe"></i> تمريض العمليات</span></div>
+                </div>
+                <div class="result-action">
+                    <button class="btn btn-secondary" style="border-color: #2c3e50; color: #2c3e50;" onclick="openSummary('عدوى غرف العمليات', 'دراسة قائمة على الملاحظة المباشرة لمدى تطبيق معايير التعقيم الجراحي والتخلص الآمن من النفايات الطبية الحادة لمنع التلوث المتقاطع.')"><i class="fas fa-eye"></i> قراءة الملخص</button>
+                </div>
+            </div>
+
+            <div class="pagination fade-element">
+                <button class="page-btn" onclick="prevPage()"><i class="fas fa-chevron-right"></i> السابق</button>
+                <button class="page-btn active" id="btn-page-1" onclick="goToPage(1)">1</button>
+                <button class="page-btn" id="btn-page-2" onclick="goToPage(2)">2</button>
+                <button class="page-btn" id="btn-page-3" onclick="goToPage(3)">3</button>
+                <button class="page-btn" onclick="nextPage()">التالي <i class="fas fa-chevron-left"></i></button>
+            </div>
+
+        </div>
+    </section>
+
+    <div id="summaryModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modalTitle" style="color: var(--dark-blue); border-bottom: 2px solid var(--main-color); padding-bottom: 10px; margin-bottom: 20px;">عنوان البحث</h2>
+            <p id="modalBody" style="font-size: 1.1rem; line-height: 1.8; color: #444;">هنا سيظهر الملخص التفصيلي...</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 - شبكة الممرضين السودانيين</p>
+    </footer>
+
+    <script src="script.js"></script>
+    
+    <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
+    <i class="fas fa-th-large"></i>
+</div>
+
+<div id="quickMenu" class="quick-menu">
+    <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
+        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
+        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
+        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
+        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
+        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
+        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
+        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+        
+    </ul>
+</div>
+</body>
+</html>

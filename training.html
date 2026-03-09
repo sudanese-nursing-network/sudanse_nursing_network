@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مركز التدريب | شبكة الممرضين السودانيين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* تنسيقات شبكة التدريب */
+        .training-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 25px; 
+            margin-top: 30px; 
+        }
+        .course-card {
+            background: white; border-radius: 15px; overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s;
+            border-top: 5px solid var(--main-color); display: flex; flex-direction: column;
+        }
+        .course-card:hover { transform: translateY(-10px); box-shadow: 0 12px 30px rgba(0,0,0,0.1); }
+        .course-header { padding: 20px; background: #f9fdfc; border-bottom: 1px solid #eee; }
+        .course-category { background: var(--main-color); color: white; padding: 4px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
+        .course-body { padding: 20px; flex-grow: 1; }
+        .course-info-list { list-style: none; padding: 0; margin: 15px 0; font-size: 0.9rem; color: #555; }
+        .course-info-list li { margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .course-info-list i { color: var(--main-color); width: 20px; text-align: center; }
+        .availability { font-weight: bold; color: #e67e22; }
+        .course-footer { padding: 20px; background: #fdfdfd; }
+
+        /* الأقسام الإضافية */
+        .nominate-section {
+            background: linear-gradient(135deg, var(--dark-blue), #2c3e50);
+            color: white; padding: 40px; border-radius: 15px; margin-top: 50px; text-align: center;
+        }
+        .upcoming-badge { background: #f39c12; color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.7rem; margin-bottom: 5px; display: inline-block; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-heart-pulse"></i> شبكة الممرضين <span>السودانيين</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+            <li><a href="research.html"><i class="fas fa-book-medical"></i> المكتبة والأبحاث</a></li>
+            <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+            <li><a href="training.html" style="color: var(--main-color);"><i class="fas fa-users"></i> التدريب المستمر</a></li>
+            <li><a href="index.html#contact"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero" style="height: 30vh; background: linear-gradient(rgba(30, 39, 46, 0.9), rgba(0, 168, 132, 0.9));">
+        <div class="hero-content">
+            <h1>مركز <span class="highlight">التدريب والترشيح</span></h1>
+            <p>سجل في دوراتنا الحالية، ترقب برامجنا القادمة، أو شاركنا بترشيحك.</p>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            
+            <h2 class="section-title">الدورات التدريبية المتاحة (3 دورات)</h2>
+            <div class="training-grid">
+                
+                <div class="course-card fade-element">
+                    <div class="course-header">
+                        <span class="course-category">طوارئ</span>
+                        <h3 style="margin: 10px 0;">إنعاش قلبي رئوي (CPR/BLS)</h3>
+                    </div>
+                    <div class="course-body">
+                        <ul class="course-info-list">
+                            <li><i class="fas fa-calendar-alt"></i> <b>تاريخ البدء:</b> 15 مارس 2026</li>
+                            <li><i class="fas fa-clock"></i> <b>المدة:</b> 10 ساعات تدريبية</li>
+                            <li><i class="fas fa-users"></i> <b>العدد المتاح:</b> <span class="availability">5 مقاعد</span></li>
+                            <li><i class="fas fa-map-marker-alt"></i> <b>الحضور:</b> مقر الشبكة</li>
+                        </ul>
+                    </div>
+                    <div class="course-footer">
+                        <button class="btn btn-primary" style="width: 100%;" onclick="openModal('regModal', 'CPR/BLS')">سجل الآن</button>
+                    </div>
+                </div>
+
+                <div class="course-card fade-element" style="border-top-color: #27ae60;">
+                    <div class="course-header">
+                        <span class="course-category" style="background:#27ae60;">وقاية</span>
+                        <h3 style="margin: 10px 0;">مكافحة العدوى والتعقيم</h3>
+                    </div>
+                    <div class="course-body">
+                        <ul class="course-info-list">
+                            <li><i class="fas fa-calendar-alt"></i> <b>تاريخ البدء:</b> 22 مارس 2026</li>
+                            <li><i class="fas fa-clock"></i> <b>المدة:</b> 4 أيام (مسائي)</li>
+                            <li><i class="fas fa-users"></i> <b>العدد المتاح:</b> <span class="availability">10 مقاعد</span></li>
+                            <li><i class="fas fa-laptop"></i> <b>الحضور:</b> تعليم هجين</li>
+                        </ul>
+                    </div>
+                    <div class="course-footer">
+                        <button class="btn btn-primary" style="width: 100%; background:#27ae60; border:none;" onclick="openModal('regModal', 'Infection Control')">سجل الآن</button>
+                    </div>
+                </div>
+
+                <div class="course-card fade-element" style="border-top-color: var(--dark-blue);">
+                    <div class="course-header">
+                        <span class="course-category" style="background:var(--dark-blue);">أبحاث</span>
+                        <h3 style="margin: 10px 0;">التحليل الإحصائي (SPSS)</h3>
+                    </div>
+                    <div class="course-body">
+                        <ul class="course-info-list">
+                            <li><i class="fas fa-calendar-alt"></i> <b>تاريخ البدء:</b> 1 أبريل 2026</li>
+                            <li><i class="fas fa-clock"></i> <b>المدة:</b> 15 ساعة</li>
+                            <li><i class="fas fa-users"></i> <b>العدد المتاح:</b> <span class="availability">18 مقعد</span></li>
+                            <li><i class="fas fa-desktop"></i> <b>الحضور:</b> أونلاين (Zoom)</li>
+                        </ul>
+                    </div>
+                    <div class="course-footer">
+                        <button class="btn btn-primary" style="width: 100%; background:var(--dark-blue); border:none;" onclick="openModal('regModal', 'SPSS Analysis')">سجل الآن</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <h2 class="section-title" style="margin-top: 60px;">دورات تدريبية لاحقاً (3 برامج مرتقبة)</h2>
+            <div class="training-grid">
+                
+                <div class="course-card fade-element" style="border-top-color: #f39c12; opacity: 0.9;">
+                    <div class="course-header">
+                        <span class="upcoming-badge">مرتقب</span>
+                        <h3 style="margin: 10px 0;">تمريض الكلى والديلزة</h3>
+                    </div>
+                    <div class="course-body">
+                        <p style="font-size: 0.9rem; color: #666;">برنامج تخصصي متقدم يشمل التدريب السريري في وحدات غسيل الكلى المعتمدة.</p>
+                    </div>
+                    <div class="course-footer">
+                        <button class="btn btn-secondary" style="width: 100%; border-color: #f39c12; color: #f39c12;" onclick="openModal('notifyModal', 'تمريض الكلى')">أعلمني عند البدء</button>
+                    </div>
+                </div>
+
+                <div class="course-card fade-element" style="border-top-color: #f39c12; opacity: 0.9;">
+                    <div class="course-header">
+                        <span class="upcoming-badge">مرتقب</span>
+                        <h3 style="margin: 10px 0;">التمريض النفسي المجتمعي</h3>
+                    </div>
+                    <div class="course-body">
+                        <p style="font-size: 0.9rem; color: #666;">دورة في كيفية تقديم الدعم النفسي وإدارة حالات الاضطراب في مراكز الصحة الأولية.</p>
+                    </div>
+                    <div class="course-footer">
+                        <button class="btn btn-secondary" style="width: 100%; border-color: #f39c12; color: #f39c12;" onclick="openModal('notifyModal', 'التمريض النفسي')">أعلمني عند البدء</button>
+                    </div>
+                </div>
+
+                <div class="course-card fade-element" style="border-top-color: #f39c12; opacity: 0.9;">
+                    <div class="course-header">
+                        <span class="upcoming-badge">مرتقب</span>
+                        <h3 style="margin: 10px 0;">إدارة الجودة في التمريض</h3>
+                    </div>
+                    <div class="course-body">
+                        <p style="font-size: 0.9rem; color: #666;">تعلم معايير الجودة العالمية وكيفية تطبيقها في الأقسام التمريضية المختلفة.</p>
+                    </div>
+                    <div class="course-footer">
+                        <button class="btn btn-secondary" style="width: 100%; border-color: #f39c12; color: #f39c12;" onclick="openModal('notifyModal', 'إدارة الجودة')">أعلمني عند البدء</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="nominate-section fade-element">
+                <i class="fas fa-lightbulb" style="font-size: 3rem; color: #f1c40f; margin-bottom: 15px;"></i>
+                <h2>رشح موضوعاً تدريبياً</h2>
+                <p style="margin-bottom: 25px;">ساهم في بناء الخطة التدريبية القادمة؛ رشح الدورة التي تحتاجها لمهنتك.</p>
+                <button class="btn btn-primary" style="padding: 15px 40px;" onclick="openModal('nominateModal', '')">أرسل ترشيحك الآن <i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <div id="regModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModals()">&times;</span>
+            <h2 id="regTitle" style="color: var(--dark-blue); border-bottom: 2px solid var(--main-color); padding-bottom: 10px;">التسجيل في الدورة</h2>
+            <form id="regForm" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                <input type="text" placeholder="الاسم الكامل" required style="padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: Cairo;">
+                <input type="tel" placeholder="رقم الواتساب" required style="padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: Cairo;">
+                <button type="submit" class="btn btn-primary">تأكيد طلب التسجيل</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="notifyModal" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <span class="close-btn" onclick="closeModals()">&times;</span>
+            <i class="fas fa-bell" style="font-size: 3rem; color: #f39c12; margin-bottom: 15px;"></i>
+            <h2 id="notifyTitle">أعلمني عند البدء</h2>
+            <form id="notifyForm" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                <input type="email" placeholder="بريدك الإلكتروني" required style="padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: Cairo; text-align: center;">
+                <button type="submit" class="btn btn-secondary" style="background:#f39c12; border:none; color:white;">تفعيل التنبيه</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="nominateModal" class="modal">
+        <div class="modal-content" style="max-width: 450px;">
+            <span class="close-btn" onclick="closeModals()">&times;</span>
+            <h2 style="color: var(--dark-blue); border-bottom: 2px solid #f1c40f; padding-bottom: 10px;">رشح دورة جديدة</h2>
+            <form id="nomForm" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                <input type="text" placeholder="اسم الدورة المقترحة" required style="padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: Cairo;">
+                <textarea placeholder="لماذا هذا الترشيح مهم؟" rows="4" style="padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: Cairo;"></textarea>
+                <button type="submit" class="btn btn-primary" style="background:#f1c40f; color:#333; border:none;">إرسال الترشيح الآن</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 - شبكة الممرضين السودانيين</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function openModal(modalId, title) {
+            const modal = document.getElementById(modalId);
+            if (title) {
+                if (modalId === 'regModal') document.getElementById('regTitle').innerText = "التسجيل في: " + title;
+                if (modalId === 'notifyModal') document.getElementById('notifyTitle').innerText = "تنبيه لدورة: " + title;
+            }
+            modal.style.display = "block";
+        }
+
+        function closeModals() {
+            document.querySelectorAll('.modal').forEach(m => m.style.display = "none");
+        }
+
+        document.getElementById('regForm').onsubmit = (e) => { e.preventDefault(); alert('تم استلام طلب التسجيل بنجاح!'); closeModals(); };
+        document.getElementById('notifyForm').onsubmit = (e) => { e.preventDefault(); alert('تم تفعيل التنبيه، سنخطرك فور البدء!'); closeModals(); };
+        document.getElementById('nomForm').onsubmit = (e) => { e.preventDefault(); alert('شكراً لترشيحك، سنقوم بدراسة مقترحك قريباً!'); closeModals(); };
+        
+        window.onclick = (e) => { if (e.target.className === 'modal') closeModals(); };
+    </script>
+    
+    <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
+    <i class="fas fa-th-large"></i>
+</div>
+
+<div id="quickMenu" class="quick-menu">
+    <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
+        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
+        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
+        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
+        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
+        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
+        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
+        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+        
+    </ul>
+</div>
+</body>
+</html>

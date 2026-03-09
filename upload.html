@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شارك بحثك | شبكة الممرضين السودانيين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* تنسيقات إضافية خاصة بنموذج الرفع فقط */
+        .upload-container {
+            max-width: 700px; margin: auto; background: white; padding: 40px; 
+            border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-top: 5px solid var(--main-color);
+        }
+        .upload-form { display: flex; flex-direction: column; gap: 20px; }
+        .upload-form label { font-weight: bold; color: var(--dark-blue); font-size: 1.1rem; }
+        .upload-form input[type="text"], .upload-form select, .upload-form textarea { 
+            width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 8px; 
+            font-family: 'Cairo', sans-serif; box-sizing: border-box; transition: 0.3s;
+        }
+        .upload-form input[type="text"]:focus, .upload-form select:focus, .upload-form textarea:focus {
+            border-color: var(--main-color); outline: none; box-shadow: 0 0 8px rgba(0,168,132,0.2);
+        }
+        /* تصميم زر رفع الملف */
+        .file-upload-wrapper {
+            position: relative; text-align: center; padding: 40px 20px; 
+            border: 2px dashed var(--main-color); border-radius: 8px; 
+            background: #f4f7f6; cursor: pointer; transition: 0.3s;
+        }
+        .file-upload-wrapper:hover { background: #e9f2ef; }
+        .file-upload-wrapper i { font-size: 3rem; color: var(--main-color); margin-bottom: 15px; }
+        .file-upload-wrapper input[type="file"] {
+            position: absolute; left: 0; top: 0; width: 100%; height: 100%; 
+            opacity: 0; cursor: pointer;
+        }
+        .file-upload-text { color: #666; font-size: 1.1rem; }
+        .file-name-display { margin-top: 10px; font-weight: bold; color: var(--dark-blue); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-heart-pulse"></i> شبكة الممرضين <span>السودانيين</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+            <li><a href="research.html" style="color: var(--main-color);"><i class="fas fa-book-medical"></i> المكتبة والأبحاث</a></li>
+            <li><a href="index.html#contact"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero" style="height: 35vh; background: linear-gradient(rgba(30, 39, 46, 0.9), rgba(0, 168, 132, 0.8)), url('https://via.placeholder.com/1200x300'); background-size: cover; background-position: center;">
+        <div class="hero-content">
+            <h1>شارك <span class="highlight">بحثك</span></h1>
+            <p>ساهم في إثراء المكتبة التمريضية السودانية وانشر علمك لييستفيد منه الجميع.</p>
+        </div>
+    </header>
+
+    <section class="section bg-light">
+        <div class="upload-container fade-element">
+            <h2 style="text-align: center; color: var(--dark-blue); margin-bottom: 30px;"><i class="fas fa-cloud-upload-alt" style="color: var(--main-color);"></i> استمارة رفع الأبحاث</h2>
+            
+            <form id="researchUploadForm" class="upload-form">
+                
+                <div>
+                    <label>الاسم الكامل (كما سيظهر في النشر)</label>
+                    <input type="text" placeholder="مثال: أ. الرشيد..." required>
+                </div>
+                
+                <div>
+                    <label>المستشفى أو الجامعة المنفذ بها البحث</label>
+                    <input type="text" placeholder="مثال: مستشفى أم درمان التعليمي..." required>
+                </div>
+
+                <div>
+                    <label>عنوان البحث أو الدراسة</label>
+                    <input type="text" placeholder="اكتب العنوان الكامل للبحث هنا..." required>
+                </div>
+
+                <div>
+                    <label>تخصص البحث (اختر التصنيف الأقرب)</label>
+                    <select required>
+                        <option value="" disabled selected>-- اضغط لاختيار التخصص --</option>
+                        <option value="infection">مكافحة العدوى والوقاية</option>
+                        <option value="stats">الإحصاء الحيوي والتحليل</option>
+                        <option value="tech">المعلوماتية الصحية والبرمجيات</option>
+                        <option value="admin">الإدارة التمريضية</option>
+                        <option value="clinical">التمريض السريري</option>
+                        <option value="other">أخرى</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>ملخص بسيط عن البحث (نبذة مختصرة)</label>
+                    <textarea rows="4" placeholder="اكتب نبذة عن مشكلة البحث والنتائج التي توصلت إليها..." required></textarea>
+                </div>
+
+                <div>
+                    <label>إرفاق ملف البحث (PDF أو Word)</label>
+                    <div class="file-upload-wrapper">
+                        <i class="fas fa-file-pdf"></i>
+                        <div class="file-upload-text">اضغط هنا لاختيار الملف، أو قم بسحبه وإفلاته</div>
+                        <input type="file" id="fileInput" accept=".pdf, .doc, .docx" required>
+                        <div id="fileNameDisplay" class="file-name-display"></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="font-size: 1.2rem; margin-top: 10px;"><i class="fas fa-paper-plane"></i> إرسال البحث للمراجعة والنشر</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 - شبكة الممرضين السودانيين</p>
+    </footer>
+
+    <script src="script.js"></script>
+    
+    <script>
+        // دالة لإظهار اسم الملف بعد اختياره من الجهاز
+        const fileInput = document.getElementById('fileInput');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files.length > 0) {
+                fileNameDisplay.innerHTML = '<i class="fas fa-check-circle" style="color: var(--main-color); font-size: 1rem; margin-left: 5px;"></i> تم اختيار: ' + this.files[0].name;
+            } else {
+                fileNameDisplay.innerHTML = '';
+            }
+        });
+
+        // دالة لعرض رسالة نجاح عند الضغط على زر الإرسال
+        document.getElementById('researchUploadForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // منع إعادة تحميل الصفحة
+            alert('ممتاز! تم استلام ملف البحث بنجاح. سيقوم فريق شبكة الممرضين السودانيين بمراجعته ونشره في المكتبة قريباً. شكراً لمساهمتك!');
+            this.reset(); // تفريغ الحقول بعد الرفع
+            fileNameDisplay.innerHTML = ''; // مسح اسم الملف
+        });
+    </script>
+    
+    <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
+    <i class="fas fa-th-large"></i>
+</div>
+
+<div id="quickMenu" class="quick-menu">
+    <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
+        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
+        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
+        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
+        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
+        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
+        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
+        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+        
+    </ul>
+</div>
+</body>
+</html>

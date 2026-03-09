@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>من نحن | شبكة الممرضين السودانيين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-heart-pulse"></i> شبكة الممرضين <span>السودانيين</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+            <li><a href="research.html" style="color: var(--main-color);"><i class="fas fa-book-medical"></i> المكتبة والأبحاث</a></li>
+            <li><a href="index.html#contact"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero" style="height: 50vh; background: linear-gradient(rgba(30, 39, 46, 0.9), rgba(0, 168, 132, 0.7)), url('https://via.placeholder.com/1200x500'); background-size: cover; background-position: center;">
+        <div class="hero-content">
+            <h1>من <span class="highlight">نحن؟</span></h1>
+            <p>تعرف على رؤيتنا، رسالتنا، والأهداف التي نسعى لتحقيقها للارتقاء بمهنة التمريض.</p>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="grid">
+            <div class="card fade-element">
+                <div class="icon-box"><i class="fas fa-eye"></i></div>
+                <h3>رؤيتنا</h3>
+                <p>أن نكون المنصة الرائدة والمرجع الأول لكل ممرض وممرضة في السودان، لخلق بيئة صحية متكاملة تواكب التطورات العالمية في الرعاية التمريضية.</p>
+            </div>
+            <div class="card fade-element">
+                <div class="icon-box"><i class="fas fa-bullseye"></i></div>
+                <h3>رسالتنا</h3>
+                <p>تمكين الكوادر التمريضية السودانية من خلال توفير بيئة داعمة للبحث العلمي، التطوير المهني المستمر، وتبادل الخبرات السريرية بكفاءة عالية.</p>
+            </div>
+            <div class="card fade-element">
+                <div class="icon-box"><i class="fas fa-hand-holding-heart"></i></div>
+                <h3>قيمنا</h3>
+                <p>الإنسانية، الإتقان، العمل الجماعي، والالتزام بأخلاقيات المهنة لتقديم أفضل رعاية ممكنة للمرضى.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section bg-light">
+        <h2 class="section-title">محاور تركيزنا الأساسية</h2>
+        <div class="grid">
+            <div class="card fade-element" style="text-align: right;">
+                <h3 style="color: var(--main-color);"><i class="fas fa-shield-virus"></i> تعزيز بروتوكولات مكافحة العدوى</h3>
+                <p>نولي اهتماماً بالغاً برفع وعي الكوادر وتطبيق المعايير القياسية. من أولويات الشبكة دعم الأبحاث الميدانية التي تدرس دور الممرضين في طرق انتقال العدوى وطرق الوقاية منها، وتعميم نتائج هذه الدراسات للارتقاء ببيئة العمل في مستشفياتنا، مثل مستشفى أم درمان التعليمي وغيرها من الصروح الطبية.</p>
+            </div>
+            
+            <div class="card fade-element" style="text-align: right;">
+                <h3 style="color: var(--main-color);"><i class="fas fa-chart-line"></i> دعم البحث العلمي والتحليل الإحصائي</h3>
+                <p>نؤمن بأن التمريض علم مبني على البراهين. لذلك، نهدف إلى مساعدة الخريجين والباحثين في توثيق أبحاثهم وتوفير الدعم في جمع وتحليل البيانات لإنتاج دراسات علمية دقيقة تساهم في حل المشكلات الصحية الميدانية.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section text-center fade-element">
+        <h2>كن جزءاً من التغيير!</h2>
+        <p style="margin-bottom: 20px;">شبكتنا تكبر بانضمام الكفاءات أمثالك. ساهم معنا في بناء مستقبل أفضل للتمريض.</p>
+        <a href="index.html#contact" class="btn btn-primary">انضم إلى فريق العمل <i class="fas fa-arrow-left"></i></a>
+    </section>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 - شبكة الممرضين السودانيين</p>
+    </footer>
+
+    <script src="script.js"></script>
+    
+    <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
+    <i class="fas fa-th-large"></i>
+</div>
+
+<div id="quickMenu" class="quick-menu">
+    <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
+        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
+        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
+        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
+        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
+        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
+        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
+        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+        
+    </ul>
+</div>
+</body>
+</html>

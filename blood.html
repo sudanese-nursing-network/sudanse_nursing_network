@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بنك الدم التفاعلي | شبكة الممرضين السودانيين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .blood-header { background: #c0392b; color: white; padding: 25px; text-align: center; border-radius: 0 0 30px 30px; }
+        .blood-type-badge { 
+            background: #e74c3c; color: white; padding: 5px 15px; 
+            border-radius: 50px; font-weight: bold; font-size: 1.1rem; 
+        }
+        .donor-card {
+            background: white; border-radius: 15px; padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-right: 6px solid #e74c3c;
+            display: flex; justify-content: space-between; align-items: center; transition: 0.3s;
+        }
+        .donor-card:hover { transform: scale(1.02); }
+        .donor-info h3 { margin: 0 0 5px 0; color: var(--dark-blue); }
+        .donor-meta { font-size: 0.9rem; color: #666; }
+        .btn-call-blood { 
+            background: #27ae60; color: white; padding: 10px 15px; 
+            border-radius: 8px; text-decoration: none; font-weight: bold;
+        }
+        .blood-tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 10px; }
+        .tab-btn { 
+            padding: 8px 20px; border: 1px solid #e74c3c; border-radius: 20px; 
+            background: white; color: #e74c3c; cursor: pointer; white-space: nowrap;
+        }
+        .tab-btn.active { background: #e74c3c; color: white; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-heart-pulse"></i> شبكة الممرضين <span>السودانيين</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="blood.html" style="color: #e74c3c;"><i class="fas fa-droplet"></i> بنك الدم</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> الاستغاثة</a></li>
+            <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا</a></li>
+        </ul>
+    </nav>
+
+    <div class="blood-header">
+        <h1><i class="fas fa-tint"></i> بنك الدم السوداني التفاعلي</h1>
+        <p>قطرة دم تساوي حياة.. ابحث عن متبرع أو سجل كمتبرع الآن.</p>
+    </div>
+
+    <section class="section">
+        <div class="container">
+            
+            <div class="blood-tabs">
+                <button class="tab-btn active">الكل</button>
+                <button class="tab-btn">O+</button>
+                <button class="tab-btn">O-</button>
+                <button class="tab-btn">A+</button>
+                <button class="tab-btn">B+</button>
+                <button class="tab-btn">AB+</button>
+            </div>
+
+            <div class="grid" style="grid-template-columns: 1fr;">
+                
+                <div class="donor-card fade-element">
+                    <div class="donor-info">
+                        <h3>محمد علي (متبرع متاح)</h3>
+                        <div class="donor-meta">
+                            <span><i class="fas fa-map-marker-alt"></i> الخرطوم - بحري</span> | 
+                            <span><i class="fas fa-clock"></i> آخر تبرع: منذ 4 أشهر</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span class="blood-type-badge">O+</span>
+                        <a href="tel:09xxxxxxx" class="btn-call-blood"><i class="fas fa-phone"></i> اتصل</a>
+                    </div>
+                </div>
+
+                <div class="donor-card fade-element" style="border-right-color: #f39c12; background: #fffdf9;">
+                    <div class="donor-info">
+                        <h3 style="color: #d35400;">عاجل: مطلوب متبرع لعملية</h3>
+                        <div class="donor-meta">
+                            <span><i class="fas fa-hospital"></i> مستشفى نورة - أم درمان</span> | 
+                            <span><i class="fas fa-user-clock"></i> الحالة: طارئة جداً</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span class="blood-type-badge" style="background: #f39c12;">A-</span>
+                        <a href="tel:09xxxxxxx" class="btn-call-blood" style="background: #e67e22;"><i class="fas fa-ambulance"></i> تبرع الآن</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="margin-top: 40px; text-align: center;">
+                <button class="btn btn-primary" style="background: #c0392b; border: none; padding: 15px 40px;" onclick="document.getElementById('bloodModal').style.display='block'">
+                    <i class="fas fa-plus-circle"></i> سجل كمتبرع أو اطلب دم
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <div id="bloodModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="document.getElementById('bloodModal').style.display='none'">&times;</span>
+            <h2 style="color: #c0392b;">إضافة بيانات</h2>
+            <form style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                <select style="padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-family: Cairo;">
+                    <option>أنا متبرع (متاح للاتصال)</option>
+                    <option>أنا مريض (أحتاج تبرع عاجل)</option>
+                </select>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <input type="text" placeholder="الاسم" required style="padding: 12px; border-radius: 8px; border: 1px solid #ddd;">
+                    <select style="padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-family: Cairo;">
+                        <option>O+</option><option>O-</option><option>A+</option><option>A-</option>
+                        <option>B+</option><option>B-</option><option>AB+</option><option>AB-</option>
+                    </select>
+                </div>
+                <input type="tel" placeholder="رقم الهاتف" required style="padding: 12px; border-radius: 8px; border: 1px solid #ddd;">
+                <input type="text" placeholder="المدينة والمستشفى" style="padding: 12px; border-radius: 8px; border: 1px solid #ddd;">
+                <button type="submit" class="btn btn-primary" style="background: #c0392b; border: none;">نشر في البنك</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 - شبكة الممرضين السودانيين</p>
+    </footer>
+
+    <script src="script.js"></script>
+    
+  <div id="quickMenu" class="quick-menu">
+    <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
+        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
+        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
+        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
+        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
+        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
+        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
+        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+        
+    </ul>
+</div>
+</body>
+</html>

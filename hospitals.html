@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل المستشفيات ونظام التحويل | شبكة الممرضين السودانيين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .hosp-header { background: #2c3e50; color: white; padding: 40px 20px; text-align: center; border-radius: 0 0 30px 30px; border-bottom: 5px solid #3498db; }
+        .filter-container { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 20px 0 30px; }
+        .filter-btn { background: white; border: 2px solid #3498db; color: #3498db; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-family: 'Cairo'; font-weight: bold; transition: 0.3s; }
+        .filter-btn.active, .filter-btn:hover { background: #3498db; color: white; }
+        .search-hosp { max-width: 800px; margin: 0 auto; display: block; width: 100%; padding: 15px; border-radius: 10px; border: 1px solid #ddd; font-family: 'Cairo'; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .search-hosp:focus { border-color: #3498db; outline: none; }
+        .hosp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
+        .hosp-card { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); position: relative; transition: 0.3s; border-top: 5px solid #3498db; }
+        .hosp-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+        .hosp-name { font-size: 1.3rem; color: var(--dark-blue); margin: 0 0 5px 0; }
+        .hosp-location { color: #666; font-size: 0.95rem; margin-bottom: 15px; border-bottom: 1px dashed #eee; padding-bottom: 10px; }
+        .tests-section { margin-bottom: 15px; }
+        .test-title { font-size: 0.9rem; font-weight: bold; color: #444; margin-bottom: 5px; }
+        .test-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+        .tag-on { background: #e8f8f5; color: #27ae60; padding: 4px 10px; border-radius: 5px; font-size: 0.85rem; border: 1px solid #a3e4d7; }
+        .tag-off { background: #fdedec; color: #c0392b; padding: 4px 10px; border-radius: 5px; font-size: 0.85rem; border: 1px solid #f5b7b1; text-decoration: line-through; }
+        .hosp-actions { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-transfer { background: #e67e22; color: white; flex: 2; text-align: center; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; font-family: 'Cairo'; font-size: 1rem; }
+        .btn-transfer:hover { background: #d35400; }
+        .btn-call { background: #27ae60; color: white; flex: 1; text-align: center; padding: 12px; border-radius: 8px; font-weight: bold; display: flex; justify-content: center; align-items: center; text-decoration: none; }
+        
+        /* نوافذ المودال (التحويل وطلب المريض) */
+        .modal-overlay { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); }
+        .modal-content { background-color: #fefefe; margin: 5% auto; padding: 30px; border-radius: 15px; width: 90%; max-width: 600px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .close-modal { color: #aaa; float: left; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close-modal:hover { color: #333; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; color: #444; }
+        .custom-input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Cairo'; box-sizing: border-box; }
+        
+        /* لافتة المريض الجديدة */
+        .patient-banner { background: #e8f8f5; border: 2px dashed #27ae60; border-radius: 15px; padding: 25px; text-align: center; margin-bottom: 30px; }
+        .patient-banner h3 { color: #27ae60; margin-top: 0; font-size: 1.4rem; }
+        .btn-inquiry { background: #27ae60; color: white; padding: 12px 30px; border: none; border-radius: 8px; font-family: 'Cairo'; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .btn-inquiry:hover { background: #219150; transform: scale(1.05); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-heart-pulse"></i> شبكة الممرضين <span>السودانيين</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="hospitals.html" style="color: #3498db;"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+            <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة</a></li>
+            <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> التسليم</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> الاستغاثة</a></li>
+        </ul>
+    </nav>
+
+    <div class="hosp-header">
+        <h1><i class="fas fa-network-wired"></i> النظام القومي لبيانات المستشفيات والتحويل</h1>
+        <p>تحديث مباشر لتوفر الفحوصات الطبية، مع إمكانية تحويل المرضى بين المستشفيات إلكترونياً.</p>
+    </div>
+
+    <section class="section">
+        <div class="container">
+            
+            <div class="patient-banner">
+                <h3><i class="fas fa-search-location"></i> ما لقيت الفحص أو الخدمة البتفتش عليها؟</h3>
+                <p style="color: #555;">اكتب لينا طلبك، وتيم شبكة الممرضين حيفتش ليك ويتواصل معاك يوريك أقرب مستشفى أو مركز متوفر فيه طلبك.</p>
+                <button class="btn-inquiry" onclick="openInquiryModal()"><i class="fas fa-hand-holding-medical"></i> أرسل طلب بحث عن فحص / خدمة</button>
+            </div>
+
+            <input type="text" id="searchInput" class="search-hosp" placeholder="🔍 ابحث عن اسم المستشفى، الفحص، أو المدينة...">
+
+            <div class="filter-container" id="cityFilters"></div>
+
+            <div class="hosp-grid" id="hospitalsGrid"></div>
+        </div>
+    </section>
+
+    <div id="transferModal" class="modal-overlay">
+        <div class="modal-content" style="border-top: 5px solid #e67e22;">
+            <span class="close-modal" id="closeTransferBtn">&times;</span>
+            <h2 style="color: #e67e22; margin-top: 0;"><i class="fas fa-ambulance"></i> استمارة تحويل مريض</h2>
+            <form id="transferForm">
+                <div class="form-group">
+                    <label>المستشفى المحول إليها (الوجهة)</label>
+                    <input type="text" id="destHospital" class="custom-input" readonly style="background: #f4f4f4; color: #e67e22; font-weight: bold;">
+                </div>
+                <div class="form-group">
+                    <label>اسم المريض</label>
+                    <input type="text" class="custom-input" placeholder="الاسم الرباعي للمريض" required>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>المستشفى المحول منها</label>
+                        <input type="text" class="custom-input" placeholder="اسم مستشفاك الحالي" required>
+                    </div>
+                    <div class="form-group">
+                        <label>مستوى الخطورة</label>
+                        <select class="custom-input">
+                            <option>عادي (Routine)</option>
+                            <option>عاجل (Urgent)</option>
+                            <option style="color:red; font-weight:bold;">طوارئ قصوى (Emergency)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>سبب التحويل / الفحوصات المطلوبة</label>
+                    <textarea class="custom-input" rows="3" placeholder="مثال: يحتاج المريض لعمل أشعة مقطعية..." required></textarea>
+                </div>
+                <button type="submit" style="width: 100%; padding: 15px; font-size: 1.1rem; background: #e67e22; border: none; color: white; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                    <i class="fas fa-paper-plane"></i> إرسال طلب التحويل
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="inquiryModal" class="modal-overlay">
+        <div class="modal-content" style="border-top: 5px solid #27ae60;">
+            <span class="close-modal" id="closeInquiryBtn">&times;</span>
+            <h2 style="color: #27ae60; margin-top: 0;"><i class="fas fa-user-injured"></i> طلب مساعدة في البحث</h2>
+            <form id="inquiryForm">
+                <div class="form-group">
+                    <label>اسم المريض / المستفسر</label>
+                    <input type="text" class="custom-input" placeholder="اكتب اسمك هنا" required>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>رقم الهاتف (واتساب)</label>
+                        <input type="tel" class="custom-input" placeholder="مثال: 0912345678" required>
+                    </div>
+                    <div class="form-group">
+                        <label>المدينة / السكن</label>
+                        <input type="text" class="custom-input" placeholder="مثال: أم درمان - الثورة" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>عن ماذا تبحث؟ (اكتب الفحص أو الخدمة)</label>
+                    <textarea class="custom-input" rows="4" placeholder="مثال: بفتش على فحص رنين مغناطيسي للركبة وما لاقيهو... أو محتاج دواء كذا..." required></textarea>
+                </div>
+                <button type="submit" style="width: 100%; padding: 15px; font-size: 1.1rem; background: #27ae60; border: none; color: white; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                    <i class="fas fa-paper-plane"></i> إرسال الطلب لشبكة الممرضين
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="quick-access-btn" id="quickBtn" title="كل الشاشات">
+        <i class="fas fa-th-large"></i>
+    </div>
+  <div id="quickMenu" class="quick-menu">
+    <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
+        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
+        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
+        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
+        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
+        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
+        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
+        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+        
+    </ul>
+</div>
+
+    <script src="script.js"></script>
+    <script src="hospitals.js"></script>
+</body>
+</html>

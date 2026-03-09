@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فرص العمل | شبكة الممرضين السودانيين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* تنسيقات صفحة الوظائف */
+        .search-filters {
+            background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            display: flex; flex-wrap: wrap; gap: 15px; margin-top: -50px; position: relative; z-index: 10;
+        }
+        .search-filters input, .search-filters select {
+            flex: 1; min-width: 180px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Cairo';
+        }
+        .job-tools { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+        .job-card {
+            background: white; padding: 25px; border-radius: 12px; border-right: 5px solid var(--main-color);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05); transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 20px;
+        }
+        .job-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .job-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
+        .job-title { margin: 0; color: var(--dark-blue); font-size: 1.3rem; }
+        .job-hospital { margin: 5px 0 0; color: #666; font-weight: bold; }
+        .job-type-badge { background: #e9f2ef; color: var(--main-color); padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
+        .job-details p { margin: 8px 0; color: #555; display: flex; align-items: center; gap: 10px; }
+        .job-details i { color: #aaa; width: 20px; text-align: center; }
+        .job-actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; align-items: center; }
+        .icon-btn { 
+            background: transparent; border: 1px solid #ddd; color: #666; border-radius: 5px; 
+            width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; 
+            cursor: pointer; transition: 0.3s; font-size: 1.2rem;
+        }
+        .icon-btn:hover { background: #f4f7f6; color: var(--main-color); border-color: var(--main-color); }
+        
+        /* تنسيق قسم المستشفيات (قريباً) */
+        .coming-soon-banner {
+            background: linear-gradient(to left, #ffffff, #f4f7f6); border: 2px dashed #ccc;
+            padding: 30px; border-radius: 15px; margin-top: 50px; text-align: right;
+            position: relative; overflow: hidden;
+        }
+        .coming-soon-badge {
+            background: #e74c3c; color: white; padding: 5px 15px; border-radius: 5px; font-weight: bold;
+            display: inline-block; margin-bottom: 10px; animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        
+        .cv-upload-box {
+            background: linear-gradient(135deg, var(--dark-blue), #2c3e50); color: white; padding: 40px;
+            border-radius: 15px; text-align: center; margin-top: 40px; margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo"><i class="fas fa-heart-pulse"></i> شبكة الممرضين <span>السودانيين</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+            <li><a href="research.html"><i class="fas fa-book-medical"></i> المكتبة والأبحاث</a></li>
+            <li><a href="jobs.html" style="color: var(--main-color);"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+            <li><a href="index.html#contact"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero" style="height: 35vh; background: linear-gradient(rgba(30, 39, 46, 0.85), rgba(0, 168, 132, 0.85)), url('https://via.placeholder.com/1200x400'); background-size: cover; background-position: center;">
+        <div class="hero-content">
+            <h1>بوابة <span class="highlight">التوظيف الطبي</span></h1>
+            <p>أحدث فرص العمل للكوادر التمريضية في المستشفيات والمراكز الطبية.</p>
+        </div>
+    </header>
+
+    <section class="section bg-light" style="padding-top: 0;">
+        <div class="container" style="max-width: 1100px; margin: auto;">
+            
+            <div class="search-filters fade-element">
+                <input type="text" placeholder="المسمى الوظيفي (مثال: ممرض طوارئ)...">
+                <select><option value="">كل المواقع</option><option value="khartoum">الخرطوم</option><option value="omdurman">أم درمان</option></select>
+                <select><option value="">كل التخصصات</option><option value="icu">عناية مكثفة (ICU)</option><option value="er">طوارئ (ER)</option></select>
+                <button class="btn btn-primary" style="margin: 0; padding: 15px 30px;"><i class="fas fa-search"></i> بحث</button>
+            </div>
+
+            <div class="job-tools fade-element">
+                <h2 style="margin: 0; color: var(--dark-blue); font-size: 1.5rem;">النتائج المتاحة</h2>
+                <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+                    <button class="btn btn-secondary" onclick="openAlertModal()" style="border-color: #f39c12; color: #f39c12; padding: 10px 20px;"><i class="fas fa-bell"></i> إعداد تنبيه للوظائف</button>
+                </div>
+            </div>
+
+            <div class="grid" id="jobsContainer">
+                
+                <div class="job-card fade-element" data-page="1">
+                    <div>
+                        <div class="job-header">
+                            <div>
+                                <h3 class="job-title">ممرض/ة عناية مكثفة (ICU)</h3>
+                                <p class="job-hospital"><i class="fas fa-hospital-alt" style="color: var(--main-color);"></i> مستشفى رويال كير العالمية</p>
+                            </div>
+                            <span class="job-type-badge">دوام كامل</span>
+                        </div>
+                        <div class="job-details">
+                            <p><i class="fas fa-map-marker-alt"></i> الخرطوم، حي بري</p>
+                            <p><i class="fas fa-briefcase"></i> خبرة عملية لا تقل عن سنتين في الـ ICU</p>
+                        </div>
+                    </div>
+                    <div class="job-actions">
+                        <button class="btn btn-primary" style="flex: 1;" onclick="openApplyModal('ممرض/ة عناية مكثفة (ICU)')"><i class="fas fa-paper-plane"></i> تقديم سريع</button>
+                        <button class="icon-btn" onclick="this.style.color='var(--main-color)';"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </div>
+
+                <div class="job-card fade-element" data-page="1" style="border-right-color: var(--dark-blue);">
+                    <div>
+                        <div class="job-header">
+                            <div>
+                                <h3 class="job-title">ممرض/ة مكافحة عدوى</h3>
+                                <p class="job-hospital"><i class="fas fa-hospital-alt" style="color: var(--dark-blue);"></i> مستشفى أم درمان التعليمي</p>
+                            </div>
+                            <span class="job-type-badge" style="background: #eef2f5; color: var(--dark-blue);">تعاقد سنوي</span>
+                        </div>
+                        <div class="job-details">
+                            <p><i class="fas fa-map-marker-alt"></i> أم درمان</p>
+                            <p><i class="fas fa-graduation-cap"></i> للخريجين الجدد (Graduate Nurses)</p>
+                        </div>
+                    </div>
+                    <div class="job-actions">
+                        <button class="btn btn-primary" style="flex: 1; background: var(--dark-blue);" onclick="openApplyModal('ممرض/ة مكافحة عدوى')"><i class="fas fa-paper-plane"></i> تقديم سريع</button>
+                        <button class="icon-btn" onclick="this.style.color='var(--main-color)';"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </div>
+
+                <div class="job-card fade-element" data-page="1" style="border-right-color: #f39c12;">
+                    <div>
+                        <div class="job-header">
+                            <div>
+                                <h3 class="job-title">كادر تمريض طوارئ (ER)</h3>
+                                <p class="job-hospital"><i class="fas fa-hospital-alt" style="color: #f39c12;"></i> مستشفى فضيل</p>
+                            </div>
+                            <span class="job-type-badge" style="background: #fdf5e6; color: #f39c12;">دوام مسائي</span>
+                        </div>
+                        <div class="job-details">
+                            <p><i class="fas fa-map-marker-alt"></i> الخرطوم وسط</p>
+                            <p><i class="fas fa-heartbeat"></i> دورة إنعاش قلبي رئوي (CPR) أساسية</p>
+                        </div>
+                    </div>
+                    <div class="job-actions">
+                        <button class="btn btn-primary" style="flex: 1; background: #f39c12; border: none;" onclick="openApplyModal('تمريض طوارئ (ER)')"><i class="fas fa-paper-plane"></i> تقديم سريع</button>
+                        <button class="icon-btn" onclick="this.style.color='var(--main-color)';"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </div>
+
+                <div class="job-card" data-page="2" style="display: none; border-right-color: #27ae60;">
+                    <div>
+                        <div class="job-header">
+                            <div>
+                                <h3 class="job-title">ممرض/ة أطفال وحديثي ولادة</h3>
+                                <p class="job-hospital"><i class="fas fa-hospital-alt" style="color: #27ae60;"></i> مستشفى البلك للأطفال</p>
+                            </div>
+                            <span class="job-type-badge" style="background: #e9f7ef; color: #27ae60;">دوام كامل</span>
+                        </div>
+                        <div class="job-details">
+                            <p><i class="fas fa-map-marker-alt"></i> أم درمان</p>
+                            <p><i class="fas fa-baby"></i> خبرة في التعامل مع حضانات الأطفال</p>
+                        </div>
+                    </div>
+                    <div class="job-actions">
+                        <button class="btn btn-primary" style="flex: 1; background: #27ae60; border: none;" onclick="openApplyModal('ممرض/ة أطفال')"><i class="fas fa-paper-plane"></i> تقديم سريع</button>
+                        <button class="icon-btn" onclick="this.style.color='var(--main-color)';"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </div>
+
+                <div class="job-card" data-page="2" style="display: none; border-right-color: #8e44ad;">
+                    <div>
+                        <div class="job-header">
+                            <div>
+                                <h3 class="job-title">رئيس/ة تمريض (Head Nurse)</h3>
+                                <p class="job-hospital"><i class="fas fa-hospital-alt" style="color: #8e44ad;"></i> مستشفى الساحة التخصصي</p>
+                            </div>
+                            <span class="job-type-badge" style="background: #f4eaff; color: #8e44ad;">إداري</span>
+                        </div>
+                        <div class="job-details">
+                            <p><i class="fas fa-map-marker-alt"></i> الخرطوم</p>
+                            <p><i class="fas fa-user-tie"></i> خبرة إدارية وسريرية 5 سنوات كحد أدنى</p>
+                        </div>
+                    </div>
+                    <div class="job-actions">
+                        <button class="btn btn-primary" style="flex: 1; background: #8e44ad; border: none;" onclick="openApplyModal('رئيس/ة تمريض')"><i class="fas fa-paper-plane"></i> تقديم سريع</button>
+                        <button class="icon-btn" onclick="this.style.color='var(--main-color)';"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </div>
+                
+                <div class="job-card" data-page="2" style="display: none; border-right-color: #34495e;">
+                    <div>
+                        <div class="job-header">
+                            <div>
+                                <h3 class="job-title">تمريض رعاية منزلية (Home Care)</h3>
+                                <p class="job-hospital"><i class="fas fa-home" style="color: #34495e;"></i> وكالة عناية الطبية</p>
+                            </div>
+                            <span class="job-type-badge" style="background: #ecf0f1; color: #34495e;">زيارات ميدانية</span>
+                        </div>
+                        <div class="job-details">
+                            <p><i class="fas fa-map-marker-alt"></i> ولاية الخرطوم</p>
+                            <p><i class="fas fa-briefcase"></i> توفير رعاية تمريضية للمرضى وكبار السن بالمنازل</p>
+                        </div>
+                    </div>
+                    <div class="job-actions">
+                        <button class="btn btn-primary" style="flex: 1; background: #34495e; border: none;" onclick="openApplyModal('تمريض رعاية منزلية')"><i class="fas fa-paper-plane"></i> تقديم سريع</button>
+                        <button class="icon-btn" onclick="this.style.color='var(--main-color)';"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </div>
+
+                <div class="job-card" data-page="3" style="display: none; border-right-color: #e74c3c;">
+                    <div>
+                        <div class="job-header">
+                            <div>
+                                <h3 class="job-title">ممرض/ة عمليات (Scrub Nurse)</h3>
+                                <p class="job-hospital"><i class="fas fa-hospital-alt" style="color: #e74c3c;"></i> مستشفى الزيتونة</p>
+                            </div>
+                            <span class="job-type-badge" style="background: #fdedec; color: #e74c3c;">دوام كامل</span>
+                        </div>
+                        <div class="job-details">
+                            <p><i class="fas fa-map-marker-alt"></i> الخرطوم</p>
+                            <p><i class="fas fa-syringe"></i> إجادة التعامل مع الأدوات الجراحية والتعقيم</p>
+                        </div>
+                    </div>
+                    <div class="job-actions">
+                        <button class="btn btn-primary" style="flex: 1; background: #e74c3c; border: none;" onclick="openApplyModal('ممرض/ة عمليات')"><i class="fas fa-paper-plane"></i> تقديم سريع</button>
+                        <button class="icon-btn" onclick="this.style.color='var(--main-color)';"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </div>
+
+                <div class="job-card" data-page="3" style="display: none; border-right-color: #2c3e50;">
+                    <div>
+                        <div class="job-header">
+                            <div>
+                                <h3 class="job-title">تمريض عيادات خارجية</h3>
+                                <p class="job-hospital"><i class="fas fa-hospital-alt" style="color: #2c3e50;"></i> مجمع النيلين الطبي</p>
+                            </div>
+                            <span class="job-type-badge" style="background: #ebedef; color: #2c3e50;">دوام صباحي</span>
+                        </div>
+                        <div class="job-details">
+                            <p><i class="fas fa-map-marker-alt"></i> الخرطوم بحري</p>
+                            <p><i class="fas fa-stethoscope"></i> قياس العلامات الحيوية وترتيب ملفات المرضى</p>
+                        </div>
+                    </div>
+                    <div class="job-actions">
+                        <button class="btn btn-primary" style="flex: 1; background: #2c3e50; border: none;" onclick="openApplyModal('تمريض عيادات')"><i class="fas fa-paper-plane"></i> تقديم سريع</button>
+                        <button class="icon-btn" onclick="this.style.color='var(--main-color)';"><i class="far fa-bookmark"></i></button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pagination fade-element" style="margin-top: 30px;">
+                <button class="page-btn" onclick="prevJobPage()"><i class="fas fa-chevron-right"></i> السابق</button>
+                <button class="page-btn active" id="job-btn-1" onclick="goJobPage(1)">1</button>
+                <button class="page-btn" id="job-btn-2" onclick="goJobPage(2)">2</button>
+                <button class="page-btn" id="job-btn-3" onclick="goJobPage(3)">3</button>
+                <button class="page-btn" onclick="nextJobPage()">التالي <i class="fas fa-chevron-left"></i></button>
+            </div>
+
+            <div class="coming-soon-banner fade-element">
+                <span class="coming-soon-badge"><i class="fas fa-hourglass-half"></i> قريباً جداً</span>
+                <h2 style="color: var(--dark-blue); font-size: 1.8rem; margin: 5px 0 15px 0;"><i class="far fa-building"></i> بوابة المستشفيات والمنشآت الطبية</h2>
+                <p style="color: #555; font-size: 1.1rem; max-width: 800px;">نعمل حالياً على تجهيز قسم متكامل يضم ملفات تعريفية للمستشفيات، تقييمات لبيئة العمل، وإمكانية التقديم المباشر لقاعدة بيانات كل مستشفى لتسهيل وصول الكفاءات التمريضية للمكان المناسب.</p>
+                <i class="fas fa-tools" style="position: absolute; left: -20px; bottom: -20px; font-size: 10rem; color: rgba(0,0,0,0.03);"></i>
+            </div>
+
+            <div class="cv-upload-box fade-element">
+                <i class="fas fa-file-signature" style="font-size: 3rem; color: var(--main-color); margin-bottom: 15px;"></i>
+                <h2>لم تجد الوظيفة المناسبة؟</h2>
+                <p style="font-size: 1.1rem; margin-bottom: 25px;">ارفع سيرتك الذاتية في قاعدة بيانات شبكة الممرضين السودانيين لترشيحك للوظائف المستقبلية.</p>
+                <button class="btn btn-primary" style="font-size: 1.2rem; padding: 12px 35px;" onclick="openApplyModal('قاعدة بيانات الشبكة العامة')"><i class="fas fa-cloud-upload-alt"></i> ارفع سيرتك الذاتية الآن</button>
+            </div>
+
+        </div>
+    </section>
+
+    <div id="applyModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <span class="close-btn" onclick="closeModals()">&times;</span>
+            <h2 style="color: var(--dark-blue); border-bottom: 2px solid var(--main-color); padding-bottom: 10px;"><i class="fas fa-file-invoice"></i> استمارة التقديم</h2>
+            <p id="applyJobTitle" style="font-weight: bold; color: var(--main-color); margin-bottom: 20px;"></p>
+            <form id="applyForm" style="display: flex; flex-direction: column; gap: 15px;">
+                <input type="text" placeholder="الاسم الرباعي" required style="padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-family: 'Cairo';">
+                <input type="tel" placeholder="رقم الهاتف (واتساب)" required style="padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-family: 'Cairo';">
+                <div style="border: 2px dashed var(--main-color); padding: 15px; text-align: center; border-radius: 5px; background: #f9f9f9;">
+                    <label style="cursor: pointer; color: var(--dark-blue); font-weight: bold;">
+                        <i class="fas fa-upload" style="color: var(--main-color); font-size: 1.5rem; display: block; margin-bottom: 5px;"></i> اضغط هنا لرفع السيرة الذاتية (PDF)
+                        <input type="file" required style="display: none;">
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">إرسال الطلب الآن</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="alertModal" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <span class="close-btn" onclick="closeModals()">&times;</span>
+            <i class="fas fa-bell" style="font-size: 3rem; color: #f39c12; margin-bottom: 15px;"></i>
+            <h2 style="color: var(--dark-blue);">تنبيه الوظائف</h2>
+            <form id="alertForm" style="display: flex; flex-direction: column; gap: 15px;">
+                <input type="email" placeholder="أدخل بريدك الإلكتروني هنا..." required style="padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-family: 'Cairo'; text-align: center;">
+                <button type="submit" class="btn btn-secondary" style="background: #f39c12; color: white; border: none;">تفعيل التنبيه</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 - شبكة الممرضين السودانيين</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <script>
+        // 1. تشغيل النوافذ المنبثقة
+        const applyModal = document.getElementById('applyModal');
+        const alertModal = document.getElementById('alertModal');
+        const applyJobTitle = document.getElementById('applyJobTitle');
+
+        function openApplyModal(jobName) {
+            applyJobTitle.innerText = "التقديم على: " + jobName;
+            applyModal.style.display = 'block';
+        }
+        function openAlertModal() { alertModal.style.display = 'block'; }
+        function closeModals() {
+            applyModal.style.display = 'none';
+            alertModal.style.display = 'none';
+        }
+
+        document.getElementById('applyForm').addEventListener('submit', function(e) {
+            e.preventDefault(); alert('تم الإرسال بنجاح!'); closeModals(); this.reset();
+        });
+        document.getElementById('alertForm').addEventListener('submit', function(e) {
+            e.preventDefault(); alert('تم التفعيل بنجاح!'); closeModals(); this.reset();
+        });
+
+        // 2. تشغيل التنقل بين صفحات الوظائف (1, 2, 3)
+        let currentJobPage = 1;
+        const totalJobPages = 3;
+
+        function goJobPage(pageNumber) {
+            currentJobPage = pageNumber;
+            // إخفاء كل الوظائف
+            const allJobs = document.querySelectorAll('.job-card');
+            allJobs.forEach(card => card.style.display = 'none');
+            // إظهار وظائف الصفحة المختارة فقط
+            const targetJobs = document.querySelectorAll(`.job-card[data-page="${pageNumber}"]`);
+            targetJobs.forEach(card => card.style.display = 'flex');
+            // تغيير لون الزر النشط
+            const allBtns = document.querySelectorAll('.pagination .page-btn');
+            allBtns.forEach(btn => btn.classList.remove('active'));
+            const currentBtn = document.getElementById(`job-btn-${pageNumber}`);
+            if(currentBtn) currentBtn.classList.add('active');
+        }
+
+        function nextJobPage() { if (currentJobPage < totalJobPages) goJobPage(currentJobPage + 1); }
+        function prevJobPage() { if (currentJobPage > 1) goJobPage(currentJobPage - 1); }
+    </script>
+    
+    <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
+    <i class="fas fa-th-large"></i>
+</div>
+
+<div id="quickMenu" class="quick-menu">
+    <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
+        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
+        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
+        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
+        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
+        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
+        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
+        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+        
+    </ul>
+</div>
+</body>
+</html>

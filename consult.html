@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ركن الاستشارات | شبكة الممرضين السودانيين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .consult-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
+        .consult-card {
+            background: white; padding: 30px; border-radius: 15px; text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 5px solid var(--main-color);
+            transition: var(--transition);
+        }
+        .consult-card:hover { transform: translateY(-10px); }
+        .consult-icon { font-size: 3rem; color: var(--main-color); margin-bottom: 15px; }
+        
+        .booking-section {
+            background: white; padding: 40px; border-radius: 20px; margin-top: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #eee;
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } }
+        
+        .consult-label { display: block; margin-bottom: 8px; font-weight: bold; color: var(--dark-blue); }
+        .consult-input, .consult-select, .consult-textarea {
+            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Cairo'; box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-heart-pulse"></i> شبكة الممرضين <span>السودانيين</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="research.html"><i class="fas fa-book-medical"></i> الأبحاث</a></li>
+            <li><a href="consult.html" style="color: var(--main-color);"><i class="fas fa-comments"></i> الاستشارات</a></li>
+            <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero" style="height: 35vh; background: linear-gradient(rgba(30, 39, 46, 0.9), rgba(0, 168, 132, 0.9));">
+        <div class="hero-content">
+            <h1>ركن <span class="highlight">الاستشارات البحثية</span></h1>
+            <p>نساعدك في تحويل فكرتك البحثية إلى دراسة علمية متكاملة وبتحليل إحصائي دقيق.</p>
+        </div>
+    </header>
+
+    <section class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">كيف يمكننا مساعدتك؟</h2>
+            <div class="consult-grid">
+                
+                <div class="consult-card fade-element">
+                    <div class="consult-icon"><i class="fas fa-laptop-code"></i></div>
+                    <h3>تحليل SPSS الإحصائي</h3>
+                    <p>إدخال البيانات، استخراج التكرارات، والارتباطات الإحصائية لدراستك.</p>
+                </div>
+
+                <div class="consult-card fade-element">
+                    <div class="consult-icon"><i class="fas fa-file-medical-alt"></i></div>
+                    <h3>تنسيق خطة البحث</h3>
+                    <p>مراجعة هيكل البحث، كتابة المنهجية، وضبط المراجع (APA Style).</p>
+                </div>
+
+                <div class="consult-card fade-element">
+                    <div class="consult-icon"><i class="fas fa-shield-virus"></i></div>
+                    <h3>استشارات مكافحة العدوى</h3>
+                    <p>دعم علمي وعملي في تطبيق معايير الوقاية داخل المستشفيات.</p>
+                </div>
+
+            </div>
+
+            <div class="booking-section fade-element">
+                <h2 style="text-align: center; color: var(--dark-blue); margin-bottom: 30px;">احجز موعد استشارة (أونلاين/مباشر)</h2>
+                <form id="consultForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="consult-label">الاسم الكامل</label>
+                            <input type="text" class="consult-input" placeholder="أدخل اسمك" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="consult-label">رقم الواتساب</label>
+                            <input type="tel" class="consult-input" placeholder="للتواصل معك" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row" style="margin-top: 20px;">
+                        <div class="form-group">
+                            <label class="consult-label">مجال الاستشارة</label>
+                            <select class="consult-select">
+                                <option>التحليل الإحصائي (SPSS)</option>
+                                <option>تنسيق وكتابة البحث العلمي</option>
+                                <option>مكافحة العدوى والوقاية</option>
+                                <option>أخرى</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="consult-label">الموعد المفضل</label>
+                            <input type="date" class="consult-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label class="consult-label">اشرح لنا طلبك (اختياري)</label>
+                        <textarea class="consult-textarea" rows="4" placeholder="اكتب تفاصيل طلبك هنا لنسهل عليك المساعدة..."></textarea>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button type="submit" class="btn btn-primary" style="padding: 15px 60px; font-size: 1.1rem;">إرسال طلب الاستشارة <i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 - شبكة الممرضين السودانيين</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('consultForm').onsubmit = function(e) {
+            e.preventDefault();
+            alert('شكراً لك! تم استلام طلب الاستشارة بنجاح. سنقوم بمراجعة طلبك والتواصل معك عبر الواتساب لتأكيد الموعد.');
+            this.reset();
+        }
+    </script>
+    
+    <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
+    <i class="fas fa-th-large"></i>
+</div>
+
+<div id="quickMenu" class="quick-menu">
+    <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
+        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
+        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
+        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
+        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
+        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
+        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
+        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+        
+    </ul>
+</div>
+</body>
+</html>
