@@ -3,7 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>شبكة الممرضين السودانيين | المنصة الأولى للتمريض</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -160,10 +159,11 @@
     <section id="contact" class="section bg-dark text-white">
         <h2 class="section-title">تواصل معنا</h2>
         <div class="contact-container">
-            <form id="contactForm">
-                <input type="text" placeholder="الاسم الكامل" required>
-                <input type="email" placeholder="البريد الإلكتروني" required>
-                <textarea placeholder="رسالتك هنا..." rows="5" required></textarea>
+            <form action="https://formspree.io/f/meerewpw" method="POST" id="contactForm">
+                <input type="hidden" name="نوع_الطلب" value="رسالة من نموذج التواصل (الشاشة الرئيسية)">
+                <input type="text" name="الاسم_الكامل" placeholder="الاسم الكامل" required>
+                <input type="email" name="البريد_الالكتروني" placeholder="البريد الإلكتروني" required>
+                <textarea name="الرسالة" placeholder="رسالتك هنا..." rows="5" required></textarea>
                 <button type="submit" class="btn btn-primary">إرسال الرسالة <i class="fas fa-paper-plane"></i></button>
             </form>
         </div>
