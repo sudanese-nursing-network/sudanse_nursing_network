@@ -3,7 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>دليل الأدوية والتعرف البصري | شبكة الممرضين السودانيين</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -70,25 +69,35 @@
 
     <section class="photo-consult-section fade-element">
         <div class="upload-container">
-            <form id="drugPhotoForm" class="upload-form">
+            
+            <form id="drugPhotoForm" class="upload-form" action="https://formsubmit.co/alrsheedkamal5003@gmail.com" method="POST" enctype="multipart/form-data">
+                
+                <input type="hidden" name="_subject" value="💊 استفسار عن دواء جديد (مرفق صورة) - شبكة الممرضين">
+                <input type="hidden" name="_captcha" value="false"> 
+                <input type="hidden" name="_template" value="table">
+
                 <h2 style="color: var(--dark-blue); margin-bottom: 5px;"><i class="fas fa-camera"></i> صور الدواء واسألنا</h2>
                 <p style="color: #666; font-size: 0.9rem; margin-bottom: 15px;">هل لديك دواء غير معروف؟ ارفق صورته وسيقوم أقرب ممرض بتوضيح الجرعة وطريقة الاستخدام.</p>
-                <input type="text" placeholder="اسم المريض أو المستفسر" required>
-                <input type="tel" placeholder="رقم الواتساب (لإرسال الرد)" required>
-                <textarea placeholder="أضف ملاحظة: (مثلاً: الدكتور كتبه لي لشنو؟ أو باخده كم مرة؟)" rows="3" required></textarea>
+                
+                <input type="text" name="اسم_المريض" placeholder="اسم المريض أو المستفسر" required>
+                <input type="tel" name="رقم_الواتساب" placeholder="رقم الواتساب (لإرسال الرد)" required>
+                <textarea name="ملاحظة_الاستفسار" placeholder="أضف ملاحظة: (مثلاً: الدكتور كتبه لي لشنو؟ أو باخده كم مرة؟)" rows="3" required></textarea>
+                
                 <button type="submit" class="btn btn-primary" style="padding: 15px; font-size: 1.1rem;"><i class="fas fa-paper-plane"></i> إرسال الصورة للممرضين</button>
-            </form>
-
-            <div class="upload-box" id="uploadBox">
-                <input type="file" id="drugImageInput" class="file-input" accept="image/*" onchange="previewImage(event)">
-                <div id="uploadPlaceholder">
-                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                    <h3>اضغط هنا أو اسحب صورة الدواء</h3>
-                    <p style="color: #888; font-size: 0.85rem;">(يجب أن تكون الصورة واضحة للاسم أو شكل الحبة)</p>
-                </div>
-                <img id="imagePreview" alt="معاينة الدواء">
-            </div>
+            
         </div>
+        
+        <div class="upload-box" id="uploadBox">
+            <input type="file" name="صورة_الدواء_المرفقة" id="drugImageInput" class="file-input" accept="image/*" onchange="previewImage(event)" required>
+            <div id="uploadPlaceholder">
+                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                <h3>اضغط هنا أو اسحب صورة الدواء</h3>
+                <p style="color: #888; font-size: 0.85rem;">(يجب أن تكون الصورة واضحة للاسم أو شكل الحبة)</p>
+            </div>
+            <img id="imagePreview" alt="معاينة الدواء">
+        </div>
+        
+        </form> 
     </section>
 
     <div class="search-container fade-element">
@@ -139,6 +148,7 @@
     <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
         <i class="fas fa-th-large"></i>
     </div>
+    
     <div id="quickMenu" class="quick-menu">
         <ul>
             <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
@@ -158,7 +168,6 @@
 
     <script src="script.js"></script>
     <script>
-        // دالة لمعاينة الصورة عند رفعها (بتخلي الموقع يبان مبرمج باحترافية)
         function previewImage(event) {
             const input = event.target;
             const preview = document.getElementById('imagePreview');
@@ -175,21 +184,47 @@
             }
         }
 
-        // إرسال طلب مساعدة الدواء
-        document.getElementById('drugPhotoForm').onsubmit = function(e) {
+        // إرسال صورة الدواء بالخلفية لـ FormSubmit
+        document.getElementById('drugPhotoForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            const form = this;
             const imgInput = document.getElementById('drugImageInput');
             if(imgInput.files.length === 0) {
                 alert("الرجاء إرفاق صورة الدواء أولاً يا غالي!");
                 return;
             }
-            alert('تم استلام صورة الدواء! سيقوم أحد الممرضين بالشبكة بمراجعتها والرد عليك فوراً عبر الواتساب.');
-            this.reset();
-            document.getElementById('imagePreview').style.display = 'none';
-            document.getElementById('uploadPlaceholder').style.display = 'block';
-        }
 
-        // دالة البحث عن الأدوية
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري إرسال الصورة...';
+            submitBtn.disabled = true;
+
+            fetch(form.action, {
+                method: form.method,
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert(' استلمنا صورتك بنجاح\nأقرب ممرض متاح حيشوفها ويرد عليك في الواتساب طوالي اجر وعافية عليك يا رب .');
+                    form.reset();
+                    document.getElementById('imagePreview').style.display = 'none';
+                    document.getElementById('uploadPlaceholder').style.display = 'block';
+                } else {
+                    alert('عذراً، حدثت مشكلة أثناء الإرسال. تأكد من جودة الإنترنت وحاول تاني.');
+                }
+            })
+            .catch(error => {
+                alert('خطأ في الاتصال! يرجى التأكد من اتصالك بالإنترنت.');
+            })
+            .finally(() => {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            });
+        });
+
         function filterDrugs() {
             let input = document.getElementById('searchInput').value.toUpperCase();
             let grid = document.getElementById('drugsGrid');
@@ -204,30 +239,10 @@
             }
         }
 
-        // قائمة الوصول السريع
         function toggleQuickMenu() {
             const menu = document.getElementById('quickMenu');
             menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
         }
     </script>
-    
-    <div id="quickMenu" class="quick-menu">
-    <ul>
-        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
-        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
-        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
-        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
-        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
-        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
-        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
-        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
-        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
-        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
-        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
-        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
-        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
-        
-    </ul>
-</div>
 </body>
 </html>

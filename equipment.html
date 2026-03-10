@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>موسوعة المعدات الجراحية والطبية | شبكة الممرضين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --med-blue: #2563eb; --med-dark: #1e3a8a; --bg: #f8fafc; --surgical-red: #be123c; }
+        body { background-color: var(--bg); font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 50px; }
+        
+        .eq-header { background: linear-gradient(135deg, var(--med-dark), #334155); color: white; padding: 50px 20px; text-align: center; border-radius: 0 0 40px 40px; }
+        .back-nav { position: fixed; top: 15px; right: 15px; z-index: 5000; background: #fff; color: var(--med-blue); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+        .search-box { max-width: 800px; margin: -30px auto 30px; padding: 0 20px; }
+        .search-input { width: 100%; padding: 18px 25px; border-radius: 30px; border: none; box-shadow: 0 10px 25px rgba(0,0,0,0.1); font-family: 'Cairo'; font-size: 1.1rem; outline: none; border: 2px solid transparent; transition: 0.3s; }
+        .search-input:focus { border-color: var(--med-blue); }
+        
+        .filter-tabs { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; justify-content: center; scrollbar-width: none; }
+        .tab-btn { background: white; border: 1px solid #ddd; padding: 8px 20px; border-radius: 20px; cursor: pointer; white-space: nowrap; font-weight: 600; transition: 0.3s; font-family: 'Cairo'; }
+        .tab-btn.active { background: var(--med-dark); color: white; border-color: var(--med-dark); }
+
+        .eq-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; padding: 20px; }
+        
+        .eq-card { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; border: 1px solid #eef2f3; }
+        .eq-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        
+        .eq-img-box { height: 200px; background: #fff; display: flex; align-items: center; justify-content: center; position: relative; padding: 20px; }
+        .eq-img-box img { max-width: 90%; max-height: 90%; object-fit: contain; }
+        .eq-category { position: absolute; top: 15px; left: 15px; background: #f1f5f9; color: var(--med-dark); padding: 4px 12px; border-radius: 10px; font-size: 0.75rem; font-weight: bold; }
+
+        .eq-info { padding: 20px; }
+        .eq-names { margin-bottom: 15px; }
+        .eq-names h3 { margin: 0; font-size: 1.3rem; color: #1e293b; }
+        .eq-names span { color: var(--med-blue); font-size: 0.95rem; font-weight: 700; display: block; margin-top: 5px; }
+
+        .eq-usage { background: #f8fafc; padding: 15px; border-radius: 15px; margin-bottom: 15px; border-right: 4px solid var(--med-blue); }
+        .eq-usage b { display: block; color: var(--med-dark); font-size: 0.9rem; margin-bottom: 5px; }
+        .eq-usage p { margin: 0; font-size: 0.9rem; color: #475569; line-height: 1.6; }
+
+        .btn-details { width: 100%; padding: 14px; background: var(--med-dark); color: white; border: none; border-radius: 12px; font-family: 'Cairo'; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-details:hover { background: #334155; }
+
+        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); }
+        .modal-content { background: white; margin: 5vh auto; padding: 30px; border-radius: 30px; width: 90%; max-width: 650px; max-height: 85vh; overflow-y: auto; position: relative; }
+        .type-tag { display: inline-block; background: #eff6ff; color: #1e40af; margin: 5px; padding: 6px 15px; border-radius: 12px; font-size: 0.85rem; font-weight: 600; border: 1px solid #dbeafe; }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-nav"><i class="fas fa-chevron-right"></i></a>
+
+    <header class="eq-header">
+        <h1>موسوعة التجهيزات والمعدات الجراحية <i class="fas fa-tools"></i></h1>
+        <p>الدليل السريري الكامل للأدوات الجراحية وأجهزة غرف العمليات</p>
+    </header>
+
+    <div class="search-box">
+        <input type="text" class="search-input" id="eqSearch" placeholder="ابحث باسم الأداة.. (مقص، مشرط، Scalpel)..." onkeyup="filterEquipment()">
+    </div>
+
+    <div class="filter-tabs">
+        <button class="tab-btn active" onclick="filterCat('all')">الكل</button>
+        <button class="tab-btn" onclick="filterCat('جراحة')">أدوات جراحية</button>
+        <button class="tab-btn" onclick="filterCat('طوارئ')">طوارئ</button>
+        <button class="tab-btn" onclick="filterCat('تنفس')">تنفس صناعي</button>
+        <button class="tab-btn" onclick="filterCat('مراقبة')">مراقبة</button>
+    </div>
+
+    <div class="eq-grid" id="eqGrid"></div>
+
+    <div id="eqModal" class="modal">
+        <div class="modal-content">
+            <span onclick="closeModal()" style="float:left; cursor:pointer; font-size:35px; color:#94a3b8;">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // 💡 يا الرشيد: هذا هو "المخازن" (قاعدة البيانات). 
+        // كل قطعة معدات تبدأ بـ { وتنتهي بـ }.
+        const medicalEquipment = [
+            {
+                id: 1,
+                nameAr: "المشرط الجراحي",
+                nameEn: "Surgical Scalpel",
+                cat: "جراحة",
+                // 💡 يا الرشيد: استبدل الرابط أدناه برابط صورتك الحقيقية للمشرط
+                image: "https://via.placeholder.com/300x200/ffffff/000000?text=Scalpel",
+                usage: "الأداة الأساسية لعمل الشقوق الجراحية وفصل الأنسجة بدقة متناهية.",
+                howTo: "يتم تركيب الشفرة (Blade) على اليد (Handle) المناسبة. يمسك المشرط بوضعية 'قلم الرصاص' للشقوق الدقيقة أو 'السكين' للشقوق الطويلة.",
+                types: ["شفرة رقم 10 (للأنسجة الكبيرة)", "شفرة رقم 11 (للثقب والشقوق الصغيرة)", "شفرة رقم 15 (للجراحات الدقيقة)", "مشارط أحادية الاستخدام"]
+            },
+            {
+                id: 2,
+                nameAr: "مقص 'مايو' الجراحي",
+                nameEn: "Mayo Scissors",
+                cat: "جراحة",
+                // 💡 يا الرشيد: هنا ضع صورة مقص مايو الحقيقية
+                image: "https://via.placeholder.com/300x200/ffffff/000000?text=Mayo+Scissors",
+                usage: "يستخدم لقص الأنسجة الثقيلة والكثيفة (مثل اللفافة والعضلات) وأحياناً الخيوط الجراحية.",
+                howTo: "يتميز بشفرات سميكة. يوجد منه نوع مستقيم (للخيوط والضمادات) ونوع منحني (للقص العميق داخل الجسم).",
+                types: ["مستقيم (Straight)", "منحني (Curved)", "مقص 'ميتزنباوم' (للأنسجة الرقيقة)"]
+            },
+            {
+                id: 3,
+                nameAr: "ماسك الإبر الجراحي",
+                nameEn: "Needle Holder",
+                cat: "جراحة",
+                // 💡 يا الرشيد: هنا ضع صورة ماسك الإبر الحقيقية
+                image: "https://via.placeholder.com/300x200/ffffff/000000?text=Needle+Holder",
+                usage: "الأداة المخصصة للإمساك بإبر الخياطة أثناء رتق الجروح أو العمليات.",
+                howTo: "يتم تثبيت الإبرة في مقدمة الماسك عند ثلثي مسافة الإبرة من السن. يتم قفله بواسطة الـ Ratchet لضمان عدم انزلاق الإبرة.",
+                types: ["ماسك 'مايو هيغار' (الأكثر شيوعاً)", "ماسك 'كاستروفيجو' (للجراحات المجهرية)"]
+            },
+            {
+                id: 4,
+                nameAr: "ملاقط الأنسجة (الفورسبس)",
+                nameEn: "Tissue Forceps",
+                cat: "جراحة",
+                // 💡 يا الرشيد: هنا ضع صورة الملاقط الحقيقية
+                image: "https://via.placeholder.com/300x200/ffffff/000000?text=Forceps",
+                usage: "تستخدم للإمساك بالأنسجة أو الجلد أثناء الخياطة أو الجراحة.",
+                howTo: "تمسك مثل الملقط العادي. النوع ذو الأسنان (Toothed) للجلد، والنوع الأملس (Non-toothed) للأنسجة الرقيقة والأوعية.",
+                types: ["ملقط 'أديسون' (Adson)", "ملقط الأنسجة القياسي", "ملقط 'ديباكي' (للأوعية الدموية)"]
+            },
+            {
+                id: 5,
+                nameAr: "ملاقط الشرايين (المرقئ)",
+                nameEn: "Hemostatic Forceps (Artery)",
+                cat: "جراحة",
+                // 💡 يا الرشيد: هنا ضع صورة ملاقط الشرايين
+                image: "https://via.placeholder.com/300x200/ffffff/000000?text=Hemostat",
+                usage: "تستخدم لضغط الأوعية الدموية النازفة للسيطرة على النزيف (Hemostasis).",
+                howTo: "يتم إغلاق الملقط على الوعاء النازف حتى يتم ربطه أو كيه بالكهرباء.",
+                types: ["ملقط 'موسكيتو' (الصغير جداً)", "ملقط 'كيلي' (متوسط الحجم)", "ملقط 'كرايل'"]
+            },
+            {
+                id: 6,
+                nameAr: "المبعدات الجراحية",
+                nameEn: "Surgical Retractors",
+                cat: "جراحة",
+                // 💡 يا الرشيد: هنا ضع صورة المبعدات
+                image: "https://via.placeholder.com/300x200/ffffff/000000?text=Retractors",
+                usage: "تستخدم لإبعاد حواف الجرح أو الأعضاء لتوفير رؤية واضحة للجراح.",
+                howTo: "يتم وضعها على حافة الأنسجة وسحبها برفق. قد تكون يدوية (تحتاج ممرض يمسكها) أو ذاتية التثبيت.",
+                types: ["مبعد 'سنت' (Senn)", "مبعد 'فارابوف'", "مبعدات ذاتية (Self-retaining)"]
+            },
+            // 💡 يا الرشيد: إذا أردت إضافة أداة جراحية سابعة، انسخ البلوك أعلاه وألصقه هنا.
+            {
+                id: 7,
+                nameAr: "جهاز الصدمات الكهربائية",
+                nameEn: "Defibrillator",
+                cat: "طوارئ",
+                image: "https://via.placeholder.com/300x200/ffffff/ef4444?text=Defibrillator",
+                usage: "إنقاذ الحياة في حالات توقف القلب المفاجئ واضطرابات النظم.",
+                howTo: "تطبيق الجل، اختيار الطاقة، شحن، ثم تفريغ الشحنة مع ضمان أمان الفريق.",
+                types: ["يدوي", "آلي AED"]
+            }
+        ];
+
+        // 💡 يا الرشيد: الكود أدناه هو "المحرك" الذي يعرض البيانات، لا تغير فيه شيئاً.
+        function renderGrid(data) {
+            const grid = document.getElementById('eqGrid');
+            grid.innerHTML = data.map(item => `
+                <div class="eq-card">
+                    <div class="eq-img-box">
+                        <span class="eq-category">${item.cat}</span>
+                        <img src="${item.image}" alt="${item.nameAr}">
+                    </div>
+                    <div class="eq-info">
+                        <div class="eq-names">
+                            <h3>${item.nameAr}</h3>
+                            <span>${item.nameEn}</span>
+                        </div>
+                        <div class="eq-usage">
+                            <b><i class="fas fa-microscope"></i> الوصف السريري:</b>
+                            <p>${item.usage}</p>
+                        </div>
+                        <button class="btn-details" onclick="openDetails(${item.id})">الدليل الجراحي للاستعمال</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openDetails(id) {
+            const item = medicalEquipment.find(x => x.id === id);
+            const body = document.getElementById('modalBody');
+            body.innerHTML = `
+                <h2 style="margin-top:0; color:var(--med-dark); font-size:1.6rem;">${item.nameAr}</h2>
+                <h4 style="color:var(--med-blue); margin-top:-10px;">${item.nameEn}</h4>
+                <div style="text-align:center; padding:20px; background:#f1f5f9; border-radius:20px; margin:20px 0;">
+                    <img src="${item.image}" style="max-width:100%; height:auto;">
+                </div>
+                <h4 style="border-right:4px solid var(--surgical-red); padding-right:10px;">طريقة الاستخدام المهني:</h4>
+                <p style="line-height:1.8; color:#334155;">${item.howTo}</p>
+                <h4 style="border-right:4px solid var(--surgical-red); padding-right:10px;">الأنواع والقياسات:</h4>
+                <div style="display:flex; flex-wrap:wrap; gap:5px;">
+                    ${item.types.map(t => `<span class="type-tag">${t}</span>`).join('')}
+                </div>
+                <button onclick="closeModal()" style="margin-top:30px; width:100%; padding:15px; border:none; border-radius:12px; background:#f1f5f9; color:#475569; font-weight:bold; cursor:pointer; font-family:'Cairo';">إغلاق الموسوعة</button>
+            `;
+            document.getElementById('eqModal').style.display = 'block';
+        }
+
+        function closeModal() { document.getElementById('eqModal').style.display = 'none'; }
+        
+        function filterEquipment() {
+            const q = document.getElementById('eqSearch').value.toLowerCase();
+            renderGrid(medicalEquipment.filter(i => i.nameAr.includes(q) || i.nameEn.toLowerCase().includes(q)));
+        }
+
+        function filterCat(cat) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            renderGrid(cat === 'all' ? medicalEquipment : medicalEquipment.filter(i => i.cat === cat));
+        }
+
+        window.onclick = e => { if(e.target == document.getElementById('eqModal')) closeModal(); }
+        renderGrid(medicalEquipment);
+    </script>
+</body>
+</html>

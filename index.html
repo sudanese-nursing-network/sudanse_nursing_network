@@ -4,15 +4,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>شبكة الممرضين السودانيين | المنصة الأولى للتمريض</title>
+    <link rel="icon" href="logo.jpeg" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* تنسيق اللوجو في الهيدر */
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo img { height: 40px; width: auto; border-radius: 5px; }
+
+        /* --- الجديد: تنسيق زر المبرمج في القائمة العلوية --- */
+        .nav-dev-btn {
+            background: rgba(0, 168, 132, 0.1);
+            color: var(--main-color) !important;
+            border: 1px solid var(--main-color);
+            padding: 5px 12px !important;
+            border-radius: 8px;
+            margin-right: 10px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .nav-dev-btn:hover { background: var(--main-color); color: white !important; }
+
+        /* تنسيق زر الحقوق في الفوتر */
+        .copyright-btn {
+            background: transparent; border: 1px solid rgba(255,255,255,0.3);
+            color: #eee; padding: 5px 15px; border-radius: 20px;
+            cursor: pointer; font-family: 'Cairo'; font-size: 0.85rem;
+            margin-top: 10px; transition: 0.3s;
+        }
+        .copyright-btn:hover { background: var(--main-color); border-color: var(--main-color); color: white; }
+
+        /* نافذة بيانات المبرمج */
+        .dev-modal {
+            display: none; position: fixed; z-index: 9999; left: 0; top: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+        }
+        .dev-content {
+            background: white; width: 90%; max-width: 400px; margin: 10vh auto;
+            padding: 30px; border-radius: 20px; text-align: center; position: relative;
+            border-bottom: 5px solid var(--main-color); color: #333;
+        }
+        /* كود الصورة الشخصية */
+        .dev-img { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--main-color); margin-bottom: 15px; object-fit: cover; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .close-dev { position: absolute; left: 20px; top: 15px; font-size: 24px; cursor: pointer; color: #888; }
+        
+        .dev-contact-info { text-align: right; margin-top: 15px; background: #f9f9f9; padding: 15px; border-radius: 10px; }
+        .dev-contact-info p { margin: 8px 0; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
+        .dev-contact-info a { color: var(--dark-blue); text-decoration: none; font-weight: bold; }
+        .dev-contact-info i { color: var(--main-color); width: 20px; }
+
+        /* نبض القلب في الهيدر */
+        .heart-beat-icon { font-size: 4.5rem; color: #e74c3c; margin-bottom: 20px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+    </style>
 </head>
 <body>
 
     <nav class="navbar">
         <div class="logo">
-            <i class="fas fa-heart-pulse"></i> شبكة الممرضين <span>السودانيين</span>
+            <img src="logo.jpeg" alt="لوجو الشبكة">
+            شبكة الممرضين <span>السودانيين</span>
         </div>
         <ul class="nav-links">
             <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
@@ -21,11 +73,15 @@
             <li><a href="training.html"><i class="fas fa-users"></i> التدريب</a></li>
             <li><a href="consult.html"><i class="fas fa-comments"></i> الاستشارات</a></li>
             <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا</a></li>
+            <li><a href="javascript:void(0)" class="nav-dev-btn" onclick="openDevModal()"><i class="fas fa-code"></i> المبرمج</a></li>
         </ul>
     </nav>
 
     <header id="home" class="hero">
         <div class="hero-content">
+            <div class="heart-beat-icon">
+                <i class="fas fa-heart-pulse"></i>
+            </div>
             <h1>رعاية تمريضية بـ <span class="highlight">معايير عالمية</span></h1>
             <p>منصة تجمع الخبرات، الأبحاث، والفرص لكل ممرض وممرضة سودانية.</p>
             <div class="hero-btns">
@@ -40,7 +96,7 @@
             <div class="ticker-wrapper">
                 <span class="ticker-title"><i class="fas fa-bullhorn"></i> عاجل:</span>
                 <marquee direction="right" scrollamount="5">
-                    • دورة الإنعاش القلبي (CPR) تبدأ قريباً سجل الآن! &nbsp;&nbsp;&nbsp; 
+                    • دورة الإنعاص القلبي (CPR) تبدأ قريباً سجل الآن! &nbsp;&nbsp;&nbsp; 
                     • تم إضافة بحث جديد عن مكافحة العدوى بمستشفى أم درمان &nbsp;&nbsp;&nbsp;
                     • باب الانضمام لشبكة الممرضين مفتوح الآن لجميع الزملاء.
                 </marquee>
@@ -59,61 +115,51 @@
    <section class="section" id="services">
     <div class="container">
         <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px;">
-            
             <a href="research.html" class="service-card fade-element">
                 <div class="icon-box"><i class="fas fa-book-medical"></i></div>
                 <h3>مكتبة الأبحاث</h3>
                 <p>نشر ومشاركة أبحاث التخرج والدراسات العلمية في مجال التمريض.</p>
             </a>
-
             <a href="jobs.html" class="service-card fade-element">
                 <div class="icon-box"><i class="fas fa-user-md"></i></div>
                 <h3>فرص العمل</h3>
                 <p>توفير أحدث إعلانات الوظائف في المستشفيات والمنظمات.</p>
             </a>
-
             <a href="sos.html" class="service-card red-card fade-element">
                 <div class="icon-box red-icon"><i class="fas fa-ambulance"></i></div>
                 <h3>نداء استغاثة (SOS)</h3>
                 <p>هل تحتاج لممرض في المنزل؟ أرسل نداءك وسيصلك أقرب ممرض متطوع.</p>
             </a>
-
             <a href="hospitals.html" class="service-card blue-card fade-element">
                 <div class="icon-box blue-icon"><i class="fas fa-hospital-alt"></i></div>
                 <h3>دليل المستشفيات</h3>
                 <p>حالة المستشفيات، الفحوصات المتاحة، ونظام تحويل المرضى الإلكتروني.</p>
             </a>
-
             <a href="handover.html" class="service-card purple-card fade-element">
                 <div class="icon-box purple-icon"><i class="fas fa-exchange-alt"></i></div>
                 <h3>تسليم الورديات (SBAR)</h3>
                 <p>نظام إلكتروني ذكي لتسليم وتسلم الورديات وتوثيق حالة المرضى.</p>
             </a>
-
             <a href="calc.html" class="service-card orange-card fade-element">
                 <div class="icon-box orange-icon"><i class="fas fa-calculator"></i></div>
                 <h3>الحاسبة السريرية</h3>
                 <p>حساب معدل التنقيط الوريدي، جرعات الأطفال، ومقياس جلاسكو (GCS).</p>
             </a>
-
             <a href="drugs.html" class="service-card teal-card fade-element">
                 <div class="icon-box teal-icon"><i class="fas fa-pills"></i></div>
                 <h3>الدليل السريري للأدوية</h3>
                 <p>مرجع سريع للجرعات، طرق الإعطاء، والتحذيرات، مع خاصية التعرف بالصور.</p>
             </a>
-
             <a href="blood.html" class="service-card red-card fade-element">
                 <div class="icon-box red-icon"><i class="fas fa-tint"></i></div>
                 <h3>بنك الدم التفاعلي</h3>
                 <p>ابحث عن متبرعين بالدم أو سجل كمتبرع لإنقاذ حياة المرضى في الطوارئ.</p>
             </a>
-
             <a href="consult.html" class="service-card fade-element">
                 <div class="icon-box"><i class="fas fa-comments"></i></div>
                 <h3>الاستشارات والتدريب</h3>
                 <p>اسأل زملاءك، تبادل الخبرات، وسجل في أحدث الكورسات التدريبية.</p>
             </a>
-
         </div>
     </div>
 </section>
@@ -147,12 +193,6 @@
                     <p>يمكنك الانضمام عبر التسجيل في <a href="join.html" style="color: var(--main-color); font-weight: bold;">استمارة العضوية الكاملة</a> وإكمال بياناتك المهنية.</p>
                 </div>
             </div>
-            <div class="faq-item">
-                <button class="faq-question">هل توفر الشبكة فرصاً للتدريب؟ <i class="fas fa-plus"></i></button>
-                <div class="faq-answer">
-                    <p>نعم، نقوم بتنظيم دورات دورية بالتعاون مع وزارة الصحة والمؤسسات التعليمية.</p>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -160,9 +200,6 @@
         <h2 class="section-title">تواصل معنا</h2>
         <div class="contact-container">
             <form action="https://formspree.io/f/meerewpw" method="POST" id="contactForm">
-                <input type="hidden" name="_subject" value="📩 رسالة تواصل جديدة - الشاشة الرئيسية">
-                <input type="hidden" name="نوع_الطلب" value="رسالة من نموذج التواصل (الشاشة الرئيسية)">
-                
                 <input type="text" name="الاسم_الكامل" placeholder="الاسم الكامل" required>
                 <input type="email" name="البريد_الالكتروني" placeholder="البريد الإلكتروني" required>
                 <textarea name="الرسالة" placeholder="رسالتك هنا..." rows="5" required></textarea>
@@ -172,32 +209,84 @@
     </section>
 
     <footer>
-        <p>جميع الحقوق محفوظة &copy; 2026 - شبكة الممرضين السودانيين</p>
+        <div class="container">
+            <p>جميع الحقوق محفوظة &copy; 2026 - شبكة الممرضين السودانيين</p>
+            <button class="copyright-btn" onclick="openDevModal()">
+                <i class="fas fa-code"></i> حقوق البرمجة والتطوير
+            </button>
+        </div>
     </footer>
 
+    <div id="devModal" class="dev-modal" onclick="closeDevModal(event)">
+        <div class="dev-content fade-element">
+            <span class="close-dev" onclick="document.getElementById('devModal').style.display='none'">&times;</span>
+            
+            <img src="me.jpeg" alt="المبرمج الرشيد كمال" class="dev-img" onerror="this.src='https://via.placeholder.com/150?text=Al-Rasheed'">
+            
+            <h3 style="color: var(--dark-blue); margin-bottom: 5px;">تطوير المبرمج: الرشيد كمال</h3>
+            <p style="color: #666; font-size: 0.9rem;">متخصص في حلول الويب والأنظمة الصحية</p>
+            
+            <div class="dev-contact-info">
+                <p><i class="fas fa-phone-alt"></i> <a href="tel:0127825456">0127825456</a></p>
+                <p><i class="fas fa-phone-alt"></i> <a href="tel:0964278052">0964278052</a></p>
+                <p><i class="fas fa-envelope"></i> <a href="mailto:alrsheedkamal6002@gmail.com">alrsheedkamal6002@gmail.com</a></p>
+            </div>
+
+            <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+            <p style="margin-top: 10px; font-weight: bold; color: var(--main-color);">Al-Rasheed Company © 2026</p>
+            <p style="font-size: 0.8rem; color: #aaa;">صنع بكل فخر لدعم الكوادر الصحية السودانية</p>
+        </div>
+    </div>
+
     <script src="script.js"></script>
+    <script>
+        function openDevModal() { document.getElementById('devModal').style.display = 'block'; }
+        function closeDevModal(e) { if (e.target.id === 'devModal') { document.getElementById('devModal').style.display = 'none'; } }
+
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = this;
+            const btn = form.querySelector('button');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            }).then(response => {
+                if (response.ok) {
+                    alert('شكراً لتواصلك ! 🌟\nتم إرسال رسالتك بنجاح وسنقوم بالرد عليك في أقرب وقت.');
+                    form.reset();
+                } else { alert('عذراً، حصل خطأ.'); }
+                btn.innerHTML = 'إرسال الرسالة <i class="fas fa-paper-plane"></i>';
+            });
+        });
+
+        function toggleQuickMenu() {
+            const menu = document.getElementById('quickMenu');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
+    </script>
     
     <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
-    <i class="fas fa-th-large"></i>
-</div>
+        <i class="fas fa-th-large"></i>
+    </div>
 
-<div id="quickMenu" class="quick-menu">
-    <ul>
-        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
-        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
-        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
-        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
-        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
-        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
-        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
-        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
-        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
-        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
-        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
-        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
-        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
-        
-    </ul>
-</div>
+    <div id="quickMenu" class="quick-menu">
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+            <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
+            <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+            <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
+            <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
+            <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
+            <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
+            <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
+            <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+            <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+            <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+        </ul>
+    </div>
 </body>
 </html>

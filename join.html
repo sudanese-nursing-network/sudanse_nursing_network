@@ -3,7 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>انضم للشبكة | شبكة الممرضين السودانيين</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -53,34 +52,38 @@
     <section class="section bg-light">
         <div class="container" style="max-width: 900px; margin: auto;">
             
-            <form id="membershipForm">
+            <form id="membershipForm" action="https://formspree.io/f/meerewpw" method="POST">
+                
+                <input type="hidden" name="_subject" value="🌟 استمارة عضوية جديدة - شبكة الممرضين">
+                
+                <input type="hidden" name="نوع_الطلب" value="✅ طلب انضمام عضوية للشبكة">
                 
                 <div class="form-section fade-element">
                     <h3><i class="fas fa-user"></i> أولاً: البيانات الشخصية</h3>
                     <div class="form-grid">
                         <div class="form-group">
                             <label>الاسم الكامل</label>
-                            <input type="text" placeholder="الاسم الرباعي" required>
+                            <input type="text" name="الاسم_الكامل" placeholder="الاسم الرباعي" required>
                         </div>
                         <div class="form-group">
                             <label>الجنسية</label>
-                            <select required>
+                            <select name="الجنسية" required>
                                 <option value="" disabled selected>اختر بلدك</option>
-                                <option value="sudanese">سوداني</option>
-                                <option value="egyptian">مصري</option>
-                                <option value="saudi">سعودي</option>
-                                <option value="emirati">إماراتي</option>
-                                <option value="jordanian">أردني</option>
-                                <option value="other">بلد آخر</option>
+                                <option value="سوداني">سوداني</option>
+                                <option value="مصري">مصري</option>
+                                <option value="سعودي">سعودي</option>
+                                <option value="إماراتي">إماراتي</option>
+                                <option value="أردني">أردني</option>
+                                <option value="بلد آخر">بلد آخر</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label>رقم الهاتف</label>
-                            <input type="tel" placeholder="00xxxxxxxxxx" required>
+                            <input type="tel" name="رقم_الهاتف" placeholder="00xxxxxxxxxx" required>
                         </div>
                         <div class="form-group">
                             <label>البريد الإلكتروني</label>
-                            <input type="email" placeholder="example@mail.com" required>
+                            <input type="email" name="البريد_الإلكتروني" placeholder="example@mail.com" required>
                         </div>
                     </div>
                 </div>
@@ -90,20 +93,20 @@
                     <div class="form-grid">
                         <div class="form-group">
                             <label>الجامعة (إن وجدت)</label>
-                            <input type="text" placeholder="اسم الجامعة">
+                            <input type="text" name="الجامعة" placeholder="اسم الجامعة">
                         </div>
                         <div class="form-group">
                             <label>سنوات الخبرة الميدانية</label>
-                            <input type="number" placeholder="مثلاً: 5" required>
+                            <input type="number" name="سنوات_الخبرة" placeholder="مثلاً: 5" required>
                         </div>
                         <div class="form-group">
                             <label>أبرز المهارات</label>
-                            <input type="text" placeholder="مثلاً: خياطة جروح، تركيب كانيولا، تحليل بيانات..." required>
+                            <input type="text" name="أبرز_المهارات" placeholder="مثلاً: خياطة جروح، تركيب كانيولا، تحليل بيانات..." required>
                         </div>
                     </div>
                     <div class="form-group" style="margin-top: 20px;">
                         <label>تفاصيل الخبرات العملية السابقة</label>
-                        <textarea rows="4" placeholder="اذكر المستشفيات أو المراكز التي عملت بها والمهام التي كنت تؤديها..." required></textarea>
+                        <textarea name="الخبرات_العملية" rows="4" placeholder="اذكر المستشفيات أو المراكز التي عملت بها والمهام التي كنت تؤديها..." required></textarea>
                     </div>
                 </div>
 
@@ -111,11 +114,11 @@
                     <h3><i class="fas fa-bullseye"></i> ثالثاً: الهدف والنشاط المجتمعي</h3>
                     <div class="form-group">
                         <label>لماذا ترغب في الانضمام للشبكة؟ (الهدف من الانضمام)</label>
-                        <textarea rows="3" placeholder="اشرح لنا كيف ستساهم في الشبكة وماذا تتوقع منها..." required></textarea>
+                        <textarea name="الهدف_من_الانضمام" rows="3" placeholder="اشرح لنا كيف ستساهم في الشبكة وماذا تتوقع منها..." required></textarea>
                     </div>
                     <div class="form-group" style="margin-top: 20px;">
                         <label>المساهمات المجتمعية والعمل التطوعي</label>
-                        <textarea rows="2" placeholder="اذكر أي نشاطات تطوعية قمت بها سابقاً."></textarea>
+                        <textarea name="المساهمات_المجتمعية" rows="2" placeholder="اذكر أي نشاطات تطوعية قمت بها سابقاً."></textarea>
                     </div>
                 </div>
 
@@ -132,7 +135,7 @@
                         </ul>
                     </div>
                     <div class="checkbox-group" style="display: flex; align-items: center; gap: 10px; margin-top: 15px;">
-                        <input type="checkbox" id="agree" required>
+                        <input type="checkbox" id="agree" name="موافق_على_الشروط" required>
                         <label for="agree">أقر بصحة بياناتي وأوافق على ميثاق الشبكة</label>
                     </div>
                 </div>
@@ -151,35 +154,66 @@
     </footer>
 
     <script src="script.js"></script>
+    
     <script>
-        document.getElementById('membershipForm').onsubmit = function(e) {
-            e.preventDefault();
-            alert('تم استلام طلب عضويتك يا بطل! سنقوم بمراجعة مهاراتك وخبراتك والتواصل معك قريباً للانضمام إلى أسرة الشبكة.');
-            this.reset();
-        }
+        document.getElementById('membershipForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // منع انتقال الصفحة لـ Formspree
+            
+            const form = this;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+
+            // تغيير شكل الزر أثناء الإرسال
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري إرسال الطلب...';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(form);
+
+            // إرسال البيانات
+            fetch(form.action, {
+                method: form.method,
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('تم استلام طلب عضويتك يا بطل! سنقوم بمراجعة مهاراتك وخبراتك والتواصل معك قريباً للانضمام إلى أسرة الشبكة.');
+                    form.reset(); // تفريغ الفورم
+                } else {
+                    alert('عذراً، حدثت مشكلة أثناء الإرسال. يرجى المحاولة لاحقاً.');
+                }
+            })
+            .catch(error => {
+                alert('خطأ في الاتصال! يرجى التأكد من اتصالك بالإنترنت.');
+            })
+            .finally(() => {
+                // إرجاع الزر لحالته الطبيعية
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            });
+        });
     </script>
     
     <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
-    <i class="fas fa-th-large"></i>
-</div>
+        <i class="fas fa-th-large"></i>
+    </div>
 
-<div id="quickMenu" class="quick-menu">
-    <ul>
-        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
-        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
-        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
-        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
-        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
-        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
-        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
-        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
-        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
-        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
-        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
-        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
-        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
-        
-    </ul>
-</div>
+    <div id="quickMenu" class="quick-menu">
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+            <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
+            <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+            <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
+            <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
+            <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
+            <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
+            <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
+            <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+            <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+            <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+        </ul>
+    </div>
 </body>
 </html>

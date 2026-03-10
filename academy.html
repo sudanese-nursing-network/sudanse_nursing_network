@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>أكاديمية شبكة الممرضين السودانيين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background-color: #f8fafc; font-family: 'Cairo', sans-serif; }
+        .ac-header { background: linear-gradient(135deg, #0f172a, #1e40af); color: white; padding: 60px 20px; text-align: center; border-radius: 0 0 50px 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        
+        /* سهم العودة الذكي */
+        .back-nav {
+            position: fixed; top: 20px; right: 20px; z-index: 5000;
+            background: #2563eb; color: white; width: 45px; height: 45px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            text-decoration: none; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+            transition: 0.3s;
+        }
+        .back-nav:hover { transform: translateX(-5px); background: #1e40af; }
+
+        .section-title { margin: 40px 0 20px; padding-right: 15px; border-right: 5px solid #2563eb; color: #1e293b; font-weight: 700; }
+
+        /* قسم الفيديوهات المرقمة */
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .video-box { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: relative; border: 1px solid #e2e8f0; }
+        .video-number { position: absolute; top: 10px; left: 10px; background: #2563eb; color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; z-index: 5; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .video-card { aspect-ratio: 16/9; background: #000; }
+        .video-card iframe { width: 100%; height: 100%; border: none; }
+        .video-info { padding: 15px; text-align: center; font-weight: 600; color: #334155; }
+
+        /* مكتبة الكتب الموسعة */
+        .book-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .book-card { background: white; padding: 20px; border-radius: 15px; display: flex; align-items: center; gap: 15px; border: 1px solid #e2e8f0; transition: 0.3s; }
+        .book-card:hover { border-color: #2563eb; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .book-icon { font-size: 2.5rem; color: #dc2626; }
+        .book-details h4 { font-size: 0.95rem; color: #1e293b; margin-bottom: 5px; }
+        .download-link { color: #2563eb; text-decoration: none; font-size: 0.85rem; font-weight: bold; }
+
+        /* البروتوكولات المضافة */
+        .protocol-card { background: white; border-radius: 15px; padding: 20px; border-right: 5px solid #2563eb; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .protocol-card h3 { color: #1e40af; margin-bottom: 10px; font-size: 1.1rem; }
+        .protocol-card p { font-size: 0.9rem; line-height: 1.7; color: #475569; }
+
+        /* زر إضافة مادة محترف */
+        .fab-add {
+            position: fixed; bottom: 30px; left: 30px; 
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: white; width: 65px; height: 65px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; cursor: pointer; z-index: 1000;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.5);
+            transition: 0.4s ease;
+        }
+        .fab-add:hover { transform: scale(1.1) rotate(90deg); }
+
+        /* نافذة الإضافة مع خاصية التمرير */
+        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px); }
+        .modal-content { 
+            background: white; margin: 5vh auto; padding: 30px; border-radius: 25px; 
+            width: 90%; max-width: 500px; 
+            max-height: 85vh; 
+            overflow-y: auto; 
+            position: relative; border-top: 8px solid #2563eb;
+        }
+        .close-btn { position: absolute; left: 20px; top: 15px; font-size: 28px; cursor: pointer; color: #94a3b8; }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: #334155; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-family: 'Cairo'; outline: none; }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-nav"><i class="fas fa-arrow-right"></i></a>
+
+    <header class="ac-header">
+        <h1>شبكة الممرضين السودانيين <i class="fas fa-book-reader"></i></h1>
+        <p>المنصة التعليمية الشاملة لتطوير الكوادر التمريضية والطبية</p>
+    </header>
+
+    <div class="container" style="padding: 20px;">
+        
+        <h2 class="section-title">شروحات الفيديو التعليمية</h2>
+        <div class="video-grid">
+            <div class="video-box">
+                <div class="video-number">1</div>
+                <div class="video-card"><iframe src="https://www.youtube.com/embed/ضع_المعرف_هنا" allowfullscreen></iframe></div>
+                <div class="video-info">أساسيات سحب الدم للمبتدئين</div>
+            </div>
+            <div class="video-box">
+                <div class="video-number">2</div>
+                <div class="video-card"><iframe src="https://www.youtube.com/embed/ضع_المعرف_هنا" allowfullscreen></iframe></div>
+                <div class="video-info">مهارات الإنعاش القلبي الرئوي (CPR)</div>
+            </div>
+            <div class="video-box">
+                <div class="video-number">3</div>
+                <div class="video-card"><iframe src="https://www.youtube.com/embed/ضع_المعرف_هنا" allowfullscreen></iframe></div>
+                <div class="video-info">قراءة العلامات الحيوية بجهاز المونيتور</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">مكتبة الكتب والأبحاث (PDF)</h2>
+        <div class="book-grid">
+            <div class="book-card">
+                <i class="fas fa-file-pdf book-icon"></i>
+                <div class="book-details">
+                    <h4>دليل الممرض لضرب الحقن العضلية</h4>
+                    <a href="#" class="download-link"><i class="fas fa-download"></i> تحميل الآن</a>
+                </div>
+            </div>
+            <div class="book-card">
+                <i class="fas fa-file-pdf book-icon"></i>
+                <div class="book-details">
+                    <h4>دليل الطوارئ السوداني المحدث</h4>
+                    <a href="#" class="download-link"><i class="fas fa-download"></i> تحميل الآن</a>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">بروتوكولات تمريضية سريعة</h2>
+        
+        <div class="protocol-card" style="border-right-color: #ef4444;">
+            <h3><i class="fas fa-heart"></i> بروتوكول الجلطة القلبية (MI)</h3>
+            <p>1. طلب تخطيط قلب فوراً. 2. إعطاء أكسجين. 3. إعطاء 300mg أسبرين للمضغ. 4. مراقبة العلامات الحيوية كل 15 دقيقة.</p>
+        </div>
+
+        <div class="protocol-card" style="border-right-color: #ea580c;">
+            <h3><i class="fas fa-brain"></i> بروتوكول الجلطة الدماغية (Stroke)</h3>
+            <p>1. تحديد وقت ظهور الأعراض. 2. فحص السكر فوراً لاستبعاد الغيبوبة. 3. رفع الرأس 30 درجة. 4. تجهيز المريض للأشعة المقطعية.</p>
+        </div>
+
+        <div class="protocol-card" style="border-right-color: #dc2626;">
+            <h3><i class="fas fa-spider"></i> بروتوكول لدغات العقارب</h3>
+            <p>1. تهدئة المريض ومنعه من الحركة. 2. غسل مكان اللدغة بالماء والصابون. 3. تثبيت العضو المصاب تحت مستوى القلب. 4. مراقبة التنفس وتجهيز المصل.</p>
+        </div>
+
+        <div class="protocol-card" style="border-right-color: #ef4444;">
+            <h3><i class="fas fa-heartbeat"></i> بروتوكول توقف القلب والإنعاش</h3>
+            <p>1. التأكد من سلامة المسعف والمريض. 2. طلب المساعدة (الإسعاف). 3. البدء بـ 30 ضغطة صدرية مقابل نفسين صناعيين. 4. استخدام جهاز AED فور توفره.</p>
+        </div>
+
+        <div class="protocol-card" style="border-right-color: #f59e0b;">
+            <h3><i class="fas fa-tint-slash"></i> التعامل مع هبوط السكري الحاد</h3>
+            <p>1. فحص مستوى السكر (أقل من 70mg/dL). 2. إذا كان واعياً: إعطاء 15g سكر سريع. 3. إذا كان فاقداً للوعي: إعطاء Dextrose 50% وريدياً. 4. المراقبة كل 15 دقيقة.</p>
+        </div>
+
+        <div class="protocol-card" style="border-right-color: #10b981;">
+            <h3><i class="fas fa-lungs"></i> بروتوكول الربو الحاد (Asthma)</h3>
+            <p>1. إجلاس المريض بوضع قائم. 2. إعطاء جلسة نيبولايزر (فنتولين). 3. مراقبة تشبع الأكسجين (أعلى من 94%). 4. تجهيز الهيدروكورتيزون إذا لزم الأمر.</p>
+        </div>
+
+        <div class="protocol-card" style="border-right-color: #3b82f6;">
+            <h3><i class="fas fa-info-circle"></i> بروتوكول نقل الدم</h3>
+            <p>1. التأكد من فصيلة الدم والمريض. 2. فحص العلامات الحيوية قبل البدء. 3. البقاء مع المريض أول 15 دقيقة لمراقبة أي تفاعلات تحسسية.</p>
+        </div>
+    </div>
+
+    <div class="fab-add" onclick="document.getElementById('addContentModal').style.display='block'" title="إضافة مادة تعليمية">
+        <i class="fas fa-plus"></i>
+    </div>
+
+    <div id="addContentModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="document.getElementById('addContentModal').style.display='none'">&times;</span>
+            <h2 style="text-align:center; color: #1e40af; margin-bottom: 20px;">إضافة مادة تعليمية</h2>
+            
+            <form action="https://formsubmit.co/alrsheedkamal5003@gmail.com" method="POST" id="academyForm">
+                <input type="hidden" name="_subject" value="📚 مادة تعليمية جديدة - الأكاديمية">
+                <input type="hidden" name="_captcha" value="false">
+
+                <div class="form-group">
+                    <label>نوع المادة:</label>
+                    <select name="النوع">
+                        <option value="video">فيديو تعليمي</option>
+                        <option value="book">كتاب / بحث PDF</option>
+                        <option value="protocol">بروتوكول طبي</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>عنوان المادة:</label>
+                    <input type="text" name="العنوان" placeholder="مثلاً: شرح تركيب الكانيولا" required>
+                </div>
+
+                <div class="form-group">
+                    <label>اسم مقدم المادة:</label>
+                    <input type="text" name="المحاضر" placeholder="اسمك الكريم">
+                </div>
+
+                <div class="form-group">
+                    <label>الوصف أو محتوى البروتوكول:</label>
+                    <textarea name="الوصف" rows="6" placeholder="اكتب الشرح أو خطوات البروتوكول هنا بالتفصيل..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn" style="width:100%; background: #2563eb; color:white; padding: 15px; font-weight: bold; border-radius: 12px; border:none; cursor:pointer;">نشر المادة للمراجعة</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // إغلاق المودال عند الضغط خارجه
+        window.onclick = function(event) {
+            const modal = document.getElementById('addContentModal');
+            if (event.target == modal) { modal.style.display = "none"; }
+        }
+
+        // الكود السحري لمنع فتح صفحة FormSubmit واستقبال البيانات في صمت
+        document.getElementById('academyForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // يمنع فتح الصفحة الجديدة
+            
+            const btn = this.querySelector('button');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+            btn.disabled = true;
+
+            fetch(this.action, {
+                method: 'POST',
+                body: new FormData(this),
+                headers: { 'Accept': 'application/json' }
+            }).then(response => {
+                if (response.ok) {
+                    alert('تم إرسال المادة بنجاح للمراجعة.');
+                    this.reset();
+                    document.getElementById('addContentModal').style.display = 'none';
+                } else {
+                    alert('عذراً، تأكد من تفعيل الإيميل أولاً عبر رسالة التفعيل التي وصلتك من FormSubmit.');
+                }
+            }).catch(error => {
+                alert('حدث خطأ في الاتصال، حاول مرة أخرى.');
+            }).finally(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
