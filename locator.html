@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
+        /* --- المتغيرات الموحدة --- */
+        :root { --main-color: #00a884; --dark-blue: #1e272e; --med-blue: #2563eb; }
+
+        body { font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 100px; background: #f8fafc; }
+        
         .locator-header { background: linear-gradient(135deg, #00a884, #1a237e); color: white; padding: 60px 20px; text-align: center; border-radius: 0 0 50px 50px; }
         .search-area { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.12); margin: -50px auto 40px; max-width: 1000px; display: flex; gap: 15px; flex-wrap: wrap; border: 1px solid #eee; position: relative; z-index: 10; }
         .search-area input, .search-area select { flex: 1; min-width: 180px; padding: 14px; border: 2px solid #f0f0f0; border-radius: 12px; font-family: 'Cairo'; outline: none; }
@@ -35,25 +40,34 @@
         
         .register-section { background: #fff; border: 2px dashed #cbd5e0; border-radius: 30px; padding: 50px 20px; text-align: center; margin-top: 60px; margin-bottom: 50px; }
 
-        /* --- خاصية النزول والطلوع في نموذج الانضمام --- */
-        .modal { 
-            display: none; position: fixed; z-index: 3000; left: 0; top: 0; 
-            width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); 
-            backdrop-filter: blur(5px); 
-            overflow-y: auto; /* يسمح بالتمرير في الصفحة الخلفية إذا لزم الأمر */
+        .modal { display: none; position: fixed; z-index: 9000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); overflow-y: auto; }
+        .modal-content { background-color: #fefefe; margin: 5vh auto; padding: 30px; border-radius: 20px; width: 90%; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-height: 85vh; overflow-y: auto; position: relative; }
+
+        /* --- تنسيق الزر العائم الموحد --- */
+        .quick-access-btn {
+            position: fixed; bottom: 30px; left: 30px;
+            background: var(--main-color); color: white; width: 65px; height: 65px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; cursor: pointer; z-index: 8000;
+            box-shadow: 0 10px 25px rgba(0,168,132,0.4); 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .modal-content { 
-            background-color: #fefefe; 
-            margin: 5vh auto; 
-            padding: 30px; 
-            border-radius: 20px; 
-            width: 90%; 
-            max-width: 500px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            max-height: 85vh; /* أقصى ارتفاع 85% من حجم الشاشة */
-            overflow-y: auto; /* تفعيل شريط التمرير الداخلي للنزول والطلوع */
-            position: relative;
+        .quick-access-btn:hover { transform: scale(1.1) rotate(90deg); background: var(--dark-blue); }
+
+        .quick-menu {
+            display: none; position: fixed; bottom: 110px; left: 30px;
+            background: white; border-radius: 20px; width: 260px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); z-index: 7999;
+            overflow-y: auto; max-height: 70vh; border: 1px solid #eee;
+            animation: slideUpNav 0.4s ease forwards;
         }
+        .quick-menu ul { list-style: none; padding: 10px; margin: 0; }
+        .quick-menu li { border-bottom: 1px solid #f8fafc; }
+        .quick-menu li a { display: flex; align-items: center; gap: 12px; padding: 12px 15px; text-decoration: none; color: #334155; transition: 0.3s; font-weight: 600; }
+        .quick-menu li a i { color: var(--main-color); width: 20px; text-align: center; }
+        .quick-menu li a:hover { background: #f0fdf4; color: var(--main-color); padding-right: 25px; }
+
+        @keyframes slideUpNav { from { opacity: 0; transform: translateY(30px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
     </style>
 </head>
 <body>
@@ -96,36 +110,41 @@
         </div>
     </div>
 
+    <div class="quick-access-btn" onclick="toggleQuickMenu()"><i class="fas fa-th-large"></i></div>
+    <div id="quickMenu" class="quick-menu">
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="academy.html"><i class="fas fa-graduation-cap"></i> الأكاديمية</a></li>
+            <li><a href="research.html"><i class="fas fa-book-medical"></i> الأبحاث</a></li>
+            <li><a href="locator.html"><i class="fas fa-search-location"></i> الرادار</a></li>
+            <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة</a></li>
+            <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> الاستغاثة</a></li>
+        </ul>
+    </div>
+
     <div id="regModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="document.getElementById('regModal').style.display='none'">&times;</span>
             <h2 style="text-align:center; margin-bottom: 20px; color: var(--dark-blue); border-bottom: 2px solid var(--main-color); padding-bottom: 10px;">نموذج الانضمام للرادار</h2>
-            
             <form action="https://formsubmit.co/alrsheedkamal5003@gmail.com" method="POST" id="nurseRegForm">
                 <input type="hidden" name="_subject" value="📍 تسجيل جديد في الرادار الطبي">
                 <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_template" value="table">
-
                 <label style="font-weight: bold; display: block; margin-top: 10px;">الفئة المهنية:</label>
                 <select name="التخصص" required style="width:100%; padding:12px; margin:5px 0 15px; border-radius:10px; font-family:'Cairo'; border: 1px solid #ddd;">
                     <option value="ممرض">ممرض / ممرضة</option>
                     <option value="طبيب">طبيب / طبيبة</option>
                     <option value="صيدلي">صيدلي / صيدلانية</option>
                 </select>
-
                 <label style="font-weight: bold; display: block;">الاسم الكامل:</label>
                 <input type="text" name="الاسم" placeholder="الاسم الرباعي" required style="width:100%; padding:12px; margin:5px 0 15px; border-radius:10px; font-family:'Cairo'; border: 1px solid #ddd;">
-
                 <label style="font-weight: bold; display: block;">محل الإقامة الحالية:</label>
-                <input type="text" name="الحي" placeholder="المدينة والحي (مثل: أم درمان - المهندسين)" required style="width:100%; padding:12px; margin:5px 0 15px; border-radius:10px; font-family:'Cairo'; border: 1px solid #ddd;">
-
+                <input type="text" name="الحي" placeholder="المدينة والحي" required style="width:100%; padding:12px; margin:5px 0 15px; border-radius:10px; font-family:'Cairo'; border: 1px solid #ddd;">
                 <label style="font-weight: bold; display: block;">رقم الواتساب:</label>
                 <input type="tel" name="الهاتف" placeholder="012xxxxxxx" required style="width:100%; padding:12px; margin:5px 0 15px; border-radius:10px; font-family:'Cairo'; border: 1px solid #ddd;">
-
-                <label style="font-weight: bold; display: block;">الخدمات التي تقدمها:</label>
-                <textarea name="الخدمات" placeholder="مثلاً: غيارات جروح، حقن، استشارات دوائية..." rows="3" style="width:100%; padding:12px; margin:5px 0 15px; border-radius:10px; font-family:'Cairo'; border: 1px solid #ddd;"></textarea>
-
-                <button type="submit" class="btn btn-primary" style="width:100%; margin-top: 10px; font-size: 1.1rem; padding: 15px;">إرسال الطلب للمراجعة</button>
+                <label style="font-weight: bold; display: block;">الخدمات:</label>
+                <textarea name="الخدمات" placeholder="غيارات، حقن، إلخ..." rows="3" style="width:100%; padding:12px; margin:5px 0 15px; border-radius:10px; font-family:'Cairo'; border: 1px solid #ddd;"></textarea>
+                <button type="submit" class="btn btn-primary" style="width:100%; margin-top: 10px; font-size: 1.1rem; padding: 15px;">إرسال الطلب</button>
             </form>
         </div>
     </div>
@@ -142,75 +161,47 @@
         function displayStaff(data) {
             const grid = document.getElementById('staffGrid');
             grid.innerHTML = '';
-            if(data.length === 0) {
-                grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color:#888; padding:50px;">عذراً، لم يتم العثور على نتائج..</p>';
-                return;
-            }
+            if(data.length === 0) { grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color:#888; padding:50px;">عذراً، لم يتم العثور على نتائج..</p>'; return; }
             data.forEach(item => {
                 const roleText = item.role === 'nurse' ? 'ممرض/ة' : (item.role === 'doctor' ? 'طبيب/ة' : 'صيدلي/ة');
                 const roleClass = item.role === 'nurse' ? 'card-nurse' : (item.role === 'doctor' ? 'card-doctor' : 'card-pharmacist');
                 const badgeClass = item.role === 'nurse' ? 'bg-nurse' : (item.role === 'doctor' ? 'bg-doctor' : 'bg-pharmacist');
                 const iconColor = item.role === 'nurse' ? '#27ae60' : (item.role === 'doctor' ? '#2980b9' : '#e67e22');
-
-                const card = `
-                    <div class="nurse-card ${roleClass}">
-                        <span class="role-badge ${badgeClass}">${roleText}</span>
-                        <div class="nurse-info">
-                            <h3>${item.name}</h3>
-                            <p><i class="fas fa-map-marker-alt" style="color:${iconColor}"></i> ${item.area}</p>
-                            <p><i class="fas fa-certificate" style="color:${iconColor}"></i> ${item.bio}</p>
-                            <div class="skills">
-                                ${item.skills.map(s => `<span class="skill-tag">${s}</span>`).join('')}
-                            </div>
-                            <div class="contact-btns">
-                                <a href="https://wa.me/${item.wa}" class="btn-wa"><i class="fab fa-whatsapp"></i> واتساب</a>
-                                <a href="tel:${item.phone}" class="btn-call"><i class="fas fa-phone"></i> اتصال</a>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                grid.innerHTML += card;
+                grid.innerHTML += `<div class="nurse-card ${roleClass}"><span class="role-badge ${badgeClass}">${roleText}</span><div class="nurse-info"><h3>${item.name}</h3><p><i class="fas fa-map-marker-alt" style="color:${iconColor}"></i> ${item.area}</p><p><i class="fas fa-certificate" style="color:${iconColor}"></i> ${item.bio}</p><div class="skills">${item.skills.map(s => `<span class="skill-tag">${s}</span>`).join('')}</div><div class="contact-btns"><a href="https://wa.me/${item.wa}" class="btn-wa"><i class="fab fa-whatsapp"></i> واتساب</a><a href="tel:${item.phone}" class="btn-call"><i class="fas fa-phone"></i> اتصال</a></div></div></div>`;
             });
         }
 
         function filterStaff() {
             const areaVal = document.getElementById('areaSearch').value.toLowerCase();
             const roleVal = document.getElementById('roleFilter').value;
-            const filtered = staffData.filter(item => {
-                const matchesArea = item.area.toLowerCase().includes(areaVal);
-                const matchesRole = roleVal === "" || item.role === roleVal;
-                return matchesArea && matchesRole;
-            });
+            const filtered = staffData.filter(item => item.area.toLowerCase().includes(areaVal) && (roleVal === "" || item.role === roleVal));
             displayStaff(filtered);
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            displayStaff(staffData);
+        function toggleQuickMenu() {
+            const menu = document.getElementById('quickMenu');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
 
-            window.onclick = function(event) {
-                const modal = document.getElementById('regModal');
-                if (event.target == modal) { modal.style.display = "none"; }
-            }
-            
-            document.getElementById('nurseRegForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const btn = this.querySelector('button');
-                const original = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
-                
-                fetch(this.action, {
-                    method: 'POST',
-                    body: new FormData(this),
-                    headers: { 'Accept': 'application/json' }
-                }).then(response => {
-                    if (response.ok) {
-                        alert('يا سلام عليك! تم استلام بياناتك بنجاح. 🌟');
-                        this.reset();
-                        document.getElementById('regModal').style.display='none';
-                    }
-                }).finally(() => btn.innerHTML = original);
-            });
+        window.onclick = function(event) {
+            const menu = document.getElementById('quickMenu');
+            const btn = document.querySelector('.quick-access-btn');
+            const modal = document.getElementById('regModal');
+            if (menu.style.display === 'block' && !menu.contains(event.target) && !btn.contains(event.target)) { menu.style.display = 'none'; }
+            if (event.target == modal) { modal.style.display = "none"; }
+        }
+
+        document.getElementById('nurseRegForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = this.querySelector('button');
+            const original = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+            fetch(this.action, { method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' } })
+            .then(response => { if (response.ok) { alert('تم استلام بياناتك بنجاح. 🌟'); this.reset(); document.getElementById('regModal').style.display='none'; } })
+            .finally(() => btn.innerHTML = original);
         });
+
+        displayStaff(staffData);
     </script>
 </body>
 </html>

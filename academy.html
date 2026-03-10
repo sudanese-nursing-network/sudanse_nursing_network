@@ -8,10 +8,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        body { background-color: #f8fafc; font-family: 'Cairo', sans-serif; }
+        /* --- المتغيرات الموحدة --- */
+        :root { --main-color: #00a884; --dark-blue: #1e272e; --med-blue: #2563eb; }
+
+        body { background-color: #f8fafc; font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 100px; }
         .ac-header { background: linear-gradient(135deg, #0f172a, #1e40af); color: white; padding: 60px 20px; text-align: center; border-radius: 0 0 50px 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         
-        /* سهم العودة الذكي */
         .back-nav {
             position: fixed; top: 20px; right: 20px; z-index: 5000;
             background: #2563eb; color: white; width: 45px; height: 45px;
@@ -23,7 +25,6 @@
 
         .section-title { margin: 40px 0 20px; padding-right: 15px; border-right: 5px solid #2563eb; color: #1e293b; font-weight: 700; }
 
-        /* قسم الفيديوهات المرقمة */
         .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
         .video-box { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: relative; border: 1px solid #e2e8f0; }
         .video-number { position: absolute; top: 10px; left: 10px; background: #2563eb; color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; z-index: 5; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
@@ -31,7 +32,6 @@
         .video-card iframe { width: 100%; height: 100%; border: none; }
         .video-info { padding: 15px; text-align: center; font-weight: 600; color: #334155; }
 
-        /* مكتبة الكتب الموسعة */
         .book-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .book-card { background: white; padding: 20px; border-radius: 15px; display: flex; align-items: center; gap: 15px; border: 1px solid #e2e8f0; transition: 0.3s; }
         .book-card:hover { border-color: #2563eb; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
@@ -39,14 +39,39 @@
         .book-details h4 { font-size: 0.95rem; color: #1e293b; margin-bottom: 5px; }
         .download-link { color: #2563eb; text-decoration: none; font-size: 0.85rem; font-weight: bold; }
 
-        /* البروتوكولات المضافة */
         .protocol-card { background: white; border-radius: 15px; padding: 20px; border-right: 5px solid #2563eb; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .protocol-card h3 { color: #1e40af; margin-bottom: 10px; font-size: 1.1rem; }
         .protocol-card p { font-size: 0.9rem; line-height: 1.7; color: #475569; }
 
-        /* زر إضافة مادة محترف */
+        /* --- الزر العائم الموحد (نفس الرئيسية) --- */
+        .quick-access-btn {
+            position: fixed; bottom: 30px; left: 30px;
+            background: var(--main-color); color: white; width: 65px; height: 65px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; cursor: pointer; z-index: 8000;
+            box-shadow: 0 10px 25px rgba(0,168,132,0.4); 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .quick-access-btn:hover { transform: scale(1.1) rotate(90deg); background: var(--dark-blue); }
+
+        .quick-menu {
+            display: none; position: fixed; bottom: 110px; left: 30px;
+            background: white; border-radius: 20px; width: 260px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); z-index: 7999;
+            overflow-y: auto; max-height: 70vh; border: 1px solid #eee;
+            animation: slideUpNav 0.4s ease forwards;
+        }
+        .quick-menu ul { list-style: none; padding: 10px; margin: 0; }
+        .quick-menu li { border-bottom: 1px solid #f8fafc; }
+        .quick-menu li a { display: flex; align-items: center; gap: 12px; padding: 12px 15px; text-decoration: none; color: #334155; transition: 0.3s; font-weight: 600; }
+        .quick-menu li a i { color: var(--main-color); width: 20px; text-align: center; }
+        .quick-menu li a:hover { background: #f0fdf4; color: var(--main-color); padding-right: 25px; }
+
+        @keyframes slideUpNav { from { opacity: 0; transform: translateY(30px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        /* زر إضافة مادة تعليمية (تحريكه لليمين قليلاً لترك مساحة للزر الموحد) */
         .fab-add {
-            position: fixed; bottom: 30px; left: 30px; 
+            position: fixed; bottom: 30px; left: 110px;
             background: linear-gradient(135deg, #2563eb, #1e40af);
             color: white; width: 65px; height: 65px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
@@ -54,19 +79,11 @@
             box-shadow: 0 10px 25px rgba(37, 99, 235, 0.5);
             transition: 0.4s ease;
         }
-        .fab-add:hover { transform: scale(1.1) rotate(90deg); }
+        .fab-add:hover { transform: scale(1.1) rotate(10deg); }
 
-        /* نافذة الإضافة مع خاصية التمرير */
         .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px); }
-        .modal-content { 
-            background: white; margin: 5vh auto; padding: 30px; border-radius: 25px; 
-            width: 90%; max-width: 500px; 
-            max-height: 85vh; 
-            overflow-y: auto; 
-            position: relative; border-top: 8px solid #2563eb;
-        }
+        .modal-content { background: white; margin: 5vh auto; padding: 30px; border-radius: 25px; width: 90%; max-width: 500px; max-height: 85vh; overflow-y: auto; position: relative; border-top: 8px solid #2563eb; }
         .close-btn { position: absolute; left: 20px; top: 15px; font-size: 28px; cursor: pointer; color: #94a3b8; }
-        
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: #334155; }
         .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-family: 'Cairo'; outline: none; }
@@ -82,7 +99,6 @@
     </header>
 
     <div class="container" style="padding: 20px;">
-        
         <h2 class="section-title">شروحات الفيديو التعليمية</h2>
         <div class="video-grid">
             <div class="video-box">
@@ -121,37 +137,30 @@
         </div>
 
         <h2 class="section-title">بروتوكولات تمريضية سريعة</h2>
-        
         <div class="protocol-card" style="border-right-color: #ef4444;">
             <h3><i class="fas fa-heart"></i> بروتوكول الجلطة القلبية (MI)</h3>
             <p>1. طلب تخطيط قلب فوراً. 2. إعطاء أكسجين. 3. إعطاء 300mg أسبرين للمضغ. 4. مراقبة العلامات الحيوية كل 15 دقيقة.</p>
         </div>
-
         <div class="protocol-card" style="border-right-color: #ea580c;">
             <h3><i class="fas fa-brain"></i> بروتوكول الجلطة الدماغية (Stroke)</h3>
             <p>1. تحديد وقت ظهور الأعراض. 2. فحص السكر فوراً لاستبعاد الغيبوبة. 3. رفع الرأس 30 درجة. 4. تجهيز المريض للأشعة المقطعية.</p>
         </div>
-
         <div class="protocol-card" style="border-right-color: #dc2626;">
             <h3><i class="fas fa-spider"></i> بروتوكول لدغات العقارب</h3>
             <p>1. تهدئة المريض ومنعه من الحركة. 2. غسل مكان اللدغة بالماء والصابون. 3. تثبيت العضو المصاب تحت مستوى القلب. 4. مراقبة التنفس وتجهيز المصل.</p>
         </div>
-
         <div class="protocol-card" style="border-right-color: #ef4444;">
             <h3><i class="fas fa-heartbeat"></i> بروتوكول توقف القلب والإنعاش</h3>
             <p>1. التأكد من سلامة المسعف والمريض. 2. طلب المساعدة (الإسعاف). 3. البدء بـ 30 ضغطة صدرية مقابل نفسين صناعيين. 4. استخدام جهاز AED فور توفره.</p>
         </div>
-
         <div class="protocol-card" style="border-right-color: #f59e0b;">
             <h3><i class="fas fa-tint-slash"></i> التعامل مع هبوط السكري الحاد</h3>
             <p>1. فحص مستوى السكر (أقل من 70mg/dL). 2. إذا كان واعياً: إعطاء 15g سكر سريع. 3. إذا كان فاقداً للوعي: إعطاء Dextrose 50% وريدياً. 4. المراقبة كل 15 دقيقة.</p>
         </div>
-
         <div class="protocol-card" style="border-right-color: #10b981;">
             <h3><i class="fas fa-lungs"></i> بروتوكول الربو الحاد (Asthma)</h3>
             <p>1. إجلاس المريض بوضع قائم. 2. إعطاء جلسة نيبولايزر (فنتولين). 3. مراقبة تشبع الأكسجين (أعلى من 94%). 4. تجهيز الهيدروكورتيزون إذا لزم الأمر.</p>
         </div>
-
         <div class="protocol-card" style="border-right-color: #3b82f6;">
             <h3><i class="fas fa-info-circle"></i> بروتوكول نقل الدم</h3>
             <p>1. التأكد من فصيلة الدم والمريض. 2. فحص العلامات الحيوية قبل البدء. 3. البقاء مع المريض أول 15 دقيقة لمراقبة أي تفاعلات تحسسية.</p>
@@ -162,79 +171,68 @@
         <i class="fas fa-plus"></i>
     </div>
 
+    <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
+        <i class="fas fa-th-large"></i>
+    </div>
+
+    <div id="quickMenu" class="quick-menu">
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+            <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
+            <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+            <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
+            <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
+            <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة</a></li>
+            <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
+            <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
+            <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+            <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+            <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+        </ul>
+    </div>
+
     <div id="addContentModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="document.getElementById('addContentModal').style.display='none'">&times;</span>
             <h2 style="text-align:center; color: #1e40af; margin-bottom: 20px;">إضافة مادة تعليمية</h2>
-            
             <form action="https://formsubmit.co/alrsheedkamal5003@gmail.com" method="POST" id="academyForm">
-                <input type="hidden" name="_subject" value="📚 مادة تعليمية جديدة - الأكاديمية">
+                <input type="hidden" name="_subject" value="📚 مادة تعليمية جديدة">
                 <input type="hidden" name="_captcha" value="false">
-
-                <div class="form-group">
-                    <label>نوع المادة:</label>
-                    <select name="النوع">
-                        <option value="video">فيديو تعليمي</option>
-                        <option value="book">كتاب / بحث PDF</option>
-                        <option value="protocol">بروتوكول طبي</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>عنوان المادة:</label>
-                    <input type="text" name="العنوان" placeholder="مثلاً: شرح تركيب الكانيولا" required>
-                </div>
-
-                <div class="form-group">
-                    <label>اسم مقدم المادة:</label>
-                    <input type="text" name="المحاضر" placeholder="اسمك الكريم">
-                </div>
-
-                <div class="form-group">
-                    <label>الوصف أو محتوى البروتوكول:</label>
-                    <textarea name="الوصف" rows="6" placeholder="اكتب الشرح أو خطوات البروتوكول هنا بالتفصيل..." required></textarea>
-                </div>
-
-                <button type="submit" class="btn" style="width:100%; background: #2563eb; color:white; padding: 15px; font-weight: bold; border-radius: 12px; border:none; cursor:pointer;">نشر المادة للمراجعة</button>
+                <div class="form-group"><label>عنوان المادة:</label><input type="text" name="العنوان" required></div>
+                <div class="form-group"><label>الوصف:</label><textarea name="الوصف" rows="6" required></textarea></div>
+                <button type="submit" style="width:100%; background: #2563eb; color:white; padding: 15px; border-radius: 12px; border:none; cursor:pointer; font-weight:bold;">نشر المادة للمراجعة</button>
             </form>
         </div>
     </div>
 
     <script>
-        // إغلاق المودال عند الضغط خارجه
+        function toggleQuickMenu() {
+            const menu = document.getElementById('quickMenu');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
+
         window.onclick = function(event) {
+            const menu = document.getElementById('quickMenu');
+            const btn = document.querySelector('.quick-access-btn');
             const modal = document.getElementById('addContentModal');
+            if (menu.style.display === 'block') {
+                if (event.target !== menu && !menu.contains(event.target) && event.target !== btn && !btn.contains(event.target)) {
+                    menu.style.display = 'none';
+                }
+            }
             if (event.target == modal) { modal.style.display = "none"; }
         }
 
-        // الكود السحري لمنع فتح صفحة FormSubmit واستقبال البيانات في صمت
         document.getElementById('academyForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // يمنع فتح الصفحة الجديدة
-            
+            e.preventDefault();
             const btn = this.querySelector('button');
-            const originalText = btn.innerHTML;
-            
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
-            btn.disabled = true;
-
-            fetch(this.action, {
-                method: 'POST',
-                body: new FormData(this),
-                headers: { 'Accept': 'application/json' }
-            }).then(response => {
-                if (response.ok) {
-                    alert('تم إرسال المادة بنجاح للمراجعة.');
-                    this.reset();
-                    document.getElementById('addContentModal').style.display = 'none';
-                } else {
-                    alert('عذراً، تأكد من تفعيل الإيميل أولاً عبر رسالة التفعيل التي وصلتك من FormSubmit.');
-                }
-            }).catch(error => {
-                alert('حدث خطأ في الاتصال، حاول مرة أخرى.');
-            }).finally(() => {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            });
+            fetch(this.action, { method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' } })
+            .then(response => {
+                if (response.ok) { alert('تم إرسال المادة بنجاح للمراجعة.'); this.reset(); document.getElementById('addContentModal').style.display = 'none'; }
+            }).finally(() => { btn.innerHTML = 'نشر المادة للمراجعة'; });
         });
     </script>
 </body>

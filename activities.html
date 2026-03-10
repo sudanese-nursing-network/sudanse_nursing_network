@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>نشاطات الشبكة | نبض الميدان</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        /* --- المتغيرات الموحدة --- */
+        :root { 
+            --primary-gold: #c29d0b; 
+            --deep-green: #064e3b; 
+            --soft-bg: #fdfdfd; 
+            --main-color: #00a884; /* لون الشبكة الموحد للزر العائم */
+            --dark-blue: #1e272e;
+        }
+
+        body { background-color: var(--soft-bg); font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 100px; overflow-x: hidden; }
+        
+        .act-header { background: linear-gradient(rgba(6, 78, 59, 0.9), rgba(6, 78, 59, 0.9)), url('network_bg.jpg'); background-size: cover; color: white; padding: 80px 20px; text-align: center; border-radius: 0 0 50px 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .back-nav { position: fixed; top: 20px; right: 20px; z-index: 5000; background: #fff; color: var(--deep-green); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+
+        /* ميزة عداد الأثر التراكمي */
+        .impact-summary { 
+            display: flex; justify-content: space-around; background: var(--deep-green); 
+            padding: 20px; border-radius: 25px; margin: -40px auto 30px; color: white; 
+            text-align: center; position: relative; z-index: 100; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 800px;
+        }
+        .impact-item h3 { margin: 0; color: var(--primary-gold); font-size: 1.8rem; }
+        .impact-item p { margin: 5px 0 0; font-size: 0.85rem; opacity: 0.9; font-weight: bold; }
+
+        /* الـ Timeline السحري */
+        .timeline { position: relative; padding: 20px 0; }
+        .timeline::after { content: ''; position: absolute; width: 4px; background: var(--primary-gold); top: 0; bottom: 0; right: 30px; border-radius: 10px; }
+
+        .act-card { position: relative; margin-bottom: 50px; padding-right: 60px; animation: slideUp 0.8s ease forwards; }
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .act-dot { position: absolute; width: 25px; height: 25px; background: white; border: 5px solid var(--primary-gold); border-radius: 50%; right: 20px; top: 0; z-index: 10; box-shadow: 0 0 15px rgba(194, 157, 11, 0.4); }
+        .act-content { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; transition: 0.3s; }
+
+        .act-img { width: 100%; height: auto; max-height: 550px; background-color: #eee; overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; }
+        .act-img img { width: 100%; height: auto; object-fit: contain; transition: 0.5s; }
+        .act-tag { position: absolute; top: 15px; left: 15px; background: var(--primary-gold); color: white; padding: 5px 15px; border-radius: 30px; font-size: 0.8rem; font-weight: bold; z-index: 11; }
+
+        .act-body { padding: 25px; }
+        .act-date { color: var(--primary-gold); font-weight: bold; font-size: 0.9rem; margin-bottom: 10px; display: block; }
+        .act-body h2 { margin: 0 0 15px 0; color: var(--deep-green); font-size: 1.5rem; }
+        .act-body p { color: #555; line-height: 1.8; margin-bottom: 20px; font-size: 1rem; }
+
+        /* ميزة كتاب الزوار (شريط متحرك) */
+        .guestbook { background: #f0fdf4; padding: 10px; border-radius: 12px; margin: 15px 0; overflow: hidden; border-right: 4px solid var(--deep-green); }
+        .marquee-text { display: inline-block; white-space: nowrap; animation: marquee 25s linear infinite; color: var(--deep-green); font-weight: bold; font-size: 0.85rem; }
+        @keyframes marquee { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+        .act-actions { display: flex; flex-wrap: wrap; gap: 10px; border-top: 1px solid #eee; padding-top: 20px; margin-top: 15px; }
+        .btn-act { padding: 10px 18px; border-radius: 12px; border: none; cursor: pointer; font-family: 'Cairo'; font-weight: bold; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
+        .btn-like { background: #fee2e2; color: #dc2626; }
+        .btn-cert { background: #e0f2fe; color: #0369a1; }
+        .btn-share { background: #f0fdf4; color: #166534; }
+
+        .particle { position: fixed; pointer-events: none; animation: fly 1s ease-out forwards; z-index: 9999; }
+        @keyframes fly { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-120px) scale(0); opacity: 0; } }
+
+        .cert-list { display: none; background: #fff; border: 1px solid #ddd; padding: 15px; border-radius: 15px; margin-top: 10px; animation: fadeIn 0.3s; }
+        .cert-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.85rem; }
+
+        .act-footer { display: flex; gap: 15px; border-top: 1px solid #f1f5f9; padding-top: 20px; margin-top: 10px; }
+        .stat { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: #888; }
+        .stat i { color: var(--primary-gold); }
+
+        .admin-add-btn { position: fixed; bottom: 30px; left: 110px; background: var(--deep-green); color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transition: 0.3s; }
+
+        /* --- تنسيق الزر العائم الموحد --- */
+        .quick-access-btn {
+            position: fixed; bottom: 30px; left: 30px;
+            background: var(--main-color); color: white; width: 65px; height: 65px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; cursor: pointer; z-index: 8000;
+            box-shadow: 0 10px 25px rgba(0,168,132,0.4); 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .quick-access-btn:hover { transform: scale(1.1) rotate(90deg); background: var(--dark-blue); }
+
+        .quick-menu {
+            display: none; position: fixed; bottom: 110px; left: 30px;
+            background: white; border-radius: 20px; width: 260px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); z-index: 7999;
+            overflow-y: auto; max-height: 70vh; border: 1px solid #eee;
+            animation: slideUpNav 0.4s ease forwards;
+        }
+        .quick-menu ul { list-style: none; padding: 10px; margin: 0; }
+        .quick-menu li { border-bottom: 1px solid #f8fafc; }
+        .quick-menu li a { display: flex; align-items: center; gap: 12px; padding: 12px 15px; text-decoration: none; color: #334155; transition: 0.3s; font-weight: 600; }
+        .quick-menu li a i { color: var(--main-color); width: 20px; text-align: center; }
+        .quick-menu li a:hover { background: #f0fdf4; color: var(--main-color); padding-right: 25px; }
+
+        @keyframes slideUpNav { from { opacity: 0; transform: translateY(30px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-nav"><i class="fas fa-arrow-right"></i></a>
+
+    <header class="act-header">
+        <h1>إنجازات ونشاطات الشبكة <i class="fas fa-star"></i></h1>
+        <p>توثيق حي لرحلة العطاء في الميدان السوداني الرقمي والواقعي</p>
+    </header>
+
+    <div class="container">
+        <div class="impact-summary">
+            <div class="impact-item"><h3>+15</h3><p>فعالية ميدانية</p></div>
+            <div class="impact-item"><h3>+500</h3><p>كادر متطوع</p></div>
+            <div class="impact-item"><h3>+10k</h3><p>مستفيد كلي</p></div>
+        </div>
+
+        <div class="timeline" id="actTimeline">
+            <div class="act-card" id="card-dongola">
+                <div class="act-dot"></div>
+                <div class="act-content">
+                    <div class="act-img">
+                        <span class="act-tag">ميداني</span>
+                        <img src="act3.jpg" id="photoDongola" alt="نشاط ميداني">
+                    </div>
+                    <div class="act-body">
+                        <span class="act-date">12 مايو 2025</span>
+                        <h2>المشاركة في اليوم التمريض العالمي بجامعة دنقلا!</h2>
+                        <div class="guestbook"><div class="marquee-text">✨ د. سارة: فخورين بيكم يا وحوش الميدان.. | ✨ م. أحمد: جامعة دنقلا دائماً في المقدمة..</div></div>
+                        <p>شاركت شبكة الممرضين السودانيين بفعالية مميزة في احتفالات اليوم العالمي للتمريض بكلية التمريض – جامعة دنقلا.</p>
+                        <div class="act-actions">
+                            <button class="btn-act btn-like" onclick="explode(event)"><i class="fas fa-heart"></i> إعجاب نبضي</button>
+                            <button class="btn-act btn-cert" onclick="toggleCerts('certs-1')"><i class="fas fa-file-signature"></i> الشهادات</button>
+                            <button class="btn-act btn-share" onclick="shareCard('card-dongola')"><i class="fas fa-camera"></i> مشاركة كصورة</button>
+                        </div>
+                        <div id="certs-1" class="cert-list"><div class="cert-item"><span>الرشيد كمال (منظم)</span> <a href="#">تحميل PDF</a></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="quick-access-btn" onclick="toggleQuickMenu()"><i class="fas fa-th-large"></i></div>
+    <div id="quickMenu" class="quick-menu">
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="academy.html"><i class="fas fa-graduation-cap"></i> الأكاديمية</a></li>
+            <li><a href="research.html"><i class="fas fa-book-medical"></i> الأبحاث</a></li>
+            <li><a href="locator.html"><i class="fas fa-search-location"></i> الرادار</a></li>
+            <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة</a></li>
+            <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> الاستغاثة</a></li>
+        </ul>
+    </div>
+
+    <div class="admin-add-btn" onclick="alert('خاص بالأدمن: جاري تجهيز لوحة الإضافة')"><i class="fas fa-camera"></i></div>
+
+    <script>
+        function explode(e) {
+            for (let i = 0; i < 12; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.innerHTML = ['❤️', '🩺', '✨'][Math.floor(Math.random() * 3)];
+                p.style.left = e.clientX + 'px';
+                p.style.top = e.clientY + 'px';
+                p.style.fontSize = Math.random() * 20 + 15 + 'px';
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 1000);
+            }
+        }
+
+        function toggleCerts(id) {
+            const list = document.getElementById(id);
+            list.style.display = list.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function shareCard(id) {
+            const card = document.getElementById(id);
+            html2canvas(card).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'nursing_activity.png';
+                link.href = canvas.toDataURL();
+                link.click();
+                alert('تم حفظ النشاط كصورة بنجاح!');
+            });
+        }
+
+        function toggleQuickMenu() {
+            const menu = document.getElementById('quickMenu');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
+
+        window.onclick = function(event) {
+            const menu = document.getElementById('quickMenu');
+            const btn = document.querySelector('.quick-access-btn');
+            if (menu.style.display === 'block' && !menu.contains(event.target) && !btn.contains(event.target)) {
+                menu.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

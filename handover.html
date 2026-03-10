@@ -6,43 +6,69 @@
     <title>تسليم الورديات (SBAR) | شبكة الممرضين السودانيين</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
     <style>
-        .handover-header { background: #8e44ad; color: white; padding: 40px 20px; text-align: center; border-radius: 0 0 30px 30px; border-bottom: 5px solid #9b59b6; }
+        /* التنسيقات الأساسية وتنسيقات الهوية البصرية */
+        :root { --primary-color: #8e44ad; --secondary-color: #2c3e50; --accent-color: #27ae60; }
+        body { font-family: 'Cairo', sans-serif; background-color: #f4f7f6; margin: 0; color: #333; }
         
-        .form-section { background: white; border-radius: 15px; padding: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 5px solid #8e44ad; }
-        .form-section h2 { color: #8e44ad; margin-top: 0; border-bottom: 2px solid #f4f7f6; padding-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        /* شريط التنقل */
+        .navbar { background: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-weight: 700; font-size: 1.4rem; color: var(--secondary-color); text-decoration: none; }
+        .logo span { color: var(--primary-color); }
+        .nav-links { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; }
+        .nav-links a { text-decoration: none; color: #555; font-weight: 600; transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary-color); }
+
+        /* الهيدر */
+        .handover-header { background: var(--primary-color); color: white; padding: 40px 20px; text-align: center; border-radius: 0 0 30px 30px; border-bottom: 5px solid #9b59b6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+
+        /* الأقسام والفورم */
+        .form-section { background: white; border-radius: 15px; padding: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 5px solid var(--primary-color); }
+        .form-section h2 { color: var(--primary-color); margin-top: 0; border-bottom: 2px solid #f4f7f6; padding-bottom: 10px; display: flex; align-items: center; gap: 10px; font-size: 1.3rem; }
         
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .nav-links { display: none; } }
         
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-weight: bold; color: #444; margin-bottom: 5px; }
-        .handover-input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Cairo'; font-size: 1rem; box-sizing: border-box; }
-        .handover-input:focus { border-color: #8e44ad; outline: none; }
+        .handover-input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Cairo'; font-size: 1rem; box-sizing: border-box; transition: 0.3s; }
+        .handover-input:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 5px rgba(142, 68, 173, 0.2); }
         
-        /* تصميم الحروف S B A R */
-        .sbar-label { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; color: #2c3e50; font-weight: bold; margin-bottom: 5px; }
-        .sbar-letter { background: #8e44ad; color: white; width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; border-radius: 5px; font-size: 1.2rem; }
+        /* SBAR Design */
+        .sbar-label { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; color: #2c3e50; font-weight: bold; margin-bottom: 8px; margin-top: 15px; }
+        .sbar-letter { background: var(--primary-color); color: white; width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; border-radius: 5px; font-size: 1.2rem; flex-shrink: 0; }
         
-        /* جدول القسم */
-        .ward-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .ward-table th, .ward-table td { border: 1px solid #ddd; padding: 12px; text-align: right; }
-        .ward-table th { background: #f8f9fa; color: #2c3e50; font-weight: bold; }
-        .ward-table tr:hover { background: #fdfdfd; }
-        .add-row-btn { background: #27ae60; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-family: 'Cairo'; font-weight: bold; margin-top: 10px; }
-        
+        /* الجدول */
+        .ward-table-container { overflow-x: auto; }
+        .ward-table { width: 100%; border-collapse: collapse; margin-top: 15px; min-width: 600px; }
+        .ward-table th, .ward-table td { border: 1px solid #ddd; padding: 10px; text-align: right; }
+        .ward-table th { background: #f8f9fa; color: var(--secondary-color); }
+        .add-row-btn { background: var(--accent-color); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-family: 'Cairo'; font-weight: bold; margin-top: 15px; transition: 0.3s; }
+        .add-row-btn:hover { background: #219150; }
+
+        /* الأزرار */
         .action-btns { display: flex; gap: 15px; justify-content: center; margin-top: 30px; flex-wrap: wrap; }
-        .btn-whatsapp { background: #25D366; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 10px; border: none; cursor: pointer; font-family: 'Cairo'; font-size: 1.1rem; }
-        .btn-print { background: #34495e; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 10px; border: none; cursor: pointer; font-family: 'Cairo'; font-size: 1.1rem; }
-        /* زر الإيميل الجديد */
-        .btn-email { background: #8e44ad; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 10px; border: none; cursor: pointer; font-family: 'Cairo'; font-size: 1.1rem; }
-        
-        /* إخفاء الأزرار عند الطباعة */
+        .btn-whatsapp { background: #25D366; color: white; padding: 15px 25px; border-radius: 8px; font-weight: bold; display: flex; align-items: center; gap: 10px; border: none; cursor: pointer; font-family: 'Cairo'; font-size: 1rem; }
+        .btn-print { background: #34495e; color: white; padding: 15px 25px; border-radius: 8px; font-weight: bold; display: flex; align-items: center; gap: 10px; border: none; cursor: pointer; font-family: 'Cairo'; font-size: 1rem; }
+        .btn-email { background: var(--primary-color); color: white; padding: 15px 25px; border-radius: 8px; font-weight: bold; display: flex; align-items: center; gap: 10px; border: none; cursor: pointer; font-family: 'Cairo'; font-size: 1rem; }
+
+        /* القائمة السريعة */
+        .quick-access-btn { position: fixed; bottom: 20px; left: 20px; background: var(--primary-color); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 2000; }
+        .quick-menu { display: none; position: fixed; bottom: 90px; left: 20px; background: white; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.2); width: 250px; z-index: 1999; overflow: hidden; }
+        .quick-menu ul { list-style: none; margin: 0; padding: 10px; }
+        .quick-menu li { border-bottom: 1px solid #eee; }
+        .quick-menu li:last-child { border: none; }
+        .quick-menu a { display: flex; align-items: center; gap: 12px; padding: 12px 15px; text-decoration: none; color: #444; font-size: 0.95rem; transition: 0.2s; }
+        .quick-menu a:hover { background: #f8f9fa; color: var(--primary-color); }
+
+        footer { text-align: center; padding: 30px; color: #777; font-size: 0.9rem; }
+
         @media print {
-            .navbar, .quick-access-btn, .action-btns, .add-row-btn, .handover-header p { display: none !important; }
+            .navbar, .quick-access-btn, .action-btns, .add-row-btn, .handover-header p, .quick-menu { display: none !important; }
             body { background: white; }
-            .form-section { box-shadow: none; border: 1px solid #ddd; margin-bottom: 20px; page-break-inside: avoid; }
+            .form-section { box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; }
+            .container { max-width: 100%; width: 100%; }
         }
     </style>
 </head>
@@ -67,14 +93,13 @@
     </div>
 
     <section class="section">
-        <div class="container" style="max-width: 1000px;">
-            
+        <div class="container">
             <form id="handoverForm" action="https://formspree.io/f/meerewpw" method="POST">
                 
                 <input type="hidden" name="_subject" value="📝 تقرير تسليم وردية جديد (SBAR)">
                 <input type="hidden" name="نوع_الطلب" value="📋 تقرير تسليم وردية">
 
-                <div class="form-section fade-element">
+                <div class="form-section">
                     <h2><i class="fas fa-clock"></i> البيانات الأساسية للوردية</h2>
                     <div class="grid-2">
                         <div class="input-group">
@@ -100,10 +125,10 @@
                     </div>
                 </div>
 
-                <div class="form-section fade-element">
-                    <h2><i class="fas fa-file-medical"></i> نموذج SBAR (للحالات الحرجة أو المتابعة الدقيقة)</h2>
+                <div class="form-section">
+                    <h2><i class="fas fa-file-medical"></i> نموذج SBAR (للحالات الحرجة)</h2>
                     
-                    <div class="grid-2" style="margin-bottom: 20px;">
+                    <div class="grid-2">
                         <div class="input-group">
                             <label>اسم المريض</label>
                             <input type="text" id="pName" name="اسم_المريض_SBAR" class="handover-input" placeholder="الاسم الرباعي">
@@ -116,76 +141,71 @@
 
                     <div class="input-group">
                         <div class="sbar-label"><span class="sbar-letter">S</span> الموقف الحالي (Situation)</div>
-                        <textarea id="sbarS" name="S_الموقف_الحالي" class="handover-input" rows="2" placeholder="ما هي مشكلة المريض الآن؟ (مثال: المريض يعاني من ضيق شديد في التنفس)"></textarea>
+                        <textarea id="sbarS" name="S_الموقف_الحالي" class="handover-input" rows="2" placeholder="ما هي مشكلة المريض الآن؟"></textarea>
                     </div>
 
                     <div class="input-group">
                         <div class="sbar-label"><span class="sbar-letter">B</span> الخلفية التاريخية (Background)</div>
-                        <textarea id="sbarB" name="B_الخلفية_التاريخية" class="handover-input" rows="2" placeholder="تاريخ الدخول، التشخيص الطبي، والأمراض المزمنة (مثال: دخل المستشفى أمس بتشخيص التهاب رئوي)"></textarea>
+                        <textarea id="sbarB" name="B_الخلفية_التاريخية" class="handover-input" rows="2" placeholder="تاريخ الدخول والتشخيص الطبي"></textarea>
                     </div>
 
                     <div class="input-group">
                         <div class="sbar-label"><span class="sbar-letter">A</span> التقييم السريري (Assessment)</div>
-                        <textarea id="sbarA" name="A_التقييم_السريري" class="handover-input" rows="3" placeholder="العلامات الحيوية الحالية، مستوى الوعي، الملحقات (فراشة، قسطرة بولية، أكسجين)"></textarea>
+                        <textarea id="sbarA" name="A_التقييم_السريري" class="handover-input" rows="3" placeholder="العلامات الحيوية، مستوى الوعي، الملحقات"></textarea>
                     </div>
 
                     <div class="input-group">
                         <div class="sbar-label"><span class="sbar-letter">R</span> التوصيات والمطلوب (Recommendation)</div>
-                        <textarea id="sbarR" name="R_التوصيات_والمطلوب" class="handover-input" rows="3" placeholder="ما الذي يجب على ممرض الوردية القادمة فعله؟ (مثال: متابعة نتيجة فحص الدم، إعطاء المضاد الحيوي الساعة 10)"></textarea>
+                        <textarea id="sbarR" name="R_التوصيات_والمطلوب" class="handover-input" rows="3" placeholder="ما الذي يجب فعله في الوردية القادمة؟"></textarea>
                     </div>
                 </div>
 
-                <div class="form-section fade-element">
+                <div class="form-section">
                     <h2><i class="fas fa-th-list"></i> جدول مرضى القسم (Overview)</h2>
-                    <div style="overflow-x: auto;">
+                    <div class="ward-table-container">
                         <table class="ward-table" id="wardTable">
                             <thead>
                                 <tr>
-                                    <th style="width: 10%;">السرير</th>
-                                    <th style="width: 25%;">اسم المريض</th>
-                                    <th style="width: 25%;">التشخيص</th>
-                                    <th style="width: 20%;">المحاليل/الأدوية</th>
-                                    <th style="width: 20%;">ملاحظات هامة</th>
+                                    <th>السرير</th>
+                                    <th>اسم المريض</th>
+                                    <th>التشخيص</th>
+                                    <th>المحاليل/الأدوية</th>
+                                    <th>ملاحظات هامة</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><input type="text" name="جدول_السرير[]" class="handover-input" style="padding: 5px;"></td>
-                                    <td><input type="text" name="جدول_الاسم[]" class="handover-input" style="padding: 5px;"></td>
-                                    <td><input type="text" name="جدول_التشخيص[]" class="handover-input" style="padding: 5px;"></td>
-                                    <td><input type="text" name="جدول_الأدوية[]" class="handover-input" style="padding: 5px;"></td>
-                                    <td><input type="text" name="جدول_ملاحظات[]" class="handover-input" style="padding: 5px;"></td>
+                                    <td><input type="text" name="جدول_السرير[]" class="handover-input"></td>
+                                    <td><input type="text" name="جدول_الاسم[]" class="handover-input"></td>
+                                    <td><input type="text" name="جدول_التشخيص[]" class="handover-input"></td>
+                                    <td><input type="text" name="جدول_الأدوية[]" class="handover-input"></td>
+                                    <td><input type="text" name="جدول_ملاحظات[]" class="handover-input"></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <button type="button" class="add-row-btn" onclick="addRow()"><i class="fas fa-plus"></i> إضافة مريض آخر للجدول</button>
+                    <button type="button" class="add-row-btn" onclick="addRow()"><i class="fas fa-plus"></i> إضافة مريض آخر</button>
                 </div>
 
                 <div class="action-btns">
                     <button type="button" class="btn-whatsapp" onclick="shareToWhatsApp()"><i class="fab fa-whatsapp"></i> مشاركة واتساب</button>
                     <button type="button" class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> حفظ PDF / طباعة</button>
-                    <button type="submit" class="btn-email"><i class="fas fa-envelope"></i> إرسال التقرير للأرشيف</button>
+                    <button type="submit" class="btn-email"><i class="fas fa-envelope"></i> إرسال للأرشيف</button>
                 </div>
-
             </form>
         </div>
     </section>
 
-    <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
+    <div class="quick-access-btn" onclick="toggleQuickMenu()" title="القائمة السريعة">
         <i class="fas fa-th-large"></i>
     </div>
     <div id="quickMenu" class="quick-menu">
         <ul>
             <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
-            <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الورديات (SBAR)</a></li>
+            <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الورديات</a></li>
             <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
-            <li><a href="research.html"><i class="fas fa-book-medical"></i> الأبحاث</a></li>
-            <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية</a></li>
-            <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة</a></li>
-            <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> الاستغاثة</a></li>
             <li><a href="consult.html"><i class="fas fa-comments"></i> الاستشارات</a></li>
-            <li><a href="training.html"><i class="fas fa-users"></i> التدريب</a></li>
             <li><a href="join.html"><i class="fas fa-user-plus"></i> العضوية</a></li>
         </ul>
     </div>
@@ -194,23 +214,22 @@
         <p>جميع الحقوق محفوظة &copy; 2026 - شبكة الممرضين السودانيين</p>
     </footer>
 
-    <script src="script.js"></script>
     <script>
-        // تعيين تاريخ اليوم تلقائياً
+        // ضبط التاريخ تلقائياً
         document.getElementById('hDate').valueAsDate = new Date();
 
-        // إضافة صف جديد لجدول القسم (محدثة لدعم Formspree بـ name=[])
+        // إضافة صفوف للجدول
         function addRow() {
             const table = document.getElementById("wardTable").getElementsByTagName('tbody')[0];
             const newRow = table.insertRow();
             const names = ["جدول_السرير[]", "جدول_الاسم[]", "جدول_التشخيص[]", "جدول_الأدوية[]", "جدول_ملاحظات[]"];
             for(let i=0; i<5; i++) {
                 let cell = newRow.insertCell(i);
-                cell.innerHTML = `<input type="text" name="${names[i]}" class="handover-input" style="padding: 5px;">`;
+                cell.innerHTML = `<input type="text" name="${names[i]}" class="handover-input">`;
             }
         }
 
-        // إرسال البيانات للإيميل بالخلفية باستخدام Fetch API
+        // إرسال FormSubmit
         document.getElementById('handoverForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const form = this;
@@ -220,60 +239,57 @@
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
             submitBtn.disabled = true;
 
-            const formData = new FormData(form);
-
             fetch(form.action, {
                 method: form.method,
-                body: formData,
+                body: new FormData(form),
                 headers: { 'Accept': 'application/json' }
             })
             .then(response => {
                 if (response.ok) {
-                    alert('تم إرسال تقرير الوردية إلى الإيميل (الأرشيف) بنجاح!');
+                    alert('✅ تم إرسال التقرير بنجاح!');
+                    form.reset();
+                    document.getElementById('hDate').valueAsDate = new Date();
                 } else {
-                    alert('عذراً، حدثت مشكلة أثناء الإرسال.');
+                    alert('❌ حدث خطأ أثناء الإرسال.');
                 }
             })
-            .catch(error => {
-                alert('خطأ في الاتصال! يرجى التأكد من الإنترنت.');
-            })
+            .catch(() => alert('❌ خطأ في الاتصال بالإنترنت.'))
             .finally(() => {
                 submitBtn.innerHTML = originalBtnText;
                 submitBtn.disabled = false;
             });
         });
 
-        // مشاركة التسليم عبر الواتساب للزملاء
+        // وظيفة الواتساب
         function shareToWhatsApp() {
-            let shift = document.getElementById('hShift').value;
-            let ward = document.getElementById('hWard').value;
-            let nurse = document.getElementById('hNurse').value;
+            const shift = document.getElementById('hShift').value;
+            const ward = document.getElementById('hWard').value || "غير محدد";
+            const nurse = document.getElementById('hNurse').value || "غير مسجل";
+            const pName = document.getElementById('pName').value || "لا يوجد";
             
-            let pName = document.getElementById('pName').value || "غير محدد";
-            let pBed = document.getElementById('pBed').value || "-";
-            let s = document.getElementById('sbarS').value || "لا توجد تفاصيل";
-            let b = document.getElementById('sbarB').value || "لا توجد تفاصيل";
-            let a = document.getElementById('sbarA').value || "لا توجد تفاصيل";
-            let r = document.getElementById('sbarR').value || "لا توجد تفاصيل";
+            let message = `*تقرير تسليم وردية*\n`;
+            message += `🏥 القسم: ${ward}\n⏰ الوردية: ${shift}\n👤 الممرض: ${nurse}\n\n`;
+            message += `*حالة SBAR:*\n📍 مريض: ${pName}\n`;
+            message += `🔴 S: ${document.getElementById('sbarS').value || '-'}\n`;
+            message += `🔵 B: ${document.getElementById('sbarB').value || '-'}\n`;
+            message += `🟢 A: ${document.getElementById('sbarA').value || '-'}\n`;
+            message += `🟡 R: ${document.getElementById('sbarR').value || '-'}`;
 
-            let message = `*تسليم وردية (${shift})* 🏥\n`
-                        + `*القسم:* ${ward}\n`
-                        + `*الممرض المُسلِّم:* ${nurse}\n\n`
-                        + `*حالة SBAR للمريض:* ${pName} (سرير: ${pBed})\n`
-                        + `🔴 *S (الموقف):* ${s}\n`
-                        + `🔵 *B (الخلفية):* ${b}\n`
-                        + `🟢 *A (التقييم):* ${a}\n`
-                        + `🟡 *R (التوصيات):* ${r}\n\n`
-                        + `تم التسليم عبر منصة شبكة الممرضين السودانيين.`;
-
-            let whatsappUrl = "https://wa.me/?text=" + encodeURIComponent(message);
-            window.open(whatsappUrl, '_blank');
+            window.open("https://wa.me/?text=" + encodeURIComponent(message), '_blank');
         }
 
-        // قائمة الوصول السريع
+        // تبديل القائمة السريعة
         function toggleQuickMenu() {
             const menu = document.getElementById('quickMenu');
             menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
+
+        // إغلاق القائمة عند النقر خارجها
+        window.onclick = function(event) {
+            if (!event.target.matches('.quick-access-btn') && !event.target.matches('.fa-th-large')) {
+                const menu = document.getElementById('quickMenu');
+                if (menu.style.display === 'block') menu.style.display = 'none';
+            }
         }
     </script>
 </body>

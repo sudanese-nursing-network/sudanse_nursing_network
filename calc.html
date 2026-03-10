@@ -3,45 +3,92 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الحاسبة التمريضية السريرية | شبكة الممرضين السودانيين</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        .calc-header { background: #1e272e; color: white; padding: 40px 20px; text-align: center; border-radius: 0 0 30px 30px; border-bottom: 5px solid var(--main-color); }
-        .calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-top: 30px; }
+        /* التنسيقات الجوهرية لضمان استقرار الحاسبة */
+        :root { --main-color: #00a884; --dark-blue: #1e272e; }
+        
+        body { background-color: #f4f7f6; font-family: 'Cairo', sans-serif; margin: 0; }
+
+        .calc-header { 
+            background: #1e272e; color: white; padding: 50px 20px; 
+            text-align: center; border-radius: 0 0 40px 40px; 
+            border-bottom: 5px solid var(--main-color); 
+        }
+
+        .container { max-width: 1100px; margin: auto; padding: 20px; }
+
+        .calc-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 25px; margin-top: -30px; 
+        }
         
         .calc-card {
-            background: white; border-radius: 15px; padding: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08); border-top: 5px solid var(--main-color);
-            position: relative; overflow: hidden;
+            background: white; border-radius: 20px; padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); border-top: 6px solid var(--main-color);
+            position: relative; transition: 0.3s;
         }
-        .calc-card h3 { color: var(--dark-blue); margin-top: 0; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #f4f7f6; padding-bottom: 15px; }
-        .calc-card h3 i { color: var(--main-color); font-size: 1.5rem; }
+        .calc-card:hover { transform: translateY(-5px); }
+
+        .calc-card h3 { 
+            color: var(--dark-blue); margin: 0 0 20px 0; 
+            display: flex; align-items: center; gap: 12px; 
+            border-bottom: 2px solid #f4f7f6; padding-bottom: 15px; 
+            font-size: 1.2rem;
+        }
+        .calc-card h3 i { color: var(--main-color); }
         
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-weight: bold; color: #555; margin-bottom: 5px; font-size: 0.95rem; }
+        .form-group { margin-bottom: 15px; text-align: right; }
+        .form-group label { display: block; font-weight: bold; color: #555; margin-bottom: 8px; font-size: 0.9rem; }
+        
         .calc-input, .calc-select {
-            width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 8px;
+            width: 100%; padding: 12px; border: 2px solid #edf2f1; border-radius: 10px;
             font-family: 'Cairo'; font-size: 1rem; transition: 0.3s; box-sizing: border-box;
+            background: #fafafa;
         }
-        .calc-input:focus, .calc-select:focus { border-color: var(--main-color); outline: none; }
+        .calc-input:focus, .calc-select:focus { border-color: var(--main-color); outline: none; background: white; }
         
         .btn-calc {
             width: 100%; background: var(--main-color); color: white; border: none;
-            padding: 12px; border-radius: 8px; font-weight: bold; font-size: 1.1rem;
+            padding: 14px; border-radius: 12px; font-weight: bold; font-size: 1.1rem;
             cursor: pointer; transition: 0.3s; margin-top: 10px; font-family: 'Cairo';
         }
-        .btn-calc:hover { background: #008e6f; }
+        .btn-calc:hover { background: #008e6f; box-shadow: 0 5px 15px rgba(0,168,132,0.3); }
         
         .result-box {
-            background: #e8f6f3; color: #008e6f; padding: 15px; border-radius: 8px;
-            margin-top: 20px; text-align: center; font-weight: bold; font-size: 1.2rem;
-            display: none; border: 1px dashed #008e6f;
+            background: #e8f6f3; color: #008e6f; padding: 20px; border-radius: 12px;
+            margin-top: 20px; text-align: center; font-weight: bold; font-size: 1.1rem;
+            display: none; border: 2px dashed #008e6f; line-height: 1.6;
+            animation: fadeIn 0.4s ease;
         }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .result-box.danger { background: #fadbd8; color: #c0392b; border-color: #c0392b; }
         .result-box.warning { background: #fcf3cf; color: #d35400; border-color: #f39c12; }
+
+        /* القائمة السريعة */
+        .quick-access-btn { 
+            position: fixed; bottom: 30px; right: 30px; 
+            background: var(--main-color); color: white; width: 60px; height: 60px; 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            font-size: 1.5rem; cursor: pointer; z-index: 1000; box-shadow: 0 10px 20px rgba(0,0,0,0.2); 
+        }
+        .quick-menu { 
+            display: none; position: fixed; bottom: 100px; right: 30px; 
+            background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); 
+            width: 280px; z-index: 1000; overflow: hidden; animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .quick-menu ul { list-style: none; margin: 0; padding: 10px; }
+        .quick-menu li a { 
+            display: flex; align-items: center; gap: 12px; padding: 12px 15px; 
+            text-decoration: none; color: #444; border-radius: 12px; transition: 0.2s; font-weight: 600; 
+        }
+        .quick-menu li a:hover { background: #f0fdf4; color: var(--main-color); }
+        
+        footer { background: #1e272e; color: #999; text-align: center; padding: 30px; margin-top: 50px; }
     </style>
 </head>
 <body>
@@ -52,23 +99,23 @@
         </a>
         <ul class="nav-links">
             <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
-            <li><a href="calc.html" style="color: var(--main-color);"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+            <li><a href="calc.html" style="color: var(--main-color); font-weight: bold;"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
             <li><a href="drugs.html"><i class="fas fa-pills"></i> الأدوية</a></li>
             <li><a href="sos.html"><i class="fas fa-ambulance"></i> الاستغاثة</a></li>
             <li><a href="consult.html"><i class="fas fa-comments"></i> الاستشارات</a></li>
         </ul>
     </nav>
 
-    <div class="calc-header">
+    <header class="calc-header">
         <h1><i class="fas fa-laptop-medical"></i> الحاسبة التمريضية الذكية</h1>
         <p>أدوات حسابية سريعة ودقيقة لمساعدتك في اتخاذ القرار أثناء الوردية.</p>
-    </div>
+    </header>
 
     <section class="section">
         <div class="container">
             <div class="calc-grid">
                 
-                <div class="calc-card fade-element">
+                <div class="calc-card">
                     <h3><i class="fas fa-tint"></i> معدل التنقيط الوريدي (IV Drip)</h3>
                     <div class="form-group">
                         <label>حجم المحلول (مل - ml)</label>
@@ -90,7 +137,7 @@
                     <div id="ivResult" class="result-box"></div>
                 </div>
 
-                <div class="calc-card fade-element" style="border-top-color: #3498db;">
+                <div class="calc-card" style="border-top-color: #3498db;">
                     <h3 style="color: #2980b9;"><i class="fas fa-child"></i> جرعات الأطفال بالوزن</h3>
                     <div class="form-group">
                         <label>وزن الطفل (كجم - kg)</label>
@@ -104,8 +151,9 @@
                     <div id="pedResult" class="result-box" style="color: #2980b9; border-color: #3498db; background: #ebf5fb;"></div>
                 </div>
 
-                <div class="calc-card fade-element" style="border-top-color: #e74c3c;">
+                <div class="calc-card" style="border-top-color: #e74c3c;">
                     <h3 style="color: #c0392b;"><i class="fas fa-brain"></i> مقياس جلاسكو للغيبوبة (GCS)</h3>
+                    
                     <div class="form-group">
                         <label>فتح العينين (Eye Opening)</label>
                         <select id="gcsEye" class="calc-select">
@@ -147,17 +195,22 @@
     <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
         <i class="fas fa-th-large"></i>
     </div>
+
     <div id="quickMenu" class="quick-menu">
         <ul>
             <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
-            <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
-            <li><a href="research.html"><i class="fas fa-book-medical"></i> الأبحاث</a></li>
-            <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية</a></li>
-            <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة</a></li>
-            <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم</a></li>
-            <li><a href="consult.html"><i class="fas fa-comments"></i> الاستشارات</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+            <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
+            <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
             <li><a href="training.html"><i class="fas fa-users"></i> التدريب</a></li>
+            <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
             <li><a href="join.html"><i class="fas fa-user-plus"></i> العضوية</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> الاستغاثة (SOS)</a></li>
+            <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم</a></li>
+            <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية</a></li>
+            <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+            <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+            <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
         </ul>
     </div>
 
@@ -167,6 +220,12 @@
 
     <script src="script.js"></script>
     <script>
+        // تفعيل القائمة السريعة
+        function toggleQuickMenu() {
+            const menu = document.getElementById('quickMenu');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
+
         // 1. حساب التنقيط الوريدي
         function calculateIV() {
             let vol = parseFloat(document.getElementById('ivVolume').value);
@@ -197,11 +256,12 @@
 
             if(!weight || !dosePkg) {
                 resultBox.style.display = 'block';
-                resultBox.innerHTML = "يرجى إدخال الوزن والجرعة.";
+                resultBox.innerHTML = "يرجى إدخال الوزن والجرعة المطلوبة.";
+                resultBox.className = "result-box danger";
                 return;
             }
 
-            let totalDose = Math.round(weight * dosePkg * 10) / 10; // تقريب لخانة عشرية واحدة
+            let totalDose = (weight * dosePkg).toFixed(1);
             
             resultBox.style.display = 'block';
             resultBox.innerHTML = `إجمالي الجرعة المطلوبة:<br><span style="font-size:1.8rem;">${totalDose}</span> ملجم (mg)`;
@@ -232,31 +292,6 @@
             resultBox.className = statusClass;
             resultBox.innerHTML = `النتيجة (GCS): <span style="font-size:1.8rem;">${total}/15</span><br><small>${status}</small>`;
         }
-
-        // قائمة الوصول السريع
-        function toggleQuickMenu() {
-            const menu = document.getElementById('quickMenu');
-            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-        }
     </script>
-    
-    <div id="quickMenu" class="quick-menu">
-    <ul>
-        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
-        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
-        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
-        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
-        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
-        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
-        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
-        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
-        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
-        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
-        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
-        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
-        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
-        
-    </ul>
-</div>
 </body>
 </html>

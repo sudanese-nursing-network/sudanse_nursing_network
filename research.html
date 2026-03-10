@@ -1,13 +1,110 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>المكتبة والأبحاث | شبكة الممرضين السودانيين</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* تعريف المتغيرات الأساسية */
+        :root {
+            --main-color: #00a884;
+            --dark-blue: #1e272e;
+            --light-bg: #f4f7f6;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding-bottom: 40px; 
+            background-color: #fff;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* تنسيق شريط التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo { font-weight: bold; font-size: 1.2rem; color: var(--dark-blue); }
+        .logo span { color: var(--main-color); }
+        .nav-links { display: flex; list-style: none; gap: 20px; margin: 0; padding: 0; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 600; transition: 0.3s; }
+        .nav-links a:hover { color: var(--main-color); }
+
+        .hero { display: flex; align-items: center; justify-content: center; text-align: center; color: white; padding: 20px; }
+        .highlight { color: var(--main-color); }
+
+        .section { padding: 40px 5%; }
+        .section-title { text-align: center; margin-bottom: 30px; position: relative; font-weight: 700; }
+        .bg-light { background-color: var(--light-bg); }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+
+        .btn { display: inline-block; padding: 12px 25px; border-radius: 8px; text-decoration: none; transition: 0.3s; cursor: pointer; font-weight: 600; text-align: center; border: none; }
+        .btn-primary { background: var(--main-color); color: white; }
+        .btn-primary:hover { background: var(--dark-blue); box-shadow: 0 5px 15px rgba(0,168,132,0.3); }
+        .btn-secondary { border: 2px solid var(--main-color); background: transparent; color: var(--main-color); }
+        .btn-secondary:hover { background: var(--main-color); color: white; }
+
+        /* --- القائمة السريعة والزر العائم --- */
+        .quick-access-btn {
+            position: fixed; bottom: 30px; left: 30px;
+            background: var(--main-color); color: white; width: 65px; height: 65px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; cursor: pointer; z-index: 8000;
+            box-shadow: 0 10px 25px rgba(0,168,132,0.4); 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .quick-access-btn:hover { transform: scale(1.1) rotate(90deg); background: var(--dark-blue); }
+
+        .quick-menu {
+            display: none; position: fixed; bottom: 110px; left: 30px;
+            background: white; border-radius: 20px; width: 260px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); z-index: 7999;
+            overflow-y: auto; max-height: 70vh; border: 1px solid #eee;
+            animation: slideUpNav 0.4s ease forwards;
+        }
+        .quick-menu ul { list-style: none; padding: 10px; margin: 0; }
+        .quick-menu li { border-bottom: 1px solid #f8fafc; }
+        .quick-menu li a { display: flex; align-items: center; gap: 12px; padding: 12px 15px; text-decoration: none; color: #334155; transition: 0.3s; font-weight: 600; }
+        .quick-menu li a i { color: var(--main-color); width: 20px; text-align: center; }
+        .quick-menu li a:hover { background: #f0fdf4; color: var(--main-color); padding-right: 25px; }
+
+        @keyframes slideUpNav { from { opacity: 0; transform: translateY(30px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        footer { text-align: center; padding: 30px; background: var(--dark-blue); color: white; margin-top: 50px; }
+        
+        input[type="text"]:focus { outline: none; border-color: var(--main-color); box-shadow: 0 0 0 3px rgba(0,168,132,0.1); }
+    </style>
 </head>
 <body>
 
@@ -23,70 +120,65 @@
         </ul>
     </nav>
 
-    <header class="hero" style="height: 40vh; background: linear-gradient(rgba(30, 39, 46, 0.8), rgba(0, 168, 132, 0.8)), url('https://via.placeholder.com/1200x400'); background-size: cover; background-position: center;">
+    <header class="hero" style="height: 40vh; background: linear-gradient(rgba(30, 39, 46, 0.8), rgba(0, 168, 132, 0.8)), url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center;">
         <div class="hero-content">
-            <h1>المكتبة <span class="highlight">العلمية</span></h1>
-            <p>شارك معرفتك، استكشف أبحاث زملائك، واحصل على الدعم الكامل في مسيرتك العلمية.</p>
+            <h1 style="font-size: 2.5rem; margin-bottom: 10px;">المكتبة <span class="highlight">العلمية</span></h1>
+            <p style="font-size: 1.1rem; max-width: 800px;">شارك معرفتك، استكشف أبحاث زملائك، واحصل على الدعم الكامل في مسيرتك العلمية.</p>
         </div>
     </header>
 
     <section class="section" style="padding-bottom: 20px;">
         <div style="max-width: 600px; margin: auto; display: flex; gap: 10px;">
-            <input type="text" placeholder="ابحث عن بحث، دراسة، أو موضوع..." style="flex: 1; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-family: 'Cairo';">
-           <a href="archive.html" class="btn btn-primary" style="text-decoration: none;"><i class="fas fa-search"></i> بحث</a>
+            <input type="text" placeholder="ابحث عن بحث، دراسة، أو موضوع..." style="flex: 1; padding: 15px; border-radius: 8px; border: 1px solid #ccc; font-family: 'Cairo'; font-size: 1rem;">
+           <a href="archive.html" class="btn btn-primary" style="display: flex; align-items: center; gap: 8px;"><i class="fas fa-search"></i> بحث</a>
         </div>
     </section>
 
     <section class="section bg-light">
         <h2 class="section-title">بوابة الباحثين</h2>
         <div class="grid">
-            
-            <div class="card fade-element" style="border-top: 4px solid var(--main-color);">
-                <div class="icon-box" style="width: 60px; height: 60px; font-size: 1.5rem;"><i class="fas fa-folder-open"></i></div>
+            <div class="card" style="border-top: 4px solid var(--main-color);">
+                <div class="icon-box" style="width: 60px; height: 60px; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; background: rgba(0,168,132,0.1); border-radius: 50%; color: var(--main-color); margin-bottom: 20px;"><i class="fas fa-folder-open"></i></div>
                 <h3>تصفح الأبحاث</h3>
                 <p>اطلع على مكتبة ضخمة تضم أبحاث التخرج، الدراسات الميدانية، والأوراق العلمية المنشورة بواسطة زملائك.</p>
-               <a href="archive.html" class="btn btn-secondary" style="color: var(--main-color); border-color: var(--main-color); margin-top: 10px;">دخول الأرشيف</a>
+               <a href="archive.html" class="btn btn-secondary" style="margin-top: 15px; width: 100%;">دخول الأرشيف</a>
             </div>
 
-            <div class="card fade-element" style="border-top: 4px solid var(--dark-blue);">
-                <div class="icon-box" style="width: 60px; height: 60px; font-size: 1.5rem; color: var(--dark-blue); background: rgba(30, 39, 46, 0.1);"><i class="fas fa-upload"></i></div>
+            <div class="card" style="border-top: 4px solid var(--dark-blue);">
+                <div class="icon-box" style="width: 60px; height: 60px; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; color: var(--dark-blue); background: rgba(30, 39, 46, 0.1); border-radius: 50%; margin-bottom: 20px;"><i class="fas fa-upload"></i></div>
                 <h3 style="color: var(--dark-blue);">شارك بحثك</h3>
                 <p>هل أتممت بحثاً قيماً؟ انشره هنا لتعم الفائدة، واحصل على تغذية راجعة من مجتمع التمريض السوداني.</p>
-                <a href="upload.html" class="btn btn-primary" style="margin-top: 10px;">رفع ملف البحث</a>
+                <a href="upload.html" class="btn btn-primary" style="margin-top: 15px; width: 100%;">رفع ملف البحث</a>
             </div>
 
-            <div class="card fade-element" style="border-top: 4px solid #f39c12;">
-                <div class="icon-box" style="width: 60px; height: 60px; font-size: 1.5rem; color: #f39c12; background: rgba(243, 156, 18, 0.1);"><i class="fas fa-hands-helping"></i></div>
-                <h3 style="color: #f39c12;">تحتاج مساعدة في البحث؟</h3>
-                <p>إذا كنت تواجه صعوبة في كتابة بحث التخرج، أو تحتاج إلى مساعدة في التحليل الإحصائي للبيانات باستخدام برامج مثل (SPSS)، فريقنا هنا لدعمك.</p>
-                <a href="index.html#contact" class="btn btn-secondary" style="color: #f39c12; border-color: #f39c12; margin-top: 10px;">تواصل مع المرشدين</a>
+            <div class="card" style="border-top: 4px solid #f39c12;">
+                <div class="icon-box" style="width: 60px; height: 60px; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; color: #f39c12; background: rgba(243, 156, 18, 0.1); border-radius: 50%; margin-bottom: 20px;"><i class="fas fa-hands-helping"></i></div>
+                <h3 style="color: #f39c12;">تحتاج مساعدة؟</h3>
+                <p>إذا كنت تواجه صعوبة في كتابة بحث التخرج، أو تحتاج إلى مساعدة في التحليل الإحصائي (SPSS)، فريقنا هنا لدعمك.</p>
+                <a href="index.html#contact" class="btn btn-secondary" style="color: #f39c12; border-color: #f39c12; margin-top: 15px; width: 100%;">تواصل مع المرشدين</a>
             </div>
-
         </div>
     </section>
 
     <section class="section">
         <h2 class="section-title"><i class="fas fa-star" style="color: #f1c40f;"></i> لوحة شرف الباحثين <i class="fas fa-star" style="color: #f1c40f;"></i></h2>
         <p style="text-align: center; margin-bottom: 40px; font-size: 1.1rem;">نحتفي هنا بالزملاء الذين قدموا إسهامات علمية بارزة وأبحاثاً أحدثت فارقاً في الميدان الصحي.</p>
-        
         <div class="grid">
-            <div class="card fade-element" style="text-align: center; background: linear-gradient(135deg, #fff, #f4f7f6); border: 1px solid #ddd;">
-                <img src="https://via.placeholder.com/100" alt="صورة الباحث" style="border-radius: 50%; border: 3px solid var(--main-color); margin-bottom: 15px;">
+            <div class="card" style="text-align: center; background: linear-gradient(135deg, #fff, #f4f7f6); border: 1px solid #ddd;">
+                <img src="https://ui-avatars.com/api/?name=A+H&background=00a884&color=fff&size=100" alt="صورة الباحث" style="border-radius: 50%; border: 3px solid var(--main-color); margin-bottom: 15px;">
                 <h3 style="margin: 0; color: var(--dark-blue);">أ. أحمد حسن</h3>
-                <p style="color: var(--main-color); font-weight: bold; font-size: 0.9rem;">باحث الشهر</p>
+                <p style="color: var(--main-color); font-weight: bold; font-size: 0.9rem; margin: 5px 0;">باحث الشهر</p>
                 <p style="font-size: 0.9rem;">صاحب الورقة البحثية الأكثر تحميلاً في مجال إدارة الطوارئ بالمستشفيات.</p>
             </div>
-
-            <div class="card fade-element" style="text-align: center; background: linear-gradient(135deg, #fff, #f4f7f6); border: 1px solid #ddd;">
-                <img src="https://via.placeholder.com/100" alt="صورة الباحثة" style="border-radius: 50%; border: 3px solid var(--main-color); margin-bottom: 15px;">
+            <div class="card" style="text-align: center; background: linear-gradient(135deg, #fff, #f4f7f6); border: 1px solid #ddd;">
+                <img src="https://ui-avatars.com/api/?name=F+O&background=00a884&color=fff&size=100" alt="صورة الباحثة" style="border-radius: 50%; border: 3px solid var(--main-color); margin-bottom: 15px;">
                 <h3 style="margin: 0; color: var(--dark-blue);">أ. فاطمة عمر</h3>
-                <p style="color: var(--main-color); font-weight: bold; font-size: 0.9rem;">نجمة الأبحاث الميدانية</p>
+                <p style="color: var(--main-color); font-weight: bold; font-size: 0.9rem; margin: 5px 0;">نجمة الأبحاث الميدانية</p>
                 <p style="font-size: 0.9rem;">تكريم خاص لجهودها في دراسات مكافحة العدوى والوقاية الميدانية.</p>
             </div>
-            
-            <div class="card fade-element" style="text-align: center; background: linear-gradient(135deg, #fff, #f4f7f6); border: 1px solid #ddd;">
-                <div style="width: 100px; height: 100px; background: #eee; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; border: 3px dashed #ccc; margin-bottom: 15px;">
-                    <i class="fas fa-user-plus" style="font-size: 2rem; color: #aaa;"></i>
+            <div class="card" style="text-align: center; background: linear-gradient(135deg, #fff, #f4f7f6); border: 1px solid #ddd; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div style="width: 80px; height: 80px; background: #eee; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 3px dashed #ccc; margin-bottom: 15px;">
+                    <i class="fas fa-user-plus" style="font-size: 1.8rem; color: #aaa;"></i>
                 </div>
                 <h3 style="margin: 0; color: var(--dark-blue);">المكان متاح لك!</h3>
                 <p style="font-size: 0.9rem; margin-top: 10px;">شارك بحثك المميز اليوم لتكون نجمنا القادم على لوحة الشرف.</p>
@@ -97,42 +189,55 @@
     <section id="browse" class="section bg-light">
         <h2 class="section-title">أحدث الأبحاث المضافة</h2>
         <div class="grid">
-            <div class="card fade-element" style="text-align: right; border-top: 5px solid var(--main-color);">
-                <span style="background: var(--main-color); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem;">بحث تخرج</span>
+            <div class="card" style="text-align: right; border-top: 5px solid var(--main-color);">
+                <span style="background: var(--main-color); color: white; padding: 5px 12px; border-radius: 5px; font-size: 0.8rem; font-weight: bold;">بحث تخرج</span>
                 <h3 style="margin-top: 15px;">معرفة الممرضين ودورهم في طرق انتقال العدوى</h3>
-                <p><strong>موقع الدراسة:</strong> مستشفى أم درمان التعليمي</p>
-                <a href="#" class="btn btn-secondary" style="color: var(--main-color); border-color: var(--main-color); margin-top: 10px;"><i class="fas fa-download"></i> تحميل وقراءة</a>
+                <p style="margin: 10px 0;"><strong>موقع الدراسة:</strong> مستشفى أم درمان التعليمي</p>
+                <p style="font-size: 0.9rem; color: #666;">دراسة وصفية تحليلية تهدف لتقييم وعي الكادر التمريضي بإجراءات السلامة.</p>
+                <a href="#" class="btn btn-secondary" style="margin-top: 15px; width: 100%;"><i class="fas fa-download"></i> تحميل وقراءة</a>
             </div>
         </div>
     </section>
 
-    <footer>
-        <p>جميع الحقوق محفوظة &copy; 2026 - شبكة الممرضين السودانيين</p>
-    </footer>
+    <div class="quick-access-btn" onclick="toggleQuickMenu()" title="القائمة السريعة">
+        <i class="fas fa-th-large"></i>
+    </div>
 
-    <script src="script.js"></script>
-    
-    <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
-    <i class="fas fa-th-large"></i>
-</div>
+    <div id="quickMenu" class="quick-menu">
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="academy.html"><i class="fas fa-graduation-cap"></i> الأكاديمية</a></li>
+            <li><a href="research.html"><i class="fas fa-book-medical"></i> الأبحاث</a></li>
+            <li><a href="locator.html"><i class="fas fa-search-location"></i> الرادار</a></li>
+            <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة</a></li>
+            <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداء الاستغاثة</a></li>
+            <li><a href="forum.html"><i class="fas fa-comments"></i> صوت التمريض</a></li>
+        </ul>
+    </div>
 
-<div id="quickMenu" class="quick-menu">
-    <ul>
-        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
-        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
-        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
-        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
-        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
-        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
-        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
-        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
-        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
-        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
-        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
-        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
-        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
-        
-    </ul>
-</div>
+    <footer><p>جميع الحقوق محفوظة &copy; 2026 - شبكة الممرضين السودانيين</p></footer>
+
+    <script>
+        function toggleQuickMenu() {
+            var menu = document.getElementById("quickMenu");
+            if (menu.style.display === "block") {
+                menu.style.display = "none";
+            } else {
+                menu.style.display = "block";
+            }
+        }
+
+        // إغلاق القائمة عند النقر في أي مكان آخر
+        window.onclick = function(event) {
+            const menu = document.getElementById('quickMenu');
+            const btn = document.querySelector('.quick-access-btn');
+            if (menu.style.display === 'block') {
+                if (!menu.contains(event.target) && !btn.contains(event.target)) {
+                    menu.style.display = 'none';
+                }
+            }
+        }
+    </script>
 </body>
 </html>

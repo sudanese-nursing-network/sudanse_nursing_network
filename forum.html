@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --main-green: #059669; --light-bg: #f0f2f5; --sidebar-width: 300px; --warning-orange: #f59e0b; }
+        :root { --main-green: #059669; --light-bg: #f0f2f5; --sidebar-width: 300px; --warning-orange: #f59e0b; --main-color: #00a884; }
         body { background-color: var(--light-bg); font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 80px; overflow-x: hidden; }
         
         /* شريط التنبيه الاحترافي (تحت الإنشاء) */
@@ -21,7 +21,6 @@
         .page-layout { display: flex; max-width: 1200px; margin: 0 auto; gap: 20px; padding: 0 15px; }
         .forum-container { flex: 1; max-width: 650px; }
         
-        /* الـ Sidebar الجانبي (نمط فيسبوك) */
         .sidebar { width: var(--sidebar-width); position: sticky; top: 60px; height: fit-content; display: none; }
         @media (min-width: 1100px) { .sidebar { display: block; } }
 
@@ -59,19 +58,44 @@
         .comment-input-area { display: flex; gap: 10px; margin-top: 10px; }
         .comment-input-area input { flex: 1; border: 1px solid #cbd5e1; border-radius: 20px; padding: 8px 15px; font-family: 'Cairo'; outline: none; }
         
-        .fab-add { position: fixed; bottom: 25px; left: 25px; background: var(--main-green); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 5px 20px rgba(5,150,105,0.4); cursor: pointer; z-index: 1000; }
-        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); }
-        .modal-content { background: white; margin: 10vh auto; padding: 25px; border-radius: 20px; width: 90%; max-width: 500px; position: relative; }
-        
         @keyframes popUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- تنسيقات الزر العائم الموحد (FAB) --- */
+        .quick-access-btn {
+            position: fixed; bottom: 30px; left: 30px;
+            background: var(--main-color); color: white; width: 60px; height: 60px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; cursor: pointer; z-index: 8000;
+            box-shadow: 0 10px 25px rgba(0,168,132,0.4); 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .quick-access-btn:hover { transform: scale(1.1) rotate(90deg); background: #1e272e; }
+
+        .quick-menu {
+            display: none; position: fixed; bottom: 100px; left: 30px;
+            background: white; border-radius: 20px; width: 260px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); z-index: 7999;
+            overflow-y: auto; max-height: 70vh; border: 1px solid #eee;
+            animation: slideUpNav 0.4s ease forwards;
+        }
+        .quick-menu ul { list-style: none; padding: 10px; margin: 0; }
+        .quick-menu li { border-bottom: 1px solid #f8fafc; }
+        .quick-menu li a { display: flex; align-items: center; gap: 12px; padding: 12px 15px; text-decoration: none; color: #334155; transition: 0.3s; font-weight: 600; }
+        .quick-menu li a i { color: var(--main-color); width: 20px; text-align: center; }
+        .quick-menu li a:hover { background: #f0fdf4; color: var(--main-color); padding-right: 25px; }
+
+        @keyframes slideUpNav { from { opacity: 0; transform: translateY(30px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        /* زر إضافة المنشور (تم تحريكه لليسار) */
+        .fab-add { position: fixed; bottom: 30px; left: 105px; background: var(--main-green); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 5px 20px rgba(5,150,105,0.4); cursor: pointer; z-index: 1000; }
+        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); }
+        .modal-content { background: white; margin: 10vh auto; padding: 25px; border-radius: 20px; width: 90%; max-width: 500px; position: relative; }
     </style>
 </head>
 <body>
 
-    <div class="dev-banner">
-        <i class="fas fa-cog"></i> الشاشة قيد التطوير والبرمجة بواسطة Al-Rasheed Company - ترقبوا النسخة النهائية قريباً
-    </div>
+    <div class="dev-banner"><i class="fas fa-cog"></i> الشاشة قيد التطوير والبرمجة بواسطة Al-Rasheed Company</div>
 
     <a href="index.html" class="back-nav" title="رجوع للرئيسية"><i class="fas fa-chevron-right"></i></a>
 
@@ -84,20 +108,11 @@
         <aside class="sidebar">
             <div class="side-card">
                 <h4><i class="fas fa-bars"></i> القائمة السريعة</h4>
-                <div class="side-item" onclick="openSidebarModal('الإشعارات')">
-                    <i class="fas fa-bell"></i> الإشعارات <span class="badge">3</span>
-                </div>
-                <div class="side-item" onclick="openSidebarModal('الرسائل')">
-                    <i class="fas fa-envelope"></i> الرسائل <span class="badge">5</span>
-                </div>
-                <div class="side-item" onclick="openSidebarModal('طلبات المراسلة')">
-                    <i class="fas fa-user-plus"></i> طلبات المراسلة <span class="badge">1</span>
-                </div>
-                <div class="side-item" onclick="openSidebarModal('الأصدقاء')">
-                    <i class="fas fa-users"></i> زملاء مقترحون
-                </div>
+                <div class="side-item" onclick="openSidebarModal('الإشعارات')"><i class="fas fa-bell"></i> الإشعارات <span class="badge">3</span></div>
+                <div class="side-item" onclick="openSidebarModal('الرسائل')"><i class="fas fa-envelope"></i> الرسائل <span class="badge">5</span></div>
+                <div class="side-item" onclick="openSidebarModal('طلبات المراسلة')"><i class="fas fa-user-plus"></i> طلبات المراسلة <span class="badge">1</span></div>
+                <div class="side-item" onclick="openSidebarModal('الأصدقاء')"><i class="fas fa-users"></i> زملاء مقترحون</div>
             </div>
-            
             <div class="side-card">
                 <h4><i class="fas fa-tools"></i> حالة البرمجة</h4>
                 <div style="font-size: 0.85rem; color: #666;">
@@ -108,8 +123,26 @@
             </div>
         </aside>
 
-        <main class="forum-container" id="mainGrid">
-        </main>
+        <main class="forum-container" id="mainGrid"></main>
+    </div>
+
+    <div class="quick-access-btn" onclick="toggleQuickMenu()"><i class="fas fa-th-large"></i></div>
+    <div id="quickMenu" class="quick-menu">
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+            <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
+            <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+            <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
+            <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
+            <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة</a></li>
+            <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم</a></li>
+            <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية</a></li>
+            <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+            <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+            <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+        </ul>
     </div>
 
     <div class="fab-add" onclick="document.getElementById('postModal').style.display='block'"><i class="fas fa-plus"></i></div>
@@ -125,56 +158,27 @@
     </div>
 
     <script>
-        // مصفوفة البيانات مع بوستات إضافية دسمة
         let posts = [
-            { 
-                id: 1, author: "الرشيد كمال", role: "أدمن الشبكة", time: new Date(), 
-                title: "تنبيه: تحديثات الأكاديمية", 
-                content: "تم إضافة بروتوكولات جديدة في شاشة الأكاديمية، نرجو من الممرضين مراجعتها وإعطاء ملاحظاتهم.", 
-                likes: 124, reaction: "❤️", comments: [{u: "أحمد", t: "شغل ممتاز يا ريس"}], isAdmin: true 
-            },
-            { 
-                id: 2, author: "سارة إدريس", role: "ممرضة عناية", time: new Date(), 
-                title: "استفسار بخصوص الـ ICU", 
-                content: "يا شباب، ما هي أفضل ممارسة للتعامل مع تقرحات الفراش للمرضى طويلي الإقامة؟", 
-                likes: 45, reaction: "👍", comments: [], isAdmin: false 
-            },
-            { 
-                id: 3, author: "محمد عثمان", role: "ممرض طوارئ", time: new Date(), 
-                title: "موقف بطولي اليوم", 
-                content: "تحية لزملاء وردية الليل في مستشفى أم درمان، تعامل احترافي مع حادث مروري كبير. فخور بالمهنة!", 
-                likes: 210, reaction: "❤️", comments: [], isAdmin: false 
-            }
+            { id: 1, author: "الرشيد كمال", role: "أدمن الشبكة", time: new Date(), title: "تنبيه: تحديثات الأكاديمية", content: "تم إضافة بروتوكولات جديدة في شاشة الأكاديمية، نرجو من الممرضين مراجعتها وإعطاء ملاحظاتهم.", likes: 124, reaction: "❤️", comments: [{u: "أحمد", t: "شغل ممتاز يا ريس"}], isAdmin: true },
+            { id: 2, author: "سارة إدريس", role: "ممرضة عناية", time: new Date(), title: "استفسار بخصوص الـ ICU", content: "يا شباب، ما هي أفضل ممارسة للتعامل مع تقرحات الفراش للمرضى طويلي الإقامة؟", likes: 45, reaction: "👍", comments: [], isAdmin: false },
+            { id: 3, author: "محمد عثمان", role: "ممرض طوارئ", time: new Date(), title: "موقف بطولي اليوم", content: "تحية لزملاء وردية الليل في مستشفى أم درمان، تعامل احترافي مع حادث مروري كبير. فخور بالمهنة!", likes: 210, reaction: "❤️", comments: [], isAdmin: false }
         ];
 
         function renderAll() {
             const grid = document.getElementById('mainGrid');
             grid.innerHTML = posts.map(post => `
                 <div class="post-card ${post.isAdmin ? 'admin-post' : ''}" id="post-${post.id}">
-                    ${renderAdminTools(post.id)}
+                    <div class="admin-controls"><button class="del-btn" onclick="deletePost(${post.id})"><i class="fas fa-trash"></i> حذف</button></div>
                     <div class="post-header">
                         <div class="avatar">${post.author[0]}</div>
-                        <div>
-                            <h4 style="margin:0">${post.author}</h4>
-                            <span style="font-size:0.7rem; color:#888;">${post.role} • الآن</span>
-                        </div>
+                        <div><h4 style="margin:0">${post.author}</h4><span style="font-size:0.7rem; color:#888;">${post.role} • الآن</span></div>
                     </div>
-                    <div class="post-content">
-                        <h3>${post.title}</h3>
-                        <p>${post.content}</p>
-                    </div>
-                    <div class="post-stats">
-                        <span>${post.reaction} ${post.likes}</span>
-                        <span>${post.comments.length} تعليق</span>
-                    </div>
+                    <div class="post-content"><h3>${post.title}</h3><p>${post.content}</p></div>
+                    <div class="post-stats"><span>${post.reaction} ${post.likes}</span><span>${post.comments.length} تعليق</span></div>
                     <div class="post-actions">
-                        <button class="action-btn" onclick="togglePop(${post.id})">
-                            <i class="far fa-thumbs-up"></i> تفاعل
+                        <button class="action-btn" onclick="togglePop(${post.id})"><i class="far fa-thumbs-up"></i> تفاعل
                             <div class="reaction-popover" id="pop-${post.id}">
-                                <span onclick="doReact(${post.id}, '👍')">👍</span>
-                                <span onclick="doReact(${post.id}, '❤️')">❤️</span>
-                                <span onclick="doReact(${post.id}, '😮')">😮</span>
-                                <span onclick="doReact(${post.id}, '😢')">😢</span>
+                                <span onclick="doReact(${post.id}, '👍')">👍</span><span onclick="doReact(${post.id}, '❤️')">❤️</span><span onclick="doReact(${post.id}, '😮')">😮</span><span onclick="doReact(${post.id}, '😢')">😢</span>
                             </div>
                         </button>
                         <button class="action-btn" onclick="toggleComs(${post.id})"><i class="far fa-comment"></i> تعليق</button>
@@ -182,75 +186,40 @@
                     </div>
                     <div class="comments-section" id="com-sec-${post.id}">
                         <div id="com-list-${post.id}">${post.comments.map(c => `<div class="comment-bubble"><b>${c.u}</b>: ${c.t}</div>`).join('')}</div>
-                        <div class="comment-input-area">
-                            <input type="text" id="in-${post.id}" placeholder="اكتب تعليقك...">
-                            <button onclick="addCom(${post.id})" style="background:var(--main-green); color:white; border:none; border-radius:50%; width:30px; height:30px; cursor:pointer;"><i class="fas fa-paper-plane"></i></button>
-                        </div>
+                        <div class="comment-input-area"><input type="text" id="in-${post.id}" placeholder="اكتب تعليقك..."><button onclick="addCom(${post.id})" style="background:var(--main-green); color:white; border:none; border-radius:50%; width:30px; height:30px; cursor:pointer;"><i class="fas fa-paper-plane"></i></button></div>
                     </div>
                 </div>
             `).join('');
         }
 
-        function renderAdminTools(id) {
-            return `<div class="admin-controls">
-                        <button class="del-btn" onclick="deletePost(${id})"><i class="fas fa-trash"></i> حذف</button>
-                    </div>`;
+        function toggleQuickMenu() {
+            const menu = document.getElementById('quickMenu');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
         }
 
-        window.deletePost = function(id) {
-            if(confirm("هل تريد حذف هذا المنشور نهائياً؟")) {
-                posts = posts.filter(p => p.id !== id);
-                renderAll();
-            }
-        };
+        window.onclick = function(event) {
+            const menu = document.getElementById('quickMenu');
+            const btn = document.querySelector('.quick-access-btn');
+            const modal = document.getElementById('postModal');
+            if (menu.style.display === 'block' && !menu.contains(event.target) && !btn.contains(event.target)) { menu.style.display = 'none'; }
+            if (event.target == modal) modal.style.display = "none";
+        }
 
-        window.publishPost = function() {
-            const t = document.getElementById('pTitle').value;
-            const c = document.getElementById('pContent').value;
+        function deletePost(id) { if(confirm("هل تريد حذف هذا المنشور؟")) { posts = posts.filter(p => p.id !== id); renderAll(); } }
+        function publishPost() {
+            const t = document.getElementById('pTitle').value; const c = document.getElementById('pContent').value;
             if(!t || !c) return;
-            posts.unshift({
-                id: Date.now(), author: "زميل (أنت)", role: "عضو الشبكة", 
-                time: new Date(), title: t, content: c, 
-                likes: 0, reaction: "👍", comments: [], isAdmin: false
-            });
-            renderAll();
-            document.getElementById('postModal').style.display = 'none';
-            document.getElementById('pTitle').value = '';
-            document.getElementById('pContent').value = '';
-        };
+            posts.unshift({ id: Date.now(), author: "زميل (أنت)", role: "عضو الشبكة", time: new Date(), title: t, content: c, likes: 0, reaction: "👍", comments: [], isAdmin: false });
+            renderAll(); document.getElementById('postModal').style.display = 'none';
+            document.getElementById('pTitle').value = ''; document.getElementById('pContent').value = '';
+        }
 
-        window.togglePop = function(id) { document.getElementById(`pop-${id}`).classList.toggle('active'); };
-        window.doReact = function(id, emo) {
-            const p = posts.find(x => x.id === id);
-            p.likes++; p.reaction = emo; renderAll();
-        };
-
-        window.toggleComs = function(id) {
-            const s = document.getElementById(`com-sec-${id}`);
-            s.style.display = (s.style.display === 'block') ? 'none' : 'block';
-        };
-
-        window.addCom = function(id) {
-            const val = document.getElementById(`in-${id}`).value;
-            if(!val) return;
-            posts.find(x => x.id === id).comments.push({u: "أنت", t: val});
-            renderAll();
-            document.getElementById(`com-sec-${id}`).style.display = 'block';
-        };
-
-        window.openSidebarModal = function(type) {
-            alert("قسم " + type + " قيد البرمجة حالياً بواسطة الرشيد كمال. انتظروا التحديث القادم!");
-        };
-
-        window.copyPostLink = function() {
-            alert('تم نسخ رابط المنشور بنجاح للمشاركة.');
-        };
-
-        document.addEventListener('click', e => {
-            if(!e.target.closest('.action-btn')) {
-                document.querySelectorAll('.reaction-popover').forEach(x => x.classList.remove('active'));
-            }
-        });
+        window.togglePop = (id) => document.getElementById(`pop-${id}`).classList.toggle('active');
+        window.doReact = (id, emo) => { const p = posts.find(x => x.id === id); p.likes++; p.reaction = emo; renderAll(); };
+        window.toggleComs = (id) => { const s = document.getElementById(`com-sec-${id}`); s.style.display = (s.style.display === 'block') ? 'none' : 'block'; };
+        window.addCom = (id) => { const val = document.getElementById(`in-${id}`).value; if(!val) return; posts.find(x => x.id === id).comments.push({u: "أنت", t: val}); renderAll(); document.getElementById(`com-sec-${id}`).style.display = 'block'; };
+        window.openSidebarModal = (type) => alert("قسم " + type + " قيد البرمجة!");
+        window.copyPostLink = () => alert('تم نسخ رابط المنشور.');
 
         renderAll();
     </script>

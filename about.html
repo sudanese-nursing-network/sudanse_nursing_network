@@ -1,13 +1,215 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>من نحن | شبكة الممرضين السودانيين</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        :root {
+            --main-color: #00a884;
+            --dark-color: #1e272e;
+            --light-bg: #f4f7f6;
+            --white: #ffffff;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--white);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: var(--dark-color);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            color: var(--white);
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .logo span { color: var(--main-color); }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover { color: var(--main-color); }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            padding: 0 20px;
+        }
+
+        .hero h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .highlight { color: var(--main-color); }
+
+        /* Sections & Grid */
+        .section { padding: 60px 10%; }
+        .bg-light { background-color: var(--light-bg); }
+        .text-center { text-align: center; }
+        .section-title { text-align: center; margin-bottom: 40px; position: relative; }
+        .section-title::after {
+            content: '';
+            width: 60px;
+            height: 3px;
+            background: var(--main-color);
+            position: absolute;
+            bottom: -10px;
+            right: 50%;
+            transform: translateX(50%);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            border-bottom: 4px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--main-color);
+        }
+
+        .icon-box {
+            font-size: 2.5rem;
+            color: var(--main-color);
+            margin-bottom: 15px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--main-color);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: #00866a;
+            box-shadow: 0 5px 15px rgba(0,168,132,0.3);
+        }
+
+        /* Quick Access Menu */
+        .quick-access-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--dark-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 2000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: var(--transition);
+        }
+
+        .quick-access-btn:hover { transform: scale(1.1); background: var(--main-color); }
+
+        .quick-menu {
+            position: fixed;
+            bottom: 100px;
+            left: 30px;
+            background: var(--white);
+            width: 250px;
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1999;
+            padding: 10px 0;
+            animation: slideUp 0.3s ease;
+        }
+
+        .quick-menu.active { display: block; }
+
+        .quick-menu ul { list-style: none; padding: 0; margin: 0; }
+        .quick-menu li a {
+            padding: 12px 20px;
+            display: block;
+            color: var(--dark-color);
+            text-decoration: none;
+            border-bottom: 1px solid #eee;
+            transition: 0.2s;
+            text-align: right;
+        }
+
+        .quick-menu li a:hover { background: var(--light-bg); color: var(--main-color); }
+        .quick-menu li a i { margin-left: 10px; width: 20px; text-align: center; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .section { padding: 40px 5%; }
+        }
+    </style>
 </head>
 <body>
 
@@ -18,12 +220,12 @@
         <ul class="nav-links">
             <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
             <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
-            <li><a href="research.html" style="color: var(--main-color);"><i class="fas fa-book-medical"></i> المكتبة والأبحاث</a></li>
+            <li><a href="research.html"><i class="fas fa-book-medical"></i> المكتبة والأبحاث</a></li>
             <li><a href="index.html#contact"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
         </ul>
     </nav>
 
-    <header class="hero" style="height: 50vh; background: linear-gradient(rgba(30, 39, 46, 0.9), rgba(0, 168, 132, 0.7)), url('https://via.placeholder.com/1200x500'); background-size: cover; background-position: center;">
+    <header class="hero" style="height: 50vh; background: linear-gradient(rgba(30, 39, 46, 0.9), rgba(0, 168, 132, 0.7)), url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center;">
         <div class="hero-content">
             <h1>من <span class="highlight">نحن؟</span></h1>
             <p>تعرف على رؤيتنا، رسالتنا، والأهداف التي نسعى لتحقيقها للارتقاء بمهنة التمريض.</p>
@@ -32,17 +234,17 @@
 
     <section class="section">
         <div class="grid">
-            <div class="card fade-element">
+            <div class="card">
                 <div class="icon-box"><i class="fas fa-eye"></i></div>
                 <h3>رؤيتنا</h3>
                 <p>أن نكون المنصة الرائدة والمرجع الأول لكل ممرض وممرضة في السودان، لخلق بيئة صحية متكاملة تواكب التطورات العالمية في الرعاية التمريضية.</p>
             </div>
-            <div class="card fade-element">
+            <div class="card">
                 <div class="icon-box"><i class="fas fa-bullseye"></i></div>
                 <h3>رسالتنا</h3>
                 <p>تمكين الكوادر التمريضية السودانية من خلال توفير بيئة داعمة للبحث العلمي، التطوير المهني المستمر، وتبادل الخبرات السريرية بكفاءة عالية.</p>
             </div>
-            <div class="card fade-element">
+            <div class="card">
                 <div class="icon-box"><i class="fas fa-hand-holding-heart"></i></div>
                 <h3>قيمنا</h3>
                 <p>الإنسانية، الإتقان، العمل الجماعي، والالتزام بأخلاقيات المهنة لتقديم أفضل رعاية ممكنة للمرضى.</p>
@@ -53,19 +255,19 @@
     <section class="section bg-light">
         <h2 class="section-title">محاور تركيزنا الأساسية</h2>
         <div class="grid">
-            <div class="card fade-element" style="text-align: right;">
+            <div class="card" style="text-align: right;">
                 <h3 style="color: var(--main-color);"><i class="fas fa-shield-virus"></i> تعزيز بروتوكولات مكافحة العدوى</h3>
                 <p>نولي اهتماماً بالغاً برفع وعي الكوادر وتطبيق المعايير القياسية. من أولويات الشبكة دعم الأبحاث الميدانية التي تدرس دور الممرضين في طرق انتقال العدوى وطرق الوقاية منها، وتعميم نتائج هذه الدراسات للارتقاء ببيئة العمل في مستشفياتنا، مثل مستشفى أم درمان التعليمي وغيرها من الصروح الطبية.</p>
             </div>
             
-            <div class="card fade-element" style="text-align: right;">
+            <div class="card" style="text-align: right;">
                 <h3 style="color: var(--main-color);"><i class="fas fa-chart-line"></i> دعم البحث العلمي والتحليل الإحصائي</h3>
                 <p>نؤمن بأن التمريض علم مبني على البراهين. لذلك، نهدف إلى مساعدة الخريجين والباحثين في توثيق أبحاثهم وتوفير الدعم في جمع وتحليل البيانات لإنتاج دراسات علمية دقيقة تساهم في حل المشكلات الصحية الميدانية.</p>
             </div>
         </div>
     </section>
 
-    <section class="section text-center fade-element">
+    <section class="section text-center">
         <h2>كن جزءاً من التغيير!</h2>
         <p style="margin-bottom: 20px;">شبكتنا تكبر بانضمام الكفاءات أمثالك. ساهم معنا في بناء مستقبل أفضل للتمريض.</p>
         <a href="index.html#contact" class="btn btn-primary">انضم إلى فريق العمل <i class="fas fa-arrow-left"></i></a>
@@ -75,29 +277,44 @@
         <p>جميع الحقوق محفوظة &copy; 2026 - شبكة الممرضين السودانيين</p>
     </footer>
 
-    <script src="script.js"></script>
-    
     <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
-    <i class="fas fa-th-large"></i>
-</div>
+        <i class="fas fa-th-large"></i>
+    </div>
 
-<div id="quickMenu" class="quick-menu">
-    <ul>
-        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
-        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
-        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
-        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
-        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
-        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
-        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
-        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
-        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
-        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
-        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
-        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
-        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
-        
-    </ul>
-</div>
+    <div id="quickMenu" class="quick-menu">
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+            <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
+            <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+            <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
+            <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
+            <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
+            <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
+            <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
+            <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+            <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+            <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+        </ul>
+    </div>
+
+    <script>
+        // دالة تبديل ظهور القائمة السريعة
+        function toggleQuickMenu() {
+            const menu = document.getElementById('quickMenu');
+            menu.classList.toggle('active');
+        }
+
+        // إغلاق القائمة عند النقر خارجها
+        window.onclick = function(event) {
+            if (!event.target.matches('.quick-access-btn') && !event.target.matches('.fa-th-large')) {
+                const menu = document.getElementById('quickMenu');
+                if (menu.classList.contains('active')) {
+                    menu.classList.remove('active');
+                }
+            }
+        }
+    </script>
 </body>
 </html>
