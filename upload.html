@@ -65,7 +65,9 @@
             <form id="researchUploadForm" class="upload-form" action="https://formsubmit.co/alrsheedkamal5003@gmail.com" method="POST" enctype="multipart/form-data">
                 
                 <input type="hidden" name="_subject" value="📂 بحث علمي جديد - شبكة الممرضين">
-                <input type="hidden" name="_captcha" value="false"> <input type="hidden" name="_template" value="table"> <input type="hidden" name="_next" value="https://sudanese-nursing-network.github.io/sudanse_nursing_network/research.html"> <div>
+                <input type="hidden" name="_captcha" value="false"> 
+                <input type="hidden" name="_template" value="table">
+                <div>
                     <label>الاسم الكامل (كما سيظهر في النشر)</label>
                     <input type="text" name="اسم_الباحث" placeholder="مثال: أ. الرشيد..." required>
                 </div>
@@ -108,7 +110,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary" style="font-size: 1.2rem; margin-top: 10px;" onclick="this.innerHTML='<i class=\'fas fa-spinner fa-spin\'></i> جاري رفع الملف، الرجاء الانتظار...';"><i class="fas fa-paper-plane"></i> إرسال البحث للمراجعة والنشر</button>
+                <button type="submit" class="btn btn-primary" style="font-size: 1.2rem; margin-top: 10px;"><i class="fas fa-paper-plane"></i> إرسال البحث للمراجعة والنشر</button>
             </form>
         </div>
     </section>
@@ -120,7 +122,7 @@
     <script src="script.js"></script>
     
     <script>
-        // دالة لإظهار اسم الملف فقط
+        // دالة لإظهار اسم الملف بعد اختياره من الجهاز
         const fileInput = document.getElementById('fileInput');
         const fileNameDisplay = document.getElementById('fileNameDisplay');
 
@@ -130,6 +132,43 @@
             } else {
                 fileNameDisplay.innerHTML = '';
             }
+        });
+
+        // دالة الإرسال في الخلفية باستخدام الخلطة السحرية لـ FormSubmit
+        document.getElementById('researchUploadForm').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            
+            const form = this;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري رفع البحث للمنصة...';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: form.method,
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // الرسالة السمحة اللي بتفتح النفس
+                    alert('! 🌟\nاستلمنا ملف البحث بتاعك بنجاح.. تيم شبكة الممرضين السودانيين حيراجعه وننزله في المكتبة عشان تعم الفائدة.\nشكراً ليك على مساهمتك القيمة!');
+                    form.reset(); 
+                    fileNameDisplay.innerHTML = ''; 
+                } else {
+                    alert('عذراً يا هندسة، حصلت مشكلة صغيرة في الإرسال. تأكد من جودة الإنترنت وحجم الملف وحاول تاني.');
+                }
+            })
+            .catch(error => {
+                alert('خطأ في الاتصال! يرجى التأكد من الإنترنت.');
+            })
+            .finally(() => {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            });
         });
 
         function toggleQuickMenu() {
