@@ -53,7 +53,6 @@ const hospitalsData = [
 let activeCity = "الكل";
 
 document.addEventListener('DOMContentLoaded', () => {
-    
     if(document.getElementById('hospitalsGrid')) {
         generateCityFilters();
         renderHospitals();
@@ -61,15 +60,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // ربط شريط البحث
         document.getElementById('searchInput').addEventListener('keyup', renderHospitals);
         
-        // ربط نافذة التحويل (للممرضين)
+        // ربط نوافذ الإغلاق
         document.getElementById('closeTransferBtn').addEventListener('click', closeTransfer);
-        document.getElementById('transferForm').addEventListener('submit', submitTransfer);
-        
-        // ربط نافذة الاستفسار (للمرضى)
         document.getElementById('closeInquiryBtn').addEventListener('click', closeInquiryModal);
+        
+        // ربط إرسال النماذج بالخلفية
+        document.getElementById('transferForm').addEventListener('submit', submitTransfer);
         document.getElementById('inquiryForm').addEventListener('submit', submitInquiry);
 
-        // ربط القائمة العائمة السريعة
         const quickBtn = document.getElementById('quickBtn');
         if(quickBtn) {
             quickBtn.addEventListener('click', toggleQuickMenu);
@@ -136,7 +134,7 @@ function renderHospitals() {
     });
 }
 
-// 3. وظائف نافذة التحويل للممرضين
+// 3. وظائف نافذة التحويل
 window.openTransfer = function(hospName) {
     document.getElementById('destHospital').value = hospName;
     document.getElementById('transferModal').style.display = 'block';
@@ -148,13 +146,36 @@ function closeTransfer() {
 
 function submitTransfer(e) {
     e.preventDefault();
-    let dest = document.getElementById('destHospital').value;
-    alert(`تم تسجيل طلب التحويل بنجاح إلى (${dest})! سيتم إشعار القسم لتجهيز السرير.`);
-    closeTransfer();
-    e.target.reset();
+    const form = e.target;
+    const dest = document.getElementById('destHospital').value;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+    submitBtn.disabled = true;
+
+    fetch(form.action, {
+        method: form.method,
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+    })
+    .then(response => {
+        if(response.ok) {
+            alert(`تم تسجيل طلب التحويل بنجاح إلى (${dest})! سيتم إشعار القسم لتجهيز السرير.`);
+            closeTransfer();
+            form.reset();
+        } else {
+            alert('عذراً، حدثت مشكلة أثناء الإرسال.');
+        }
+    })
+    .catch(error => alert('خطأ في الاتصال! يرجى التأكد من الإنترنت.'))
+    .finally(() => {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    });
 }
 
-// 4. وظائف الاستفسار للمرضى (الجديدة)
+// 4. وظائف الاستفسار للمرضى
 window.openInquiryModal = function() {
     document.getElementById('inquiryModal').style.display = 'block';
 };
@@ -165,13 +186,38 @@ function closeInquiryModal() {
 
 function submitInquiry(e) {
     e.preventDefault();
-    alert('تم استلام طلبك بنجاح! سيقوم تيم شبكة الممرضين بالبحث عن طلبك والتواصل معك عبر الواتساب في أقرب وقت لإفادتك.');
-    closeInquiryModal();
-    e.target.reset(); // لتفريغ الحقول بعد الإرسال
+    const form = e.target;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+    submitBtn.disabled = true;
+
+    fetch(form.action, {
+        method: form.method,
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+    })
+    .then(response => {
+        if(response.ok) {
+            alert('تم استلام طلبك بنجاح! سيقوم تيم شبكة الممرضين بالبحث والتواصل معك عبر الواتساب في أقرب وقت لإفادتك.');
+            closeInquiryModal();
+            form.reset();
+        } else {
+            alert('عذراً، حدثت مشكلة أثناء الإرسال.');
+        }
+    })
+    .catch(error => alert('خطأ في الاتصال! يرجى التأكد من الإنترنت.'))
+    .finally(() => {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    });
 }
 
 // 5. القائمة العائمة
 function toggleQuickMenu() {
     const menu = document.getElementById('quickMenu');
-    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    if(menu) {
+        menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    }
 }

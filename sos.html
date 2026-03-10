@@ -3,7 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نداء استغاثة | شبكة الممرضين السودانيين</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -103,20 +102,27 @@
 
     <div id="sosModal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeSOSModal()">&times;</span>
+            <span class="close-btn" onclick="closeSOSModal()">×</span>
             <h2 style="color: #e74c3c;"><i class="fas fa-paper-plane"></i> أرسل نداءك</h2>
-            <form id="sosForm" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
-                <input type="text" placeholder="اسم المريض" required style="padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
-                <input type="tel" id="patientPhone" placeholder="رقم الهاتف" required style="padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
-                <input type="text" id="patientLoc" placeholder="العنوان بالتفصيل" required style="padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
-                <textarea placeholder="وصف الحالة (ماذا تحتاج؟)" rows="3" style="padding: 12px; border: 1px solid #ddd; border-radius: 8px;"></textarea>
+            
+            <form id="sosForm" action="https://formspree.io/f/meerewpw" method="POST" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
+                
+                <input type="hidden" name="_subject" value="🚨 نداء استغاثة عاجل (SOS) - شبكة الممرضين">
+                <input type="hidden" name="نوع_الطلب" value="🚨 نداء استغاثة (SOS)">
+
+                <input type="text" name="اسم_المريض" placeholder="اسم المريض" required style="padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <input type="tel" id="patientPhone" name="رقم_الهاتف" placeholder="رقم الهاتف" required style="padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <input type="text" id="patientLoc" name="العنوان_بالتفصيل" placeholder="العنوان بالتفصيل" required style="padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <textarea name="وصف_الحالة" placeholder="وصف الحالة (ماذا تحتاج؟)" rows="3" required style="padding: 12px; border: 1px solid #ddd; border-radius: 8px;"></textarea>
+                
                 <button type="submit" class="btn btn-primary" style="background: #e74c3c; border: none;">نشر النداء الآن</button>
             </form>
+
         </div>
     </div>
 
     <footer>
-        <p>جميع الحقوق محفوظة &copy; 2026 - شبكة الممرضين السودانيين</p>
+        <p>جميع الحقوق محفوظة © 2026 - شبكة الممرضين السودانيين</p>
     </footer>
 
     <script src="script.js"></script>
@@ -124,39 +130,67 @@
         function openSOSModal() { document.getElementById('sosModal').style.display = 'block'; }
         function closeSOSModal() { document.getElementById('sosModal').style.display = 'none'; }
         
-        // عند إرسال النداء، نظهر رسالة نجاح
-        document.getElementById('sosForm').onsubmit = function(e) {
+        // كود الإرسال السحري في الخلفية باستخدام Fetch API
+        document.getElementById('sosForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            const form = this;
             const phone = document.getElementById('patientPhone').value;
             const loc = document.getElementById('patientLoc').value;
-            
-            alert('تم نشر ندائك! الممرضون في منطقة (' + loc + ') سيتمكنون من رؤية طلبك والاتصال بك على الرقم (' + phone + ')');
-            closeSOSModal();
-            this.reset();
-        }
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+
+            // تغيير شكل الزر أثناء الإرسال
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري إرسال النداء...';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: form.method,
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('تم إرسال ندائك بنجاح! الممرضون في منطقة (' + loc + ') سيتمكنون من رؤية طلبك والاتصال بك على الرقم (' + phone + ')');
+                    closeSOSModal();
+                    form.reset();
+                } else {
+                    alert('عذراً، حدثت مشكلة أثناء الإرسال. يرجى المحاولة لاحقاً.');
+                }
+            })
+            .catch(error => {
+                alert('خطأ في الاتصال! يرجى التأكد من اتصالك بالإنترنت.');
+            })
+            .finally(() => {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            });
+        });
     </script>
     
     <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
-    <i class="fas fa-th-large"></i>
-</div>
+        <i class="fas fa-th-large"></i>
+    </div>
 
-<div id="quickMenu" class="quick-menu">
-    <ul>
-        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
-        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
-        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
-        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
-        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
-        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
-        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
-        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
-        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
-        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
-        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
-        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
-        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
-        
-    </ul>
-</div>
+    <div id="quickMenu" class="quick-menu">
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+            <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
+            <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+            <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
+            <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
+            <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
+            <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
+            <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
+            <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+            <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+            <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+            
+        </ul>
+    </div>
 </body>
 </html>

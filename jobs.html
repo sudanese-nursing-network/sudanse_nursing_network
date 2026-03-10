@@ -3,7 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>فرص العمل | شبكة الممرضين السودانيين</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -286,15 +285,24 @@
             <span class="close-btn" onclick="closeModals()">&times;</span>
             <h2 style="color: var(--dark-blue); border-bottom: 2px solid var(--main-color); padding-bottom: 10px;"><i class="fas fa-file-invoice"></i> استمارة التقديم</h2>
             <p id="applyJobTitle" style="font-weight: bold; color: var(--main-color); margin-bottom: 20px;"></p>
-            <form id="applyForm" style="display: flex; flex-direction: column; gap: 15px;">
-                <input type="text" placeholder="الاسم الرباعي" required style="padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-family: 'Cairo';">
-                <input type="tel" placeholder="رقم الهاتف (واتساب)" required style="padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-family: 'Cairo';">
+            
+            <form id="applyForm" action="https://formspree.io/f/meerewpw" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 15px;">
+                <input type="hidden" name="_subject" value="💼 طلب تقديم لوظيفة - شبكة الممرضين">
+                <input type="hidden" name="نوع_الطلب" value="💼 طلب توظيف">
+                
+                <input type="hidden" name="الوظيفة_المقدم_عليها" id="hiddenJobTitleInput">
+                
+                <input type="text" name="الاسم_الرباعي" placeholder="الاسم الرباعي" required style="padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-family: 'Cairo';">
+                <input type="tel" name="رقم_الواتساب" placeholder="رقم الهاتف (واتساب)" required style="padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-family: 'Cairo';">
+                
                 <div style="border: 2px dashed var(--main-color); padding: 15px; text-align: center; border-radius: 5px; background: #f9f9f9;">
                     <label style="cursor: pointer; color: var(--dark-blue); font-weight: bold;">
                         <i class="fas fa-upload" style="color: var(--main-color); font-size: 1.5rem; display: block; margin-bottom: 5px;"></i> اضغط هنا لرفع السيرة الذاتية (PDF)
-                        <input type="file" required style="display: none;">
+                        <input type="file" name="السيرة_الذاتية" accept=".pdf,.doc,.docx" required style="display: none;" onchange="updateFileName(this)">
                     </label>
+                    <p id="fileNameDisplay" style="margin-top: 10px; font-size: 0.9rem; color: #27ae60;"></p>
                 </div>
+                
                 <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">إرسال الطلب الآن</button>
             </form>
         </div>
@@ -305,8 +313,12 @@
             <span class="close-btn" onclick="closeModals()">&times;</span>
             <i class="fas fa-bell" style="font-size: 3rem; color: #f39c12; margin-bottom: 15px;"></i>
             <h2 style="color: var(--dark-blue);">تنبيه الوظائف</h2>
-            <form id="alertForm" style="display: flex; flex-direction: column; gap: 15px;">
-                <input type="email" placeholder="أدخل بريدك الإلكتروني هنا..." required style="padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-family: 'Cairo'; text-align: center;">
+            
+            <form id="alertForm" action="https://formspree.io/f/meerewpw" method="POST" style="display: flex; flex-direction: column; gap: 15px;">
+                <input type="hidden" name="_subject" value="🔔 تفعيل تنبيه الوظائف - شبكة الممرضين">
+                <input type="hidden" name="نوع_الطلب" value="🔔 تفعيل تنبيه إشعارات الوظائف">
+                
+                <input type="email" name="البريد_الإلكتروني_للتنبيه" placeholder="أدخل بريدك الإلكتروني هنا..." required style="padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-family: 'Cairo'; text-align: center;">
                 <button type="submit" class="btn btn-secondary" style="background: #f39c12; color: white; border: none;">تفعيل التنبيه</button>
             </form>
         </div>
@@ -323,37 +335,89 @@
         const applyModal = document.getElementById('applyModal');
         const alertModal = document.getElementById('alertModal');
         const applyJobTitle = document.getElementById('applyJobTitle');
+        const hiddenJobTitleInput = document.getElementById('hiddenJobTitleInput');
 
+        // تحديث دالة فتح المودال عشان تحفظ اسم الوظيفة في الفورم
         function openApplyModal(jobName) {
             applyJobTitle.innerText = "التقديم على: " + jobName;
+            hiddenJobTitleInput.value = jobName; // هنا بنعبي החقل المخفي
             applyModal.style.display = 'block';
         }
         function openAlertModal() { alertModal.style.display = 'block'; }
+        
         function closeModals() {
             applyModal.style.display = 'none';
             alertModal.style.display = 'none';
         }
 
+        // عرض اسم الملف المرفوع للمستخدم
+        function updateFileName(input) {
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+            if (input.files && input.files.length > 0) {
+                fileNameDisplay.innerText = "✅ تم اختيار الملف: " + input.files[0].name;
+            } else {
+                fileNameDisplay.innerText = "";
+            }
+        }
+
+        // 2. إرسال طلب التوظيف في الخلفية (Fetch API)
         document.getElementById('applyForm').addEventListener('submit', function(e) {
-            e.preventDefault(); alert('تم الإرسال بنجاح!'); closeModals(); this.reset();
-        });
-        document.getElementById('alertForm').addEventListener('submit', function(e) {
-            e.preventDefault(); alert('تم التفعيل بنجاح!'); closeModals(); this.reset();
+            e.preventDefault();
+            const form = this;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري إرسال الطلب...';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(form);
+
+            fetch(form.action, { method: form.method, body: formData, headers: { 'Accept': 'application/json' } })
+            .then(response => {
+                if (response.ok) {
+                    alert('تم إرسال طلب التقديم بنجاح! سيتم مراجعة سيرتك الذاتية والتواصل معك قريباً.');
+                    closeModals(); form.reset();
+                    document.getElementById('fileNameDisplay').innerText = "";
+                } else { alert('عذراً، حدثت مشكلة أثناء الإرسال. تأكد من حجم ملف الـ PDF.'); }
+            })
+            .catch(error => { alert('خطأ في الاتصال! يرجى التأكد من الإنترنت.'); })
+            .finally(() => { submitBtn.innerHTML = originalBtnText; submitBtn.disabled = false; });
         });
 
-        // 2. تشغيل التنقل بين صفحات الوظائف (1, 2, 3)
+        // 3. إرسال طلب تنبيه الوظائف في الخلفية (Fetch API)
+        document.getElementById('alertForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = this;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التفعيل...';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(form);
+
+            fetch(form.action, { method: form.method, body: formData, headers: { 'Accept': 'application/json' } })
+            .then(response => {
+                if (response.ok) {
+                    alert('تم تفعيل تنبيه الوظائف بنجاح! ستصلك إشعارات بأحدث الوظائف على بريدك.');
+                    closeModals(); form.reset();
+                } else { alert('عذراً، حدثت مشكلة أثناء الإرسال.'); }
+            })
+            .catch(error => { alert('خطأ في الاتصال! يرجى التأكد من الإنترنت.'); })
+            .finally(() => { submitBtn.innerHTML = originalBtnText; submitBtn.disabled = false; });
+        });
+
+
+        // 4. تشغيل التنقل بين صفحات الوظائف (1, 2, 3)
         let currentJobPage = 1;
         const totalJobPages = 3;
 
         function goJobPage(pageNumber) {
             currentJobPage = pageNumber;
-            // إخفاء كل الوظائف
             const allJobs = document.querySelectorAll('.job-card');
             allJobs.forEach(card => card.style.display = 'none');
-            // إظهار وظائف الصفحة المختارة فقط
             const targetJobs = document.querySelectorAll(`.job-card[data-page="${pageNumber}"]`);
             targetJobs.forEach(card => card.style.display = 'flex');
-            // تغيير لون الزر النشط
             const allBtns = document.querySelectorAll('.pagination .page-btn');
             allBtns.forEach(btn => btn.classList.remove('active'));
             const currentBtn = document.getElementById(`job-btn-${pageNumber}`);
@@ -362,6 +426,12 @@
 
         function nextJobPage() { if (currentJobPage < totalJobPages) goJobPage(currentJobPage + 1); }
         function prevJobPage() { if (currentJobPage > 1) goJobPage(currentJobPage - 1); }
+        
+        // قائمة الوصول السريع
+        function toggleQuickMenu() {
+            const menu = document.getElementById('quickMenu');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
     </script>
     
     <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">

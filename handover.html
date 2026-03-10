@@ -3,7 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسليم الورديات (SBAR) | شبكة الممرضين السودانيين</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -33,9 +32,11 @@
         .ward-table tr:hover { background: #fdfdfd; }
         .add-row-btn { background: #27ae60; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-family: 'Cairo'; font-weight: bold; margin-top: 10px; }
         
-        .action-btns { display: flex; gap: 15px; justify-content: center; margin-top: 30px; }
+        .action-btns { display: flex; gap: 15px; justify-content: center; margin-top: 30px; flex-wrap: wrap; }
         .btn-whatsapp { background: #25D366; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 10px; border: none; cursor: pointer; font-family: 'Cairo'; font-size: 1.1rem; }
         .btn-print { background: #34495e; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 10px; border: none; cursor: pointer; font-family: 'Cairo'; font-size: 1.1rem; }
+        /* زر الإيميل الجديد */
+        .btn-email { background: #8e44ad; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 10px; border: none; cursor: pointer; font-family: 'Cairo'; font-size: 1.1rem; }
         
         /* إخفاء الأزرار عند الطباعة */
         @media print {
@@ -68,99 +69,106 @@
     <section class="section">
         <div class="container" style="max-width: 1000px;">
             
-            <div class="form-section fade-element">
-                <h2><i class="fas fa-clock"></i> البيانات الأساسية للوردية</h2>
-                <div class="grid-2">
-                    <div class="input-group">
-                        <label>تاريخ اليوم</label>
-                        <input type="date" id="hDate" class="handover-input" required>
-                    </div>
-                    <div class="input-group">
-                        <label>نوع الوردية</label>
-                        <select id="hShift" class="handover-input">
-                            <option>صباحية (Morning)</option>
-                            <option>مسائية (Evening)</option>
-                            <option>ليلية (Night)</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label>المستشفى / القسم</label>
-                        <input type="text" id="hWard" class="handover-input" placeholder="مثال: مستشفى أم درمان التعليمي - قسم الباطنية">
-                    </div>
-                    <div class="input-group">
-                        <label>اسم الممرض (المُسلِّم)</label>
-                        <input type="text" id="hNurse" class="handover-input" placeholder="اسمك">
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-section fade-element">
-                <h2><i class="fas fa-file-medical"></i> نموذج SBAR (للحالات الحرجة أو المتابعة الدقيقة)</h2>
+            <form id="handoverForm" action="https://formspree.io/f/meerewpw" method="POST">
                 
-                <div class="grid-2" style="margin-bottom: 20px;">
-                    <div class="input-group">
-                        <label>اسم المريض</label>
-                        <input type="text" id="pName" class="handover-input" placeholder="الاسم الرباعي">
+                <input type="hidden" name="_subject" value="📝 تقرير تسليم وردية جديد (SBAR)">
+                <input type="hidden" name="نوع_الطلب" value="📋 تقرير تسليم وردية">
+
+                <div class="form-section fade-element">
+                    <h2><i class="fas fa-clock"></i> البيانات الأساسية للوردية</h2>
+                    <div class="grid-2">
+                        <div class="input-group">
+                            <label>تاريخ اليوم</label>
+                            <input type="date" id="hDate" name="تاريخ_الوردية" class="handover-input" required>
+                        </div>
+                        <div class="input-group">
+                            <label>نوع الوردية</label>
+                            <select id="hShift" name="نوع_الوردية" class="handover-input">
+                                <option>صباحية (Morning)</option>
+                                <option>مسائية (Evening)</option>
+                                <option>ليلية (Night)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>المستشفى / القسم</label>
+                            <input type="text" id="hWard" name="القسم_أو_المستشفى" class="handover-input" placeholder="مثال: مستشفى أم درمان التعليمي - قسم الباطنية">
+                        </div>
+                        <div class="input-group">
+                            <label>اسم الممرض (المُسلِّم)</label>
+                            <input type="text" id="hNurse" name="اسم_الممرض_المسلم" class="handover-input" placeholder="اسمك">
+                        </div>
                     </div>
+                </div>
+
+                <div class="form-section fade-element">
+                    <h2><i class="fas fa-file-medical"></i> نموذج SBAR (للحالات الحرجة أو المتابعة الدقيقة)</h2>
+                    
+                    <div class="grid-2" style="margin-bottom: 20px;">
+                        <div class="input-group">
+                            <label>اسم المريض</label>
+                            <input type="text" id="pName" name="اسم_المريض_SBAR" class="handover-input" placeholder="الاسم الرباعي">
+                        </div>
+                        <div class="input-group">
+                            <label>رقم السرير / الغرفة</label>
+                            <input type="text" id="pBed" name="رقم_السرير_SBAR" class="handover-input" placeholder="مثال: سرير 5">
+                        </div>
+                    </div>
+
                     <div class="input-group">
-                        <label>رقم السرير / الغرفة</label>
-                        <input type="text" id="pBed" class="handover-input" placeholder="مثال: سرير 5">
+                        <div class="sbar-label"><span class="sbar-letter">S</span> الموقف الحالي (Situation)</div>
+                        <textarea id="sbarS" name="S_الموقف_الحالي" class="handover-input" rows="2" placeholder="ما هي مشكلة المريض الآن؟ (مثال: المريض يعاني من ضيق شديد في التنفس)"></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="sbar-label"><span class="sbar-letter">B</span> الخلفية التاريخية (Background)</div>
+                        <textarea id="sbarB" name="B_الخلفية_التاريخية" class="handover-input" rows="2" placeholder="تاريخ الدخول، التشخيص الطبي، والأمراض المزمنة (مثال: دخل المستشفى أمس بتشخيص التهاب رئوي)"></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="sbar-label"><span class="sbar-letter">A</span> التقييم السريري (Assessment)</div>
+                        <textarea id="sbarA" name="A_التقييم_السريري" class="handover-input" rows="3" placeholder="العلامات الحيوية الحالية، مستوى الوعي، الملحقات (فراشة، قسطرة بولية، أكسجين)"></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="sbar-label"><span class="sbar-letter">R</span> التوصيات والمطلوب (Recommendation)</div>
+                        <textarea id="sbarR" name="R_التوصيات_والمطلوب" class="handover-input" rows="3" placeholder="ما الذي يجب على ممرض الوردية القادمة فعله؟ (مثال: متابعة نتيجة فحص الدم، إعطاء المضاد الحيوي الساعة 10)"></textarea>
                     </div>
                 </div>
 
-                <div class="input-group">
-                    <div class="sbar-label"><span class="sbar-letter">S</span> الموقف الحالي (Situation)</div>
-                    <textarea id="sbarS" class="handover-input" rows="2" placeholder="ما هي مشكلة المريض الآن؟ (مثال: المريض يعاني من ضيق شديد في التنفس)"></textarea>
+                <div class="form-section fade-element">
+                    <h2><i class="fas fa-th-list"></i> جدول مرضى القسم (Overview)</h2>
+                    <div style="overflow-x: auto;">
+                        <table class="ward-table" id="wardTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%;">السرير</th>
+                                    <th style="width: 25%;">اسم المريض</th>
+                                    <th style="width: 25%;">التشخيص</th>
+                                    <th style="width: 20%;">المحاليل/الأدوية</th>
+                                    <th style="width: 20%;">ملاحظات هامة</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" name="جدول_السرير[]" class="handover-input" style="padding: 5px;"></td>
+                                    <td><input type="text" name="جدول_الاسم[]" class="handover-input" style="padding: 5px;"></td>
+                                    <td><input type="text" name="جدول_التشخيص[]" class="handover-input" style="padding: 5px;"></td>
+                                    <td><input type="text" name="جدول_الأدوية[]" class="handover-input" style="padding: 5px;"></td>
+                                    <td><input type="text" name="جدول_ملاحظات[]" class="handover-input" style="padding: 5px;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="add-row-btn" onclick="addRow()"><i class="fas fa-plus"></i> إضافة مريض آخر للجدول</button>
                 </div>
 
-                <div class="input-group">
-                    <div class="sbar-label"><span class="sbar-letter">B</span> الخلفية التاريخية (Background)</div>
-                    <textarea id="sbarB" class="handover-input" rows="2" placeholder="تاريخ الدخول، التشخيص الطبي، والأمراض المزمنة (مثال: دخل المستشفى أمس بتشخيص التهاب رئوي)"></textarea>
+                <div class="action-btns">
+                    <button type="button" class="btn-whatsapp" onclick="shareToWhatsApp()"><i class="fab fa-whatsapp"></i> مشاركة واتساب</button>
+                    <button type="button" class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> حفظ PDF / طباعة</button>
+                    <button type="submit" class="btn-email"><i class="fas fa-envelope"></i> إرسال التقرير للأرشيف</button>
                 </div>
 
-                <div class="input-group">
-                    <div class="sbar-label"><span class="sbar-letter">A</span> التقييم السريري (Assessment)</div>
-                    <textarea id="sbarA" class="handover-input" rows="3" placeholder="العلامات الحيوية الحالية، مستوى الوعي، الملحقات (فراشة، قسطرة بولية، أكسجين)"></textarea>
-                </div>
-
-                <div class="input-group">
-                    <div class="sbar-label"><span class="sbar-letter">R</span> التوصيات والمطلوب (Recommendation)</div>
-                    <textarea id="sbarR" class="handover-input" rows="3" placeholder="ما الذي يجب على ممرض الوردية القادمة فعله؟ (مثال: متابعة نتيجة فحص الدم، إعطاء المضاد الحيوي الساعة 10)"></textarea>
-                </div>
-            </div>
-
-            <div class="form-section fade-element">
-                <h2><i class="fas fa-th-list"></i> جدول مرضى القسم (Overview)</h2>
-                <div style="overflow-x: auto;">
-                    <table class="ward-table" id="wardTable">
-                        <thead>
-                            <tr>
-                                <th style="width: 10%;">السرير</th>
-                                <th style="width: 25%;">اسم المريض</th>
-                                <th style="width: 25%;">التشخيص</th>
-                                <th style="width: 20%;">المحاليل/الأدوية</th>
-                                <th style="width: 20%;">ملاحظات هامة</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="text" class="handover-input" style="padding: 5px;"></td>
-                                <td><input type="text" class="handover-input" style="padding: 5px;"></td>
-                                <td><input type="text" class="handover-input" style="padding: 5px;"></td>
-                                <td><input type="text" class="handover-input" style="padding: 5px;"></td>
-                                <td><input type="text" class="handover-input" style="padding: 5px;"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <button class="add-row-btn" onclick="addRow()"><i class="fas fa-plus"></i> إضافة مريض آخر للجدول</button>
-            </div>
-
-            <div class="action-btns">
-                <button class="btn-whatsapp" onclick="shareToWhatsApp()"><i class="fab fa-whatsapp"></i> مشاركة التسليم (واتساب)</button>
-                <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> طباعة التقرير / حفظ PDF</button>
-            </div>
-
+            </form>
         </div>
     </section>
 
@@ -191,15 +199,49 @@
         // تعيين تاريخ اليوم تلقائياً
         document.getElementById('hDate').valueAsDate = new Date();
 
-        // إضافة صف جديد لجدول القسم
+        // إضافة صف جديد لجدول القسم (محدثة لدعم Formspree بـ name=[])
         function addRow() {
             const table = document.getElementById("wardTable").getElementsByTagName('tbody')[0];
             const newRow = table.insertRow();
+            const names = ["جدول_السرير[]", "جدول_الاسم[]", "جدول_التشخيص[]", "جدول_الأدوية[]", "جدول_ملاحظات[]"];
             for(let i=0; i<5; i++) {
                 let cell = newRow.insertCell(i);
-                cell.innerHTML = '<input type="text" class="handover-input" style="padding: 5px;">';
+                cell.innerHTML = `<input type="text" name="${names[i]}" class="handover-input" style="padding: 5px;">`;
             }
         }
+
+        // إرسال البيانات للإيميل بالخلفية باستخدام Fetch API
+        document.getElementById('handoverForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = this;
+            const submitBtn = form.querySelector('.btn-email');
+            const originalBtnText = submitBtn.innerHTML;
+
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: form.method,
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('تم إرسال تقرير الوردية إلى الإيميل (الأرشيف) بنجاح!');
+                } else {
+                    alert('عذراً، حدثت مشكلة أثناء الإرسال.');
+                }
+            })
+            .catch(error => {
+                alert('خطأ في الاتصال! يرجى التأكد من الإنترنت.');
+            })
+            .finally(() => {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            });
+        });
 
         // مشاركة التسليم عبر الواتساب للزملاء
         function shareToWhatsApp() {
@@ -216,7 +258,7 @@
 
             let message = `*تسليم وردية (${shift})* 🏥\n`
                         + `*القسم:* ${ward}\n`
-                        + `*الممرض المُسلِّم:* ${nurse}\n\n`
+                        + `*الممرض المُسلِّم:* ${nurse}\n\n`
                         + `*حالة SBAR للمريض:* ${pName} (سرير: ${pBed})\n`
                         + `🔴 *S (الموقف):* ${s}\n`
                         + `🔵 *B (الخلفية):* ${b}\n`
@@ -234,24 +276,5 @@
             menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
         }
     </script>
-    
-    <div id="quickMenu" class="quick-menu">
-    <ul>
-        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
-        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
-        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
-        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
-        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
-        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
-        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
-        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
-        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
-        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
-        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
-        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
-        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
-        
-    </ul>
-</div>
 </body>
 </html>

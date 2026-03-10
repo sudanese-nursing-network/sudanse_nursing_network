@@ -3,7 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مركز التدريب | شبكة الممرضين السودانيين</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -82,7 +81,7 @@
                         </ul>
                     </div>
                     <div class="course-footer">
-                        <button class="btn btn-primary" style="width: 100%;" onclick="openModal('regModal', 'CPR/BLS')">سجل الآن</button>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="openModal('regModal', 'إنعاش قلبي رئوي (CPR/BLS)')">سجل الآن</button>
                     </div>
                 </div>
 
@@ -100,7 +99,7 @@
                         </ul>
                     </div>
                     <div class="course-footer">
-                        <button class="btn btn-primary" style="width: 100%; background:#27ae60; border:none;" onclick="openModal('regModal', 'Infection Control')">سجل الآن</button>
+                        <button class="btn btn-primary" style="width: 100%; background:#27ae60; border:none;" onclick="openModal('regModal', 'مكافحة العدوى والتعقيم')">سجل الآن</button>
                     </div>
                 </div>
 
@@ -118,7 +117,7 @@
                         </ul>
                     </div>
                     <div class="course-footer">
-                        <button class="btn btn-primary" style="width: 100%; background:var(--dark-blue); border:none;" onclick="openModal('regModal', 'SPSS Analysis')">سجل الآن</button>
+                        <button class="btn btn-primary" style="width: 100%; background:var(--dark-blue); border:none;" onclick="openModal('regModal', 'التحليل الإحصائي (SPSS)')">سجل الآن</button>
                     </div>
                 </div>
 
@@ -136,7 +135,7 @@
                         <p style="font-size: 0.9rem; color: #666;">برنامج تخصصي متقدم يشمل التدريب السريري في وحدات غسيل الكلى المعتمدة.</p>
                     </div>
                     <div class="course-footer">
-                        <button class="btn btn-secondary" style="width: 100%; border-color: #f39c12; color: #f39c12;" onclick="openModal('notifyModal', 'تمريض الكلى')">أعلمني عند البدء</button>
+                        <button class="btn btn-secondary" style="width: 100%; border-color: #f39c12; color: #f39c12;" onclick="openModal('notifyModal', 'تمريض الكلى والديلزة')">أعلمني عند البدء</button>
                     </div>
                 </div>
 
@@ -149,7 +148,7 @@
                         <p style="font-size: 0.9rem; color: #666;">دورة في كيفية تقديم الدعم النفسي وإدارة حالات الاضطراب في مراكز الصحة الأولية.</p>
                     </div>
                     <div class="course-footer">
-                        <button class="btn btn-secondary" style="width: 100%; border-color: #f39c12; color: #f39c12;" onclick="openModal('notifyModal', 'التمريض النفسي')">أعلمني عند البدء</button>
+                        <button class="btn btn-secondary" style="width: 100%; border-color: #f39c12; color: #f39c12;" onclick="openModal('notifyModal', 'التمريض النفسي المجتمعي')">أعلمني عند البدء</button>
                     </div>
                 </div>
 
@@ -162,7 +161,7 @@
                         <p style="font-size: 0.9rem; color: #666;">تعلم معايير الجودة العالمية وكيفية تطبيقها في الأقسام التمريضية المختلفة.</p>
                     </div>
                     <div class="course-footer">
-                        <button class="btn btn-secondary" style="width: 100%; border-color: #f39c12; color: #f39c12;" onclick="openModal('notifyModal', 'إدارة الجودة')">أعلمني عند البدء</button>
+                        <button class="btn btn-secondary" style="width: 100%; border-color: #f39c12; color: #f39c12;" onclick="openModal('notifyModal', 'إدارة الجودة في التمريض')">أعلمني عند البدء</button>
                     </div>
                 </div>
 
@@ -178,12 +177,16 @@
     </section>
 
     <div id="regModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 400px;">
             <span class="close-btn" onclick="closeModals()">&times;</span>
             <h2 id="regTitle" style="color: var(--dark-blue); border-bottom: 2px solid var(--main-color); padding-bottom: 10px;">التسجيل في الدورة</h2>
-            <form id="regForm" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
-                <input type="text" placeholder="الاسم الكامل" required style="padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: Cairo;">
-                <input type="tel" placeholder="رقم الواتساب" required style="padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: Cairo;">
+            <form id="regForm" action="https://formspree.io/f/meerewpw" method="POST" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                <input type="hidden" name="_subject" value="🎓 طلب تسجيل في دورة تدريبية">
+                <input type="hidden" name="نوع_الطلب" value="🎓 تسجيل دورة">
+                <input type="hidden" name="اسم_الدورة" id="hiddenCourseReg">
+                
+                <input type="text" name="الاسم_الكامل" placeholder="الاسم الكامل" required style="padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: Cairo;">
+                <input type="tel" name="رقم_الواتساب" placeholder="رقم الواتساب" required style="padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: Cairo;">
                 <button type="submit" class="btn btn-primary">تأكيد طلب التسجيل</button>
             </form>
         </div>
@@ -194,8 +197,12 @@
             <span class="close-btn" onclick="closeModals()">&times;</span>
             <i class="fas fa-bell" style="font-size: 3rem; color: #f39c12; margin-bottom: 15px;"></i>
             <h2 id="notifyTitle">أعلمني عند البدء</h2>
-            <form id="notifyForm" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
-                <input type="email" placeholder="بريدك الإلكتروني" required style="padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: Cairo; text-align: center;">
+            <form id="notifyForm" action="https://formspree.io/f/meerewpw" method="POST" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                <input type="hidden" name="_subject" value="🔔 طلب تنبيه لدورة مرتقبة">
+                <input type="hidden" name="نوع_الطلب" value="🔔 تنبيه دورة مرتقبة">
+                <input type="hidden" name="اسم_الدورة" id="hiddenCourseNotify">
+                
+                <input type="email" name="البريد_الإلكتروني" placeholder="بريدك الإلكتروني" required style="padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: Cairo; text-align: center;">
                 <button type="submit" class="btn btn-secondary" style="background:#f39c12; border:none; color:white;">تفعيل التنبيه</button>
             </form>
         </div>
@@ -205,9 +212,12 @@
         <div class="modal-content" style="max-width: 450px;">
             <span class="close-btn" onclick="closeModals()">&times;</span>
             <h2 style="color: var(--dark-blue); border-bottom: 2px solid #f1c40f; padding-bottom: 10px;">رشح دورة جديدة</h2>
-            <form id="nomForm" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
-                <input type="text" placeholder="اسم الدورة المقترحة" required style="padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: Cairo;">
-                <textarea placeholder="لماذا هذا الترشيح مهم؟" rows="4" style="padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: Cairo;"></textarea>
+            <form id="nomForm" action="https://formspree.io/f/meerewpw" method="POST" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                <input type="hidden" name="_subject" value="💡 ترشيح دورة تدريبية جديدة">
+                <input type="hidden" name="نوع_الطلب" value="💡 ترشيح دورة">
+                
+                <input type="text" name="اسم_الدورة_المقترحة" placeholder="اسم الدورة المقترحة" required style="padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: Cairo;">
+                <textarea name="أهمية_الترشيح" placeholder="لماذا هذا الترشيح مهم؟" rows="4" required style="padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: Cairo;"></textarea>
                 <button type="submit" class="btn btn-primary" style="background:#f1c40f; color:#333; border:none;">إرسال الترشيح الآن</button>
             </form>
         </div>
@@ -219,11 +229,18 @@
 
     <script src="script.js"></script>
     <script>
+        // دالة فتح النوافذ المنبثقة وتعبئة الحقول المخفية باسم الدورة
         function openModal(modalId, title) {
             const modal = document.getElementById(modalId);
             if (title) {
-                if (modalId === 'regModal') document.getElementById('regTitle').innerText = "التسجيل في: " + title;
-                if (modalId === 'notifyModal') document.getElementById('notifyTitle').innerText = "تنبيه لدورة: " + title;
+                if (modalId === 'regModal') {
+                    document.getElementById('regTitle').innerText = "التسجيل في: " + title;
+                    document.getElementById('hiddenCourseReg').value = title;
+                }
+                if (modalId === 'notifyModal') {
+                    document.getElementById('notifyTitle').innerText = "تنبيه لدورة: " + title;
+                    document.getElementById('hiddenCourseNotify').value = title;
+                }
             }
             modal.style.display = "block";
         }
@@ -232,34 +249,75 @@
             document.querySelectorAll('.modal').forEach(m => m.style.display = "none");
         }
 
-        document.getElementById('regForm').onsubmit = (e) => { e.preventDefault(); alert('تم استلام طلب التسجيل بنجاح!'); closeModals(); };
-        document.getElementById('notifyForm').onsubmit = (e) => { e.preventDefault(); alert('تم تفعيل التنبيه، سنخطرك فور البدء!'); closeModals(); };
-        document.getElementById('nomForm').onsubmit = (e) => { e.preventDefault(); alert('شكراً لترشيحك، سنقوم بدراسة مقترحك قريباً!'); closeModals(); };
+        // دالة شاملة لإرسال النماذج الثلاثة بالـ Fetch API
+        function handleFormSubmit(formId, successMessage) {
+            const form = document.getElementById(formId);
+            if(form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.innerHTML;
+
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+                    submitBtn.disabled = true;
+
+                    fetch(form.action, {
+                        method: form.method,
+                        body: new FormData(form),
+                        headers: { 'Accept': 'application/json' }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            alert(successMessage);
+                            form.reset();
+                            closeModals();
+                        } else {
+                            alert('عذراً، حدثت مشكلة أثناء الإرسال.');
+                        }
+                    })
+                    .catch(error => alert('خطأ في الاتصال! يرجى التأكد من الإنترنت.'))
+                    .finally(() => {
+                        submitBtn.innerHTML = originalBtnText;
+                        submitBtn.disabled = false;
+                    });
+                });
+            }
+        }
+
+        // تفعيل الإرسال للنماذج الثلاثة
+        handleFormSubmit('regForm', 'تم استلام طلب التسجيل بنجاح! سنتواصل معك قريباً.');
+        handleFormSubmit('notifyForm', 'تم تفعيل التنبيه! سنخطرك فور بدء الدورة.');
+        handleFormSubmit('nomForm', 'شكراً لترشيحك! سنقوم بدراسة مقترحك لإضافته في الخطة التدريبية.');
         
         window.onclick = (e) => { if (e.target.className === 'modal') closeModals(); };
+
+        // قائمة الوصول السريع
+        function toggleQuickMenu() {
+            const menu = document.getElementById('quickMenu');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
     </script>
     
     <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
-    <i class="fas fa-th-large"></i>
-</div>
+        <i class="fas fa-th-large"></i>
+    </div>
 
-<div id="quickMenu" class="quick-menu">
-    <ul>
-        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
-        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
-        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
-        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
-        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
-        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
-        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
-        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
-        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
-        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
-        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
-        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
-        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
-        
-    </ul>
-</div>
+    <div id="quickMenu" class="quick-menu">
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+            <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
+            <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+            <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
+            <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
+            <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
+            <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
+            <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
+            <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+            <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+            <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+        </ul>
+    </div>
 </body>
 </html>

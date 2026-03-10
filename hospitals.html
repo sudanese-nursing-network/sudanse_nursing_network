@@ -3,7 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>دليل المستشفيات ونظام التحويل | شبكة الممرضين السودانيين</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -30,15 +29,38 @@
         .btn-transfer:hover { background: #d35400; }
         .btn-call { background: #27ae60; color: white; flex: 1; text-align: center; padding: 12px; border-radius: 8px; font-weight: bold; display: flex; justify-content: center; align-items: center; text-decoration: none; }
         
-        /* نوافذ المودال (التحويل وطلب المريض) */
-        .modal-overlay { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); }
-        .modal-content { background-color: #fefefe; margin: 5% auto; padding: 30px; border-radius: 15px; width: 90%; max-width: 600px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        /* نوافذ المودال (التحويل وطلب المريض) - تم حل مشكلة القص */
+        .modal-overlay { 
+            display: none; position: fixed; z-index: 3000; left: 0; top: 0; 
+            width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); 
+            backdrop-filter: blur(5px); 
+            overflow-y: auto; /* السماح بالتمرير في الخلفية إذا كانت الشاشة صغيرة جداً */
+        }
+        .modal-content { 
+            background-color: #fefefe; 
+            margin: 5vh auto; /* تم استخدام vh لضبط الهوامش تلقائياً */
+            padding: 30px; 
+            border-radius: 15px; 
+            width: 90%; 
+            max-width: 600px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-height: 85vh; /* تحديد أقصى ارتفاع للنافذة */
+            overflow-y: auto; /* ظهور شريط تمرير داخلي عند الحاجة */
+        }
         .close-modal { color: #aaa; float: left; font-size: 28px; font-weight: bold; cursor: pointer; }
         .close-modal:hover { color: #333; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; font-weight: bold; margin-bottom: 5px; color: #444; }
         .custom-input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Cairo'; box-sizing: border-box; }
         
+        /* ترتيب الحقول المزدوجة لتتناسب مع اللابتوب والتلفون */
+        .modal-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        
+        @media (max-width: 768px) {
+            .modal-grid-2 { grid-template-columns: 1fr; gap: 10px; } /* في الموبايل تنزل تحت بعض */
+            .modal-content { padding: 20px; margin: 3vh auto; max-height: 92vh; }
+        }
+
         /* لافتة المريض الجديدة */
         .patient-banner { background: #e8f8f5; border: 2px dashed #27ae60; border-radius: 15px; padding: 25px; text-align: center; margin-bottom: 30px; }
         .patient-banner h3 { color: #27ae60; margin-top: 0; font-size: 1.4rem; }
@@ -87,32 +109,38 @@
         <div class="modal-content" style="border-top: 5px solid #e67e22;">
             <span class="close-modal" id="closeTransferBtn">&times;</span>
             <h2 style="color: #e67e22; margin-top: 0;"><i class="fas fa-ambulance"></i> استمارة تحويل مريض</h2>
-            <form id="transferForm">
+            
+            <form id="transferForm" action="https://formspree.io/f/meerewpw" method="POST">
+                <input type="hidden" name="_subject" value="🚑 طلب تحويل مريض جديد - شبكة المستشفيات">
+                <input type="hidden" name="نوع_الطلب" value="🚑 تحويل مريض">
+
                 <div class="form-group">
                     <label>المستشفى المحول إليها (الوجهة)</label>
-                    <input type="text" id="destHospital" class="custom-input" readonly style="background: #f4f4f4; color: #e67e22; font-weight: bold;">
+                    <input type="text" name="المستشفى_الوجهة" id="destHospital" class="custom-input" readonly style="background: #f4f4f4; color: #e67e22; font-weight: bold;">
                 </div>
                 <div class="form-group">
                     <label>اسم المريض</label>
-                    <input type="text" class="custom-input" placeholder="الاسم الرباعي للمريض" required>
+                    <input type="text" name="اسم_المريض" class="custom-input" placeholder="الاسم الرباعي للمريض" required>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                
+                <div class="modal-grid-2">
                     <div class="form-group">
                         <label>المستشفى المحول منها</label>
-                        <input type="text" class="custom-input" placeholder="اسم مستشفاك الحالي" required>
+                        <input type="text" name="المستشفى_المحول_منها" class="custom-input" placeholder="اسم مستشفاك الحالي" required>
                     </div>
                     <div class="form-group">
                         <label>مستوى الخطورة</label>
-                        <select class="custom-input">
-                            <option>عادي (Routine)</option>
-                            <option>عاجل (Urgent)</option>
-                            <option style="color:red; font-weight:bold;">طوارئ قصوى (Emergency)</option>
+                        <select name="مستوى_الخطورة" class="custom-input">
+                            <option value="عادي (Routine)">عادي (Routine)</option>
+                            <option value="عاجل (Urgent)">عاجل (Urgent)</option>
+                            <option value="طوارئ قصوى (Emergency)" style="color:red; font-weight:bold;">طوارئ قصوى (Emergency)</option>
                         </select>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label>سبب التحويل / الفحوصات المطلوبة</label>
-                    <textarea class="custom-input" rows="3" placeholder="مثال: يحتاج المريض لعمل أشعة مقطعية..." required></textarea>
+                    <textarea name="سبب_التحويل" class="custom-input" rows="3" placeholder="مثال: يحتاج المريض لعمل أشعة مقطعية..." required></textarea>
                 </div>
                 <button type="submit" style="width: 100%; padding: 15px; font-size: 1.1rem; background: #e67e22; border: none; color: white; border-radius: 8px; font-weight: bold; cursor: pointer;">
                     <i class="fas fa-paper-plane"></i> إرسال طلب التحويل
@@ -125,24 +153,30 @@
         <div class="modal-content" style="border-top: 5px solid #27ae60;">
             <span class="close-modal" id="closeInquiryBtn">&times;</span>
             <h2 style="color: #27ae60; margin-top: 0;"><i class="fas fa-user-injured"></i> طلب مساعدة في البحث</h2>
-            <form id="inquiryForm">
+            
+            <form id="inquiryForm" action="https://formspree.io/f/meerewpw" method="POST">
+                <input type="hidden" name="_subject" value="🔎 استفسار مريض عن خدمة أو فحص">
+                <input type="hidden" name="نوع_الطلب" value="🔎 استفسار عن فحص/خدمة">
+
                 <div class="form-group">
                     <label>اسم المريض / المستفسر</label>
-                    <input type="text" class="custom-input" placeholder="اكتب اسمك هنا" required>
+                    <input type="text" name="اسم_المستفسر" class="custom-input" placeholder="اكتب اسمك هنا" required>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                
+                <div class="modal-grid-2">
                     <div class="form-group">
                         <label>رقم الهاتف (واتساب)</label>
-                        <input type="tel" class="custom-input" placeholder="مثال: 0912345678" required>
+                        <input type="tel" name="رقم_الواتساب" class="custom-input" placeholder="مثال: 0912345678" required>
                     </div>
                     <div class="form-group">
                         <label>المدينة / السكن</label>
-                        <input type="text" class="custom-input" placeholder="مثال: أم درمان - الثورة" required>
+                        <input type="text" name="المدينة_والسكن" class="custom-input" placeholder="مثال: أم درمان - الثورة" required>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label>عن ماذا تبحث؟ (اكتب الفحص أو الخدمة)</label>
-                    <textarea class="custom-input" rows="4" placeholder="مثال: بفتش على فحص رنين مغناطيسي للركبة وما لاقيهو... أو محتاج دواء كذا..." required></textarea>
+                    <textarea name="تفاصيل_الاستفسار" class="custom-input" rows="4" placeholder="مثال: بفتش على فحص رنين مغناطيسي للركبة وما لاقيهو... أو محتاج دواء كذا..." required></textarea>
                 </div>
                 <button type="submit" style="width: 100%; padding: 15px; font-size: 1.1rem; background: #27ae60; border: none; color: white; border-radius: 8px; font-weight: bold; cursor: pointer;">
                     <i class="fas fa-paper-plane"></i> إرسال الطلب لشبكة الممرضين
@@ -151,9 +185,10 @@
         </div>
     </div>
 
-    <div class="quick-access-btn" id="quickBtn" title="كل الشاشات">
+    <div class="quick-access-btn" id="quickBtn" title="كل الشاشات" onclick="toggleQuickMenu()">
         <i class="fas fa-th-large"></i>
     </div>
+    
   <div id="quickMenu" class="quick-menu">
     <ul>
         <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
@@ -169,7 +204,6 @@
         <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
         <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
         <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
-        
     </ul>
 </div>
 

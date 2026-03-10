@@ -3,7 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ركن الاستشارات | شبكة الممرضين السودانيين</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -79,43 +78,50 @@
 
             <div class="booking-section fade-element">
                 <h2 style="text-align: center; color: var(--dark-blue); margin-bottom: 30px;">احجز موعد استشارة (أونلاين/مباشر)</h2>
-                <form id="consultForm">
+                
+                <form id="consultForm" action="https://formspree.io/f/meerewpw" method="POST">
+                    
+                    <input type="hidden" name="_subject" value="📚 طلب استشارة بحثية جديد">
+                    <input type="hidden" name="نوع_الطلب" value="💡 طلب استشارة">
+
                     <div class="form-row">
                         <div class="form-group">
                             <label class="consult-label">الاسم الكامل</label>
-                            <input type="text" class="consult-input" placeholder="أدخل اسمك" required>
+                            <input type="text" name="اسم_طالب_الاستشارة" class="consult-input" placeholder="أدخل اسمك" required>
                         </div>
                         <div class="form-group">
                             <label class="consult-label">رقم الواتساب</label>
-                            <input type="tel" class="consult-input" placeholder="للتواصل معك" required>
+                            <input type="tel" name="رقم_الواتساب" class="consult-input" placeholder="للتواصل معك" required>
                         </div>
                     </div>
                     
                     <div class="form-row" style="margin-top: 20px;">
                         <div class="form-group">
                             <label class="consult-label">مجال الاستشارة</label>
-                            <select class="consult-select">
-                                <option>التحليل الإحصائي (SPSS)</option>
-                                <option>تنسيق وكتابة البحث العلمي</option>
-                                <option>مكافحة العدوى والوقاية</option>
-                                <option>أخرى</option>
+                            <select name="مجال_الاستشارة" class="consult-select" required>
+                                <option value="" disabled selected>اختر المجال...</option>
+                                <option value="التحليل الإحصائي (SPSS)">التحليل الإحصائي (SPSS)</option>
+                                <option value="تنسيق وكتابة البحث العلمي">تنسيق وكتابة البحث العلمي</option>
+                                <option value="مكافحة العدوى والوقاية">مكافحة العدوى والوقاية</option>
+                                <option value="مجال آخر">أخرى</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label class="consult-label">الموعد المفضل</label>
-                            <input type="date" class="consult-input" required>
+                            <input type="date" name="الموعد_المقترح" class="consult-input" required>
                         </div>
                     </div>
 
                     <div class="form-group" style="margin-top: 20px;">
                         <label class="consult-label">اشرح لنا طلبك (اختياري)</label>
-                        <textarea class="consult-textarea" rows="4" placeholder="اكتب تفاصيل طلبك هنا لنسهل عليك المساعدة..."></textarea>
+                        <textarea name="تفاصيل_الطلب" class="consult-textarea" rows="4" placeholder="اكتب تفاصيل طلبك هنا لنسهل عليك المساعدة..."></textarea>
                     </div>
 
                     <div style="text-align: center; margin-top: 30px;">
                         <button type="submit" class="btn btn-primary" style="padding: 15px 60px; font-size: 1.1rem;">إرسال طلب الاستشارة <i class="fas fa-paper-plane"></i></button>
                     </div>
                 </form>
+
             </div>
         </div>
     </section>
@@ -126,34 +132,63 @@
 
     <script src="script.js"></script>
     <script>
-        document.getElementById('consultForm').onsubmit = function(e) {
+        // كود الإرسال السحري في الخلفية باستخدام Fetch API
+        document.getElementById('consultForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('شكراً لك! تم استلام طلب الاستشارة بنجاح. سنقوم بمراجعة طلبك والتواصل معك عبر الواتساب لتأكيد الموعد.');
-            this.reset();
-        }
+            
+            const form = this;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+
+            // تغيير شكل الزر أثناء الإرسال
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري إرسال الطلب...';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: form.method,
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('شكراً لك! تم استلام طلب الاستشارة بنجاح. سنقوم بمراجعة طلبك والتواصل معك عبر الواتساب لتأكيد الموعد.');
+                    form.reset();
+                } else {
+                    alert('عذراً، حدثت مشكلة أثناء الإرسال. يرجى المحاولة لاحقاً.');
+                }
+            })
+            .catch(error => {
+                alert('خطأ في الاتصال! يرجى التأكد من اتصالك بالإنترنت.');
+            })
+            .finally(() => {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            });
+        });
     </script>
     
     <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
-    <i class="fas fa-th-large"></i>
-</div>
+        <i class="fas fa-th-large"></i>
+    </div>
 
-<div id="quickMenu" class="quick-menu">
-    <ul>
-        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
-        <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
-        <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
-        <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
-        <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
-        <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
-        <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
-        <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
-        <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
-        <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
-        <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
-        <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
-        <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
-        
-    </ul>
-</div>
+    <div id="quickMenu" class="quick-menu">
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+            <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
+            <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
+            <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
+            <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
+            <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
+            <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
+            <li><a href="drugs.html"><i class="fas fa-pills"></i> دليل الأدوية السريري</a></li>
+            <li><a href="hospitals.html"><i class="fas fa-hospital-alt"></i> المستشفيات</a></li>
+            <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> تسليم الوردية</a></li>
+            <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة السريرية</a></li>
+        </ul>
+    </div>
 </body>
 </html>
