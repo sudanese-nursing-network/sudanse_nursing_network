@@ -4,61 +4,181 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>شارك بحثك | شبكة الممرضين السودانيين</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         /* تعريف المتغيرات الأساسية لضمان عمل الألوان */
         :root {
             --main-color: #00a884;
+            --main-color-hover: #008f6f;
             --dark-blue: #1e272e;
-            --light-bg: #f4f7f6;
+            --light-bg: #f8fbfb;
+            --text-color: #2f3640;
+            --border-color: #dcdde1;
         }
 
-        body { font-family: 'Cairo', sans-serif; margin: 0; padding: 0; background-color: #fff; padding-bottom: 80px; }
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background-color: var(--light-bg); 
+            padding-bottom: 80px; 
+            color: var(--text-color);
+        }
 
-        /* تنسيق شريط التنقل */
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .nav-links { display: flex; list-style: none; gap: 20px; padding: 0; }
-        .nav-links a { text-decoration: none; color: #333; font-weight: bold; }
+        /* تنسيق شريط التنقل بلمسة حديثة */
+        .navbar { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 15px 5%; 
+            background: white; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo { font-size: 1.4rem; font-weight: 800; color: var(--dark-blue); }
+        .logo i { color: var(--main-color); margin-left: 5px; }
+        .logo span { color: var(--main-color); }
+        .nav-links { display: flex; list-style: none; gap: 25px; padding: 0; }
+        .nav-links a { 
+            text-decoration: none; 
+            color: #555; 
+            font-weight: 700; 
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .nav-links a:hover { color: var(--main-color); transform: translateY(-2px); }
         
-        /* تنسيق الهيرو */
-        .hero { display: flex; align-items: center; justify-content: center; text-align: center; color: white; flex-direction: column; }
-        .highlight { color: var(--main-color); }
+        /* تنسيق الهيرو المطور */
+        .hero { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center; 
+            color: white; 
+            flex-direction: column; 
+            position: relative;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(30, 39, 46, 0.95), rgba(0, 168, 132, 0.85));
+            z-index: 1;
+        }
+        .hero-content { z-index: 2; padding: 0 20px; }
+        .hero-content h1 { font-size: 3rem; margin-bottom: 10px; font-weight: 800; text-shadow: 2px 2px 10px rgba(0,0,0,0.3); }
+        .hero-content p { font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: auto; }
+        .highlight { color: #2ecc71; text-shadow: none; }
 
-        /* إجبار محتوى الصفحة على الظهور */
-        .section { padding: 40px 5%; }
-        .bg-light { background-color: var(--light-bg); }
-        .fade-element { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+        .section { padding: 50px 5%; }
+        .fade-element { animation: fadeIn 0.8s ease forwards; }
 
-        /* تنسيق استمارة الرفع */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* تنسيق استمارة الرفع باحترافية */
         .upload-container {
-            max-width: 700px; margin: auto; background: white; padding: 40px; 
-            border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            border-top: 5px solid var(--main-color);
+            max-width: 750px; 
+            margin: -60px auto 0; /* رفع الاستمارة لتتداخل مع الهيرو */
+            background: white; 
+            padding: 45px; 
+            border-radius: 20px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+            border-top: 6px solid var(--main-color);
+            position: relative;
+            z-index: 10;
         }
-        .upload-form { display: flex; flex-direction: column; gap: 20px; }
-        .upload-form label { font-weight: bold; color: var(--dark-blue); font-size: 1.1rem; display: block; margin-bottom: 8px; }
-        .upload-form input[type="text"], .upload-form select, .upload-form textarea { 
-            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; 
-            font-family: 'Cairo', sans-serif; box-sizing: border-box;
+        .upload-container h2 { text-align: center; color: var(--dark-blue); margin-bottom: 35px; font-size: 1.8rem; font-weight: 800; }
+        .upload-container h2 i { color: var(--main-color); margin-left: 10px; }
+        
+        .upload-form { display: flex; flex-direction: column; gap: 25px; }
+        .form-group { position: relative; }
+        .upload-form label { 
+            font-weight: 700; 
+            color: var(--dark-blue); 
+            font-size: 1.05rem; 
+            display: block; 
+            margin-bottom: 10px; 
+        }
+        .upload-form input[type="text"], 
+        .upload-form select, 
+        .upload-form textarea { 
+            width: 100%; 
+            padding: 15px; 
+            border: 2px solid var(--border-color); 
+            border-radius: 12px; 
+            font-family: 'Cairo', sans-serif; 
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            background-color: #fcfcfc;
+        }
+        .upload-form input:focus, 
+        .upload-form select:focus, 
+        .upload-form textarea:focus {
+            outline: none;
+            border-color: var(--main-color);
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(0, 168, 132, 0.1);
         }
         
+        /* تأثيرات الرفع (Drag & Drop area) */
         .file-upload-wrapper {
-            position: relative; text-align: center; padding: 30px 20px; 
-            border: 2px dashed var(--main-color); border-radius: 8px; 
-            background: #f4f7f6; cursor: pointer; transition: 0.3s;
+            position: relative; 
+            text-align: center; 
+            padding: 40px 20px; 
+            border: 2px dashed var(--main-color); 
+            border-radius: 15px; 
+            background: #f4fbf9; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
         }
-        .file-upload-wrapper i { font-size: 2.5rem; color: var(--main-color); margin-bottom: 10px; }
+        .file-upload-wrapper:hover { background: #e6f6f2; border-color: var(--main-color-hover); transform: scale(1.01); }
+        .file-upload-wrapper i { font-size: 3.5rem; color: var(--main-color); margin-bottom: 15px; transition: 0.3s; }
+        .file-upload-wrapper:hover i { transform: translateY(-5px); }
+        .file-upload-text { font-size: 1.1rem; color: #555; font-weight: 600; }
         .file-upload-wrapper input[type="file"] { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+        #fileNameDisplay { margin-top: 15px; font-weight: 700; color: var(--dark-blue); font-size: 1.1rem; }
 
-        .btn { padding: 12px 25px; border-radius: 8px; border: none; cursor: pointer; font-family: 'Cairo'; font-weight: bold; transition: 0.3s; display: inline-block; text-align: center; text-decoration: none; }
-        .btn-primary { background: var(--main-color); color: white; width: 100%; }
+        /* زر الإرسال */
+        .btn { 
+            padding: 16px 25px; 
+            border-radius: 12px; 
+            border: none; 
+            cursor: pointer; 
+            font-family: 'Cairo'; 
+            font-weight: 800; 
+            font-size: 1.2rem !important;
+            transition: all 0.3s ease; 
+            display: inline-block; 
+            text-align: center; 
+            text-decoration: none; 
+        }
+        .btn-primary { 
+            background: linear-gradient(135deg, var(--main-color), #028d70); 
+            color: white; 
+            width: 100%; 
+            margin-top: 15px;
+            box-shadow: 0 8px 20px rgba(0, 168, 132, 0.3);
+        }
+        .btn-primary:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 12px 25px rgba(0, 168, 132, 0.4); 
+        }
+        .btn-primary:active { transform: translateY(0); }
 
         /* --- تنسيق الزر العائم الموحد والاحترافي (FAB) --- */
         .quick-access-btn {
             position: fixed; bottom: 30px; left: 30px;
-            background: var(--main-color); color: white; width: 65px; height: 65px;
+            background: linear-gradient(135deg, var(--main-color), var(--main-color-hover)); color: white; width: 65px; height: 65px;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
             font-size: 1.6rem; cursor: pointer; z-index: 8000;
             box-shadow: 0 10px 25px rgba(0,168,132,0.4); 
@@ -68,27 +188,35 @@
 
         .quick-menu {
             display: none; position: fixed; bottom: 110px; left: 30px;
-            background: white; border-radius: 20px; width: 260px;
+            background: white; border-radius: 20px; width: 280px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.2); z-index: 7999;
-            overflow-y: auto; max-height: 70vh; border: 1px solid #eee;
+            overflow-y: auto; max-height: 70vh; border: 1px solid #f1f2f6;
             animation: slideUpNav 0.4s ease forwards;
         }
-        .quick-menu ul { list-style: none; padding: 10px; margin: 0; }
-        .quick-menu li { border-bottom: 1px solid #f8fafc; }
-        .quick-menu li:last-child { border-bottom: none; }
+        .quick-menu ul { list-style: none; padding: 15px; margin: 0; }
+        .quick-menu li { border-bottom: 1px solid #f8fafc; margin-bottom: 5px; }
+        .quick-menu li:last-child { border-bottom: none; margin-bottom: 0; }
         .quick-menu li a { 
-            display: flex; align-items: center; gap: 12px; padding: 12px 15px; 
-            text-decoration: none; color: #334155; transition: 0.3s; font-weight: 600; 
+            display: flex; align-items: center; gap: 15px; padding: 12px 15px; 
+            text-decoration: none; color: #334155; transition: all 0.3s ease; font-weight: 700; 
+            border-radius: 10px;
         }
-        .quick-menu li a i { color: var(--main-color); width: 20px; text-align: center; }
-        .quick-menu li a:hover { background: #f0fdf4; color: var(--main-color); padding-right: 25px; }
+        .quick-menu li a i { color: var(--main-color); width: 20px; text-align: center; font-size: 1.1rem; }
+        .quick-menu li a:hover { background: #f0fdf4; color: var(--main-color); padding-right: 20px; }
 
         @keyframes slideUpNav { 
             from { opacity: 0; transform: translateY(30px) scale(0.9); } 
             to { opacity: 1; transform: translateY(0) scale(1); } 
         }
 
-        footer { text-align: center; padding: 20px; background: var(--dark-blue); color: white; margin-top: 40px; }
+        footer { text-align: center; padding: 25px; background: var(--dark-blue); color: white; margin-top: 60px; font-weight: 600; }
+        
+        /* إخفاء شريط التنقل في الشاشات الصغيرة وتنسيق أفضل */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .upload-container { margin-top: -30px; padding: 25px; }
+            .hero-content h1 { font-size: 2.2rem; }
+        }
     </style>
 </head>
 <body>
@@ -105,16 +233,16 @@
         </ul>
     </nav>
 
-    <header class="hero" style="height: 35vh; background: linear-gradient(rgba(30, 39, 46, 0.9), rgba(0, 168, 132, 0.8)), url('https://via.placeholder.com/1200x300'); background-size: cover; background-position: center;">
+    <header class="hero" style="height: 40vh; background: url('https://via.placeholder.com/1200x400') center/cover no-repeat;">
         <div class="hero-content">
             <h1>شارك <span class="highlight">بحثك</span></h1>
             <p>ساهم في إثراء المكتبة التمريضية السودانية وانشر علمك لييستفيد منه الجميع.</p>
         </div>
     </header>
 
-    <section class="section bg-light">
+    <section class="section">
         <div class="upload-container fade-element">
-            <h2 style="text-align: center; color: var(--dark-blue); margin-bottom: 30px;"><i class="fas fa-cloud-upload-alt" style="color: var(--main-color);"></i> استمارة رفع الأبحاث</h2>
+            <h2><i class="fas fa-cloud-upload-alt"></i> استمارة رفع الأبحاث</h2>
             
             <form id="researchUploadForm" class="upload-form" action="https://formsubmit.co/alrsheedkamal5003@gmail.com" method="POST" enctype="multipart/form-data">
                 
@@ -122,22 +250,22 @@
                 <input type="hidden" name="_captcha" value="false"> 
                 <input type="hidden" name="_template" value="table">
                 
-                <div>
+                <div class="form-group">
                     <label>الاسم الكامل (كما سيظهر في النشر)</label>
                     <input type="text" name="اسم_الباحث" placeholder="مثال: أ. الرشيد..." required>
                 </div>
                 
-                <div>
+                <div class="form-group">
                     <label>المستشفى أو الجامعة المنفذ بها البحث</label>
                     <input type="text" name="جهة_البحث" placeholder="مثال: مستشفى أم درمان التعليمي..." required>
                 </div>
 
-                <div>
+                <div class="form-group">
                     <label>عنوان البحث أو الدراسة</label>
                     <input type="text" name="عنوان_البحث" placeholder="اكتب العنوان الكامل للبحث هنا..." required>
                 </div>
 
-                <div>
+                <div class="form-group">
                     <label>تخصص البحث (اختر التصنيف الأقرب)</label>
                     <select name="تخصص_البحث" required>
                         <option value="" disabled selected>-- اضغط لاختيار التخصص --</option>
@@ -150,22 +278,22 @@
                     </select>
                 </div>
 
-                <div>
+                <div class="form-group">
                     <label>ملخص بسيط عن البحث (نبذة مختصرة)</label>
                     <textarea name="ملخص_البحث" rows="4" placeholder="اكتب نبذة عن مشكلة البحث والنتائج التي توصلت إليها..." required></textarea>
                 </div>
 
-                <div>
+                <div class="form-group">
                     <label>إرفاق ملف البحث (PDF أو Word)</label>
                     <div class="file-upload-wrapper">
                         <i class="fas fa-file-pdf"></i>
                         <div class="file-upload-text">اضغط هنا لاختيار الملف، أو قم بسحبه وإفلاته</div>
                         <input type="file" id="fileInput" name="ملف_البحث" accept=".pdf, .doc, .docx" required>
-                        <div id="fileNameDisplay" style="margin-top: 10px; font-weight: bold; color: var(--dark-blue);"></div>
+                        <div id="fileNameDisplay"></div>
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary" style="font-size: 1.1rem; margin-top: 10px;"><i class="fas fa-paper-plane"></i> إرسال البحث للمراجعة والنشر</button>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> إرسال البحث للمراجعة والنشر</button>
             </form>
         </div>
     </section>
