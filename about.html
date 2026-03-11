@@ -4,17 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>من نحن | شبكة الممرضين السودانيين</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
             --main-color: #00a884;
+            --main-hover: #00866a;
             --dark-color: #1e272e;
-            --light-bg: #f4f7f6;
+            --light-bg: #f4f9f8;
             --white: #ffffff;
-            --transition: all 0.3s ease;
+            --text-muted: #555555;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 20px 40px rgba(0, 168, 132, 0.15);
         }
+
+        /* تخصيص شريط التمرير (Scrollbar) */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--light-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--main-color); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--main-hover); }
 
         body {
             font-family: 'Cairo', sans-serif;
@@ -22,45 +32,71 @@
             padding: 0;
             background-color: var(--white);
             color: var(--dark-color);
-            line-height: 1.6;
+            line-height: 1.8;
+            scroll-behavior: smooth;
         }
 
         /* Navigation */
         .navbar {
-            background: var(--dark-color);
-            padding: 1rem 5%;
+            background: rgba(30, 39, 46, 0.95);
+            padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
 
         .logo {
             color: var(--white);
-            font-size: 1.4rem;
-            font-weight: 700;
+            font-size: 1.6rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--main-color);
+            animation: heartbeat 1.5s infinite;
         }
 
         .logo span { color: var(--main-color); }
 
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
         .nav-links {
             list-style: none;
             display: flex;
-            gap: 20px;
+            gap: 25px;
             margin: 0;
+            padding: 0;
         }
 
         .nav-links a {
             color: var(--white);
             text-decoration: none;
             font-weight: 600;
+            font-size: 1.1rem;
             transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 10px;
+            border-radius: 8px;
         }
 
-        .nav-links a:hover { color: var(--main-color); }
+        .nav-links a:hover { 
+            color: var(--main-color); 
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
 
         /* Hero Section */
         .hero {
@@ -70,144 +106,268 @@
             text-align: center;
             color: var(--white);
             padding: 0 20px;
+            position: relative;
+        }
+        
+        /* إضافة طبقة تعتيم احترافية للصورة */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            background: linear-gradient(135deg, rgba(30,39,46,0.95) 0%, rgba(0,168,132,0.8) 100%);
+            z-index: 1;
         }
 
-        .hero h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .hero h1 { 
+            font-size: 3.5rem; 
+            margin-bottom: 15px;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
         .highlight { color: var(--main-color); }
 
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* Sections & Grid */
-        .section { padding: 60px 10%; }
+        .section { padding: 80px 10%; }
         .bg-light { background-color: var(--light-bg); }
         .text-center { text-align: center; }
-        .section-title { text-align: center; margin-bottom: 40px; position: relative; }
+        
+        .section-title { 
+            text-align: center; 
+            margin-bottom: 60px; 
+            position: relative; 
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--dark-color);
+        }
+        
         .section-title::after {
             content: '';
-            width: 60px;
-            height: 3px;
+            width: 80px;
+            height: 4px;
             background: var(--main-color);
             position: absolute;
-            bottom: -10px;
+            bottom: -15px;
             right: 50%;
             transform: translateX(50%);
+            border-radius: 2px;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
 
+        /* تصميم الكروت الاحترافي */
         .card {
             background: var(--white);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
             transition: var(--transition);
-            border-bottom: 4px solid transparent;
+            border-bottom: 5px solid var(--main-color);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
         }
 
         .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--main-color);
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--dark-color);
         }
 
         .icon-box {
             font-size: 2.5rem;
             color: var(--main-color);
+            margin: 0 auto 20px;
+            width: 80px;
+            height: 80px;
+            background: rgba(0, 168, 132, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .card:hover .icon-box {
+            background: var(--main-color);
+            color: var(--white);
+            transform: rotateY(360deg);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
             margin-bottom: 15px;
+            color: var(--dark-color);
+            font-weight: 700;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* تخصيص كروت محاور التركيز */
+        .section.bg-light .card {
+            text-align: right;
+            border-bottom: none;
+            border-right: 5px solid var(--main-color);
+        }
+        
+        .section.bg-light .card:hover {
+            border-right-color: var(--dark-color);
         }
 
         /* Buttons */
         .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 35px;
+            border-radius: 50px;
             text-decoration: none;
             font-weight: 700;
+            font-size: 1.1rem;
             transition: var(--transition);
             cursor: pointer;
+            border: none;
         }
 
         .btn-primary {
             background: var(--main-color);
             color: var(--white);
-        }
-
-        .btn-primary:hover {
-            background: #00866a;
             box-shadow: 0 5px 15px rgba(0,168,132,0.3);
         }
 
-        /* Quick Access Menu */
+        .btn-primary:hover {
+            background: var(--main-hover);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,168,132,0.5);
+        }
+
+        /* Quick Access Menu (القائمة السريعة) */
         .quick-access-btn {
             position: fixed;
             bottom: 30px;
             left: 30px;
-            width: 60px;
-            height: 60px;
+            width: 65px;
+            height: 65px;
             background: var(--dark-color);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 28px;
             cursor: pointer;
             z-index: 2000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
             transition: var(--transition);
+            animation: pulse-ring 2s infinite;
         }
 
-        .quick-access-btn:hover { transform: scale(1.1); background: var(--main-color); }
+        .quick-access-btn:hover { 
+            transform: scale(1.1) rotate(90deg); 
+            background: var(--main-color); 
+            animation: none;
+        }
+
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(30, 39, 46, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(30, 39, 46, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(30, 39, 46, 0); }
+        }
 
         .quick-menu {
             position: fixed;
-            bottom: 100px;
+            bottom: 110px;
             left: 30px;
             background: var(--white);
-            width: 250px;
-            max-height: 400px;
+            width: 280px;
+            max-height: 450px;
             overflow-y: auto;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
             display: none;
             z-index: 1999;
-            padding: 10px 0;
-            animation: slideUp 0.3s ease;
+            padding: 15px 0;
+            animation: slideUpFade 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
         .quick-menu.active { display: block; }
 
         .quick-menu ul { list-style: none; padding: 0; margin: 0; }
+        
         .quick-menu li a {
-            padding: 12px 20px;
-            display: block;
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
             color: var(--dark-color);
             text-decoration: none;
-            border-bottom: 1px solid #eee;
-            transition: 0.2s;
-            text-align: right;
+            border-bottom: 1px solid #f0f0f0;
+            transition: 0.3s;
+            font-weight: 600;
         }
 
-        .quick-menu li a:hover { background: var(--light-bg); color: var(--main-color); }
-        .quick-menu li a i { margin-left: 10px; width: 20px; text-align: center; }
+        .quick-menu li:last-child a { border-bottom: none; }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .quick-menu li a:hover { 
+            background: var(--light-bg); 
+            color: var(--main-color); 
+            padding-right: 30px; /* حركة لطيفة عند التمرير */
+        }
+        
+        .quick-menu li a i { 
+            width: 25px; 
+            text-align: center; 
+            font-size: 1.2rem;
+            color: var(--main-color);
+        }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(40px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         footer {
             background: var(--dark-color);
             color: white;
             text-align: center;
-            padding: 20px 0;
-            margin-top: 40px;
+            padding: 25px 0;
+            font-weight: 600;
+            border-top: 5px solid var(--main-color);
         }
 
+        /* شاشات الجوال */
         @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .section { padding: 40px 5%; }
+            .navbar { padding: 15px 20px; flex-direction: column; gap: 15px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; gap: 15px; }
+            .hero h1 { font-size: 2.5rem; }
+            .section { padding: 50px 5%; }
+            .quick-menu { left: 15px; right: 15px; width: auto; bottom: 100px; }
+            .quick-access-btn { left: 20px; bottom: 20px; width: 55px; height: 55px; font-size: 24px;}
         }
     </style>
 </head>
@@ -225,7 +385,7 @@
         </ul>
     </nav>
 
-    <header class="hero" style="height: 50vh; background: linear-gradient(rgba(30, 39, 46, 0.9), rgba(0, 168, 132, 0.7)), url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center;">
+    <header class="hero" style="height: 60vh; background-image: url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center; background-attachment: fixed;">
         <div class="hero-content">
             <h1>من <span class="highlight">نحن؟</span></h1>
             <p>تعرف على رؤيتنا، رسالتنا، والأهداف التي نسعى لتحقيقها للارتقاء بمهنة التمريض.</p>
@@ -255,21 +415,25 @@
     <section class="section bg-light">
         <h2 class="section-title">محاور تركيزنا الأساسية</h2>
         <div class="grid">
-            <div class="card" style="text-align: right;">
-                <h3 style="color: var(--main-color);"><i class="fas fa-shield-virus"></i> تعزيز بروتوكولات مكافحة العدوى</h3>
+            <div class="card">
+                <h3 style="color: var(--main-color); display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-shield-virus"></i> تعزيز بروتوكولات مكافحة العدوى
+                </h3>
                 <p>نولي اهتماماً بالغاً برفع وعي الكوادر وتطبيق المعايير القياسية. من أولويات الشبكة دعم الأبحاث الميدانية التي تدرس دور الممرضين في طرق انتقال العدوى وطرق الوقاية منها، وتعميم نتائج هذه الدراسات للارتقاء ببيئة العمل في مستشفياتنا، مثل مستشفى أم درمان التعليمي وغيرها من الصروح الطبية.</p>
             </div>
             
-            <div class="card" style="text-align: right;">
-                <h3 style="color: var(--main-color);"><i class="fas fa-chart-line"></i> دعم البحث العلمي والتحليل الإحصائي</h3>
+            <div class="card">
+                <h3 style="color: var(--main-color); display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-chart-line"></i> دعم البحث العلمي والتحليل الإحصائي
+                </h3>
                 <p>نؤمن بأن التمريض علم مبني على البراهين. لذلك، نهدف إلى مساعدة الخريجين والباحثين في توثيق أبحاثهم وتوفير الدعم في جمع وتحليل البيانات لإنتاج دراسات علمية دقيقة تساهم في حل المشكلات الصحية الميدانية.</p>
             </div>
         </div>
     </section>
 
     <section class="section text-center">
-        <h2>كن جزءاً من التغيير!</h2>
-        <p style="margin-bottom: 20px;">شبكتنا تكبر بانضمام الكفاءات أمثالك. ساهم معنا في بناء مستقبل أفضل للتمريض.</p>
+        <h2 style="font-size: 2.5rem; margin-bottom: 20px; color: var(--dark-color);">كن جزءاً من التغيير!</h2>
+        <p style="margin-bottom: 30px; font-size: 1.2rem; color: var(--text-muted);">شبكتنا تكبر بانضمام الكفاءات أمثالك. ساهم معنا في بناء مستقبل أفضل للتمريض.</p>
         <a href="index.html#contact" class="btn btn-primary">انضم إلى فريق العمل <i class="fas fa-arrow-left"></i></a>
     </section>
 
@@ -288,7 +452,7 @@
             <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
             <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
             <li><a href="training.html"><i class="fas fa-users"></i> التدريب المستمر</a></li>
-            <li><a href="consult.html"><i class="fas fa-comments"></i> ركن الاستشارات</a></li>
+            <li><a href="consult.html"><i class="fas fa-user-nurse"></i> ركن الاستشارات</a></li>
             <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا (عضوية)</a></li>
             <li><a href="sos.html"><i class="fas fa-ambulance"></i> نداءات الاستغاثة (SOS)</a></li>
             <li><a href="blood.html"><i class="fas fa-tint"></i> بنك الدم التفاعلي</a></li>
@@ -301,24 +465,39 @@
             <li><a href="equipment.html"><i class="fas fa-tools"></i> موسوعة المعدات</a></li>
             <li><a href="forum.html"><i class="fas fa-comments"></i> صوت التمريض (المنتدى)</a></li>
             <li><a href="locator.html"><i class="fas fa-search-location"></i> الرادار الطبي</a></li>
-            <li><a href="archive.html"><i class="fas fa-book-medical"></i> أرشيف الأبحاث</a></li>
+            <li><a href="archive.html"><i class="fas fa-folder-open"></i> أرشيف الأبحاث</a></li>
             <li><a href="upload-research.html"><i class="fas fa-cloud-upload-alt"></i> شارك بحثك العلمي</a></li>
         </ul>
     </div>
 
     <script>
-        // دالة تبديل ظهور القائمة السريعة
+        // دالة تبديل ظهور القائمة السريعة بلمسة برمجية احترافية
         function toggleQuickMenu() {
             const menu = document.getElementById('quickMenu');
+            const btnIcon = document.querySelector('.quick-access-btn i');
+            
             menu.classList.toggle('active');
+            
+            // تغيير الأيقونة عند الفتح والإغلاق
+            if(menu.classList.contains('active')) {
+                btnIcon.classList.remove('fa-th-large');
+                btnIcon.classList.add('fa-times');
+            } else {
+                btnIcon.classList.remove('fa-times');
+                btnIcon.classList.add('fa-th-large');
+            }
         }
 
-        // إغلاق القائمة عند النقر خارجها
+        // إغلاق القائمة عند النقر خارجها وتحديث الأيقونة
         window.onclick = function(event) {
-            if (!event.target.matches('.quick-access-btn') && !event.target.matches('.fa-th-large')) {
+            if (!event.target.closest('.quick-access-btn') && !event.target.closest('.quick-menu')) {
                 const menu = document.getElementById('quickMenu');
+                const btnIcon = document.querySelector('.quick-access-btn i');
+                
                 if (menu.classList.contains('active')) {
                     menu.classList.remove('active');
+                    btnIcon.classList.remove('fa-times');
+                    btnIcon.classList.add('fa-th-large');
                 }
             }
         }
