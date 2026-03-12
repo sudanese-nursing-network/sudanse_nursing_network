@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الأكاديمية | لوحة التحكم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --main-color: #2563eb; --dark-blue: #1e40af; --bg-color: #f8fafc; --success: #10b981; }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--bg-color); padding: 20px; direction: rtl; margin: 0; }
+        
+        .admin-card { background: white; max-width: 900px; margin: 0 auto; padding: 40px; border-radius: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.08); border-top: 8px solid var(--dark-blue); animation: fadeIn 0.5s ease; }
+        h2 { color: var(--dark-blue); text-align: center; margin-bottom: 25px; font-weight: 900; font-size: 2rem; }
+        
+        /* تصميم الأقسام (Tabs) */
+        .tabs { display: flex; gap: 10px; margin-bottom: 25px; justify-content: center; flex-wrap: wrap; }
+        .tab-btn { background: #f1f5f9; color: #475569; border: 2px solid transparent; padding: 12px 25px; border-radius: 12px; font-weight: bold; font-family: 'Cairo'; cursor: pointer; transition: 0.3s; font-size: 1.1rem; }
+        .tab-btn.active { background: var(--main-color); color: white; box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3); }
+        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+
+        .form-section { background: #ffffff; padding: 25px; border-radius: 15px; margin-bottom: 25px; border: 1px solid #e2e8f0; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-section label { font-weight: bold; margin-bottom: 8px; color: #334155; display: block; }
+        .form-section .full-width { grid-column: 1 / -1; }
+        
+        input, select, textarea { width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 12px; font-family: 'Cairo'; box-sizing: border-box; outline: none; transition: 0.3s; background: #f8fafc; font-size: 1rem; }
+        input:focus, select:focus, textarea:focus { border-color: var(--main-color); background: white; }
+        
+        .btn-main { width: 100%; padding: 18px; background: linear-gradient(135deg, var(--main-color), var(--dark-blue)); color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.4s; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); }
+        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(37, 99, 235, 0.4); }
+        
+        .data-list { margin-top: 40px; border-top: 2px dashed #cbd5e0; padding-top: 30px; }
+        .data-item { background: white; border: 1px solid #e2e8f0; padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-right: 5px solid var(--main-color); }
+        .btn-delete { background: #fee2e2; color: #ef4444; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Cairo'; }
+        
+        #loginSection { max-width: 450px; margin: 10vh auto; background: white; padding: 50px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); text-align: center; border-top: 8px solid var(--main-color); }
+        #adminPanel { display: none; }
+        .logout-link { display: block; text-align: center; margin-top: 30px; color: #ef4444; cursor: pointer; font-weight: bold; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 768px) { .form-section { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div id="loginSection">
+    <i class="fas fa-user-shield" style="font-size: 5rem; color: var(--main-color); margin-bottom: 20px;"></i>
+    <h2 style="color: var(--dark-blue);">إدارة الأكاديمية</h2>
+    <p style="color: #64748b; margin-bottom: 30px;">سجل دخولك لإضافة المحاضرات والمراجع</p>
+    
+    <select id="userName" style="margin-bottom: 20px;">
+        <option value="">-- اختر المستخدم --</option>
+        <option value="admin">المدير العام</option>
+        <option value="user2">الممرض الرشيد</option>
+    </select>
+    <input type="password" id="adminPass" placeholder="كلمة المرور السرية" style="margin-bottom: 25px;">
+    <button class="btn-main" onclick="verifyAccess()">دخول اللوحة <i class="fas fa-sign-in-alt"></i></button>
+    <p id="loginError" style="color: #ef4444; display: none; margin-top: 15px; font-weight: bold;">بيانات الدخول غير صحيحة!</p>
+</div>
+
+<div id="adminPanel">
+    <div class="admin-card">
+        <h2><i class="fas fa-graduation-cap" style="color: var(--main-color);"></i> لوحة تحكم الأكاديمية</h2>
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('videos')"><i class="fas fa-video"></i> الفيديوهات</button>
+            <button class="tab-btn" onclick="switchTab('books')"><i class="fas fa-book"></i> الكتب (PDF)</button>
+            <button class="tab-btn" onclick="switchTab('protocols')"><i class="fas fa-notes-medical"></i> البروتوكولات</button>
+        </div>
+
+        <div id="videos" class="tab-content active">
+            <div class="form-section">
+                <div><label>عنوان الفيديو</label><input type="text" id="vidTitle" placeholder="مثال: أساسيات سحب الدم"></div>
+                <div><label>رقم الفيديو (الترتيب)</label><input type="number" id="vidNumber" placeholder="مثال: 4"></div>
+                <div class="full-width"><label>معرف يوتيوب (ID)</label><input type="text" id="vidUrl" placeholder="مثال: dQw4w9WgXcQ (الرموز بعد v= في رابط يوتيوب)"></div>
+            </div>
+            <button class="btn-main" onclick="saveData('videos')">إضافة الفيديو للأكاديمية <i class="fas fa-upload"></i></button>
+        </div>
+
+        <div id="books" class="tab-content">
+            <div class="form-section">
+                <div class="full-width"><label>عنوان الكتاب أو الدليل</label><input type="text" id="bookTitle" placeholder="مثال: مرجع الأدوية السريرية"></div>
+                <div class="full-width"><label>رابط تحميل الكتاب (PDF)</label><input type="url" id="bookUrl" placeholder="https://..."></div>
+            </div>
+            <button class="btn-main" style="background: linear-gradient(135deg, #dc2626, #991b1b);" onclick="saveData('books')">إضافة الكتاب للمكتبة <i class="fas fa-file-pdf"></i></button>
+        </div>
+
+        <div id="protocols" class="tab-content">
+            <div class="form-section">
+                <div class="full-width"><label>عنوان البروتوكول</label><input type="text" id="protTitle" placeholder="مثال: بروتوكول الصدمة التحسسية"></div>
+                <div><label>أيقونة (FontAwesome class)</label><input type="text" id="protIcon" placeholder="مثال: fa-allergies" value="fa-heartbeat"></div>
+                <div>
+                    <label>لون الشريط الجانبي</label>
+                    <select id="protColor">
+                        <option value="#ef4444">أحمر (حرج/طوارئ)</option>
+                        <option value="#f59e0b">برتقالي (تحذير/انتباه)</option>
+                        <option value="#10b981">أخضر (علاج/تنفس)</option>
+                        <option value="#3b82f6">أزرق (إجراءات عامة)</option>
+                    </select>
+                </div>
+                <div class="full-width"><label>خطوات البروتوكول التفصيلية</label><textarea id="protDesc" rows="3" placeholder="1. خطوة أولى... 2. خطوة ثانية..."></textarea></div>
+            </div>
+            <button class="btn-main" style="background: linear-gradient(135deg, #10b981, #047857);" onclick="saveData('protocols')">إضافة البروتوكول <i class="fas fa-plus-circle"></i></button>
+        </div>
+
+        <div class="data-list">
+            <h3 style="color: var(--dark-blue); margin-bottom: 15px;"><i class="fas fa-list"></i> العناصر المضافة حديثاً (بالفايربيس):</h3>
+            <div id="activeList"><div style="text-align:center; color:#94a3b8;"><i class="fas fa-spinner fa-spin"></i> جاري التحميل...</div></div>
+        </div>
+        
+        <span class="logout-link" onclick="location.reload()"><i class="fas fa-power-off"></i> تسجيل الخروج</span>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, push, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBltsN_YuPhicWCv4MmbYf7-kSp9u66lBE",
+        authDomain: "sudanse-nursing-network.firebaseapp.com",
+        projectId: "sudanse-nursing-network",
+        storageBucket: "sudanse-nursing-network.firebasestorage.app",
+        messagingSenderId: "577008528931",
+        appId: "1:577008528931:web:febfbc9ce086a07b8ccb96"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const usersList = { "admin": "0960", "user2": "096020" };
+    window.verifyAccess = function() {
+        const user = document.getElementById('userName').value;
+        const pass = document.getElementById('adminPass').value;
+        if (user && usersList[user] === pass) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+        } else { document.getElementById('loginError').style.display = 'block'; }
+    }
+
+    let currentTab = 'videos';
+    window.switchTab = function(tabName) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabName).classList.add('active');
+        event.currentTarget.classList.add('active');
+        currentTab = tabName;
+        loadDataList();
+    }
+
+    window.saveData = function(type) {
+        let dataObj = {};
+        if(type === 'videos') {
+            const title = document.getElementById('vidTitle').value;
+            const num = document.getElementById('vidNumber').value;
+            const url = document.getElementById('vidUrl').value;
+            if(!title || !url) return alert("أدخل العنوان ومعرف اليوتيوب!");
+            dataObj = { title, num: num||"-", url, type: 'video' };
+        } else if(type === 'books') {
+            const title = document.getElementById('bookTitle').value;
+            const url = document.getElementById('bookUrl').value;
+            if(!title || !url) return alert("أدخل عنوان الكتاب والرابط!");
+            dataObj = { title, url, type: 'book' };
+        } else if(type === 'protocols') {
+            const title = document.getElementById('protTitle').value;
+            const icon = document.getElementById('protIcon').value;
+            const color = document.getElementById('protColor').value;
+            const desc = document.getElementById('protDesc').value;
+            if(!title || !desc) return alert("أدخل عنوان البروتوكول والتفاصيل!");
+            dataObj = { title, icon, color, desc, type: 'protocol' };
+        }
+        
+        dataObj.timestamp = Date.now();
+        push(ref(db, 'academy_data/' + type), dataObj).then(() => {
+            alert("✅ تمت الإضافة للأكاديمية بنجاح!");
+            document.querySelectorAll('input, textarea').forEach(el => el.value = '');
+        });
+    }
+
+    function loadDataList() {
+        onValue(ref(db, 'academy_data/' + currentTab), (snapshot) => {
+            const list = document.getElementById('activeList');
+            list.innerHTML = '';
+            if (!snapshot.exists()) { list.innerHTML = "<p style='text-align:center;'>لا توجد بيانات مضافة هنا حالياً.</p>"; return; }
+            snapshot.forEach(child => {
+                const data = child.val();
+                let iconStr = currentTab === 'videos' ? 'fa-video' : (currentTab === 'books' ? 'fa-book' : 'fa-notes-medical');
+                list.innerHTML += `
+                    <div class="data-item">
+                        <div><strong style="color:var(--dark-blue);"><i class="fas ${iconStr}"></i> ${data.title}</strong></div>
+                        <button class="btn-delete" onclick="deleteItem('${currentTab}', '${child.key}')"><i class="fas fa-trash"></i> حذف</button>
+                    </div>`;
+            });
+        });
+    }
+
+    window.deleteItem = function(tab, key) {
+        if(confirm("متأكد من حذف هذا العنصر؟")) remove(ref(db, `academy_data/${tab}/${key}`));
+    }
+    
+    // تحميل البيانات للتاب النشط عند فتح اللوحة
+    setTimeout(loadDataList, 1500); 
+</script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة بوابة التوظيف | لوحة التحكم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* التنسيقات الأصلية الخاصة بك كما هي تماماً */
+        :root { --main-color: #00a884; --dark-blue: #1e272e; }
+        body { font-family: 'Cairo', sans-serif; background-color: #f0f2f5; padding: 20px; direction: rtl; }
+        .admin-card { background: white; max-width: 700px; margin: 0 auto; padding: 35px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-top: 8px solid var(--main-color); }
+        h2 { color: var(--dark-blue); text-align: center; margin-bottom: 25px; font-weight: 900; }
+        .form-section { background: #f8f9fa; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #eef0f2; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; color: #34495e; }
+        input, select, textarea { width: 100%; padding: 14px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 10px; font-family: 'Cairo'; box-sizing: border-box; outline: none; }
+        input:focus { border-color: var(--main-color); }
+        .btn-update { width: 100%; padding: 18px; background: linear-gradient(45deg, var(--main-color), #008f6f); color: white; border: none; border-radius: 10px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-update:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,168,132,0.3); }
+        .job-list { margin-top: 30px; border-top: 2px solid #eee; padding-top: 20px; }
+        .job-item { background: #fff; border: 1px solid #eee; padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .btn-delete { background: #fee2e2; color: #ef4444; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        
+        /* --- الإضافات الجديدة الخاصة بشاشة الدخول فقط لحفظ الأمان والتنسيق --- */
+        #loginSection { max-width: 420px; margin: 80px auto; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); text-align: center; border-top: 8px solid var(--main-color); }
+        #adminPanel { display: none; /* هذا السطر يخفي اللوحة حتى يتم تسجيل الدخول */ }
+        .user-select { margin-bottom: 15px; border: 2px solid #ddd; }
+        .user-select:focus { border-color: var(--main-color); }
+        .logout-link { display: block; text-align: center; margin-top: 25px; color: #ef4444; cursor: pointer; font-weight: bold; text-decoration: underline; transition: 0.3s; }
+        .logout-link:hover { color: #dc2626; }
+    </style>
+</head>
+<body>
+
+<div id="loginSection">
+    <i class="fas fa-user-tie" style="font-size: 4rem; color: var(--main-color); margin-bottom: 20px;"></i>
+    <h2>دخول إدارة التوظيف</h2>
+    <p style="color: #34495e; margin-bottom: 25px;">اختر حسابك وأدخل كلمة السر للتحكم بالوظائف</p>
+    
+    <select id="userName" class="user-select" style="width: 100%; padding: 14px; border-radius: 10px; font-family: 'Cairo'; outline: none;">
+        <option value="">-- اختر المستخدم --</option>
+        <option value="admin">المدير العام</option>
+        <option value="user1">مسؤول التوظيف</option>
+        <option value="user2">الممرض الرشيد</option>
+    </select>
+
+    <input type="password" id="adminPass" placeholder="كلمة المرور السرية" style="width: 100%; padding: 14px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 10px; font-family: 'Cairo'; box-sizing: border-box; outline: none;">
+    <button class="btn-update" onclick="verifyAccess()">دخول اللوحة الآمنة</button>
+    <p id="loginError" style="color: #ef4444; display: none; margin-top: 15px; font-weight: bold;">بيانات الدخول غير صحيحة!</p>
+</div>
+
+<div id="adminPanel">
+    
+    <div class="admin-card">
+        <h2><i class="fas fa-user-tie"></i> إدارة بوابة التوظيف</h2>
+        
+        <div class="form-section">
+            <label>المسمى الوظيفي</label>
+            <input type="text" id="jobTitle" placeholder="مثلاً: ممرض/ة عناية مكثفة (ICU)">
+            
+            <label>اسم المستشفى / المركز</label>
+            <input type="text" id="hospitalName" placeholder="مثلاً: مستشفى رويال كير">
+
+            <label>نوع الدوام</label>
+            <select id="jobType">
+                <option value="دوام كامل">دوام كامل</option>
+                <option value="دوام جزئي">دوام جزئي</option>
+                <option value="تعاقد سنوي">تعاقد سنوي</option>
+                <option value="زيارات ميدانية">زيارات ميدانية</option>
+            </select>
+
+            <label>الموقع (المدينة والحي)</label>
+            <input type="text" id="jobLoc" placeholder="مثلاً: الخرطوم، حي بري">
+
+            <label>المتطلبات / الخبرة</label>
+            <input type="text" id="jobExp" placeholder="مثلاً: خبرة سنتين + دورة CPR">
+
+            <label>لون الكرت (حسب التخصص)</label>
+            <select id="jobColor">
+                <option value="#00a884">أخضر (أساسي)</option>
+                <option value="#1e272e">كحلي (إداري)</option>
+                <option value="#f39c12">برتقالي (طوارئ)</option>
+                <option value="#e74c3c">أحمر (عمليات)</option>
+            </select>
+        </div>
+
+        <button class="btn-update" onclick="pushJobToFirebase()">نشر الوظيفة الآن <i class="fas fa-plus-circle"></i></button>
+        
+        <div class="job-list">
+            <h3>الوظائف المعروضة حالياً:</h3>
+            <div id="activeJobs"></div>
+        </div>
+        
+        <span class="logout-link" onclick="location.reload()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج وإقفال اللوحة</span>
+    </div>
+    </div>
+
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBltsN_YuPhicWCv4MmbYf7-kSp9u66lBE",
+        authDomain: "sudanse-nursing-network.firebaseapp.com",
+        databaseURL: "https://sudanse-nursing-network-default-rtdb.firebaseio.com/",
+        projectId: "sudanse-nursing-network",
+        storageBucket: "sudanse-nursing-network.firebasestorage.app",
+        messagingSenderId: "577008528931",
+        appId: "1:577008528931:web:febfbc9ce086a07b8ccb96"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // === الكود الجديد المسؤول عن تسجيل الدخول والحماية ===
+    const usersList = {
+        "admin": "0960",   // كلمة سر المدير العام
+        "user1": "HR123",        // كلمة سر مسؤول التوظيف
+        "user2": "096020"       // كلمة سر الممرض الرشيد
+    };
+
+    function verifyAccess() {
+        const user = document.getElementById('userName').value;
+        const pass = document.getElementById('adminPass').value;
+        const errorMsg = document.getElementById('loginError');
+
+        if (user && usersList[user] === pass) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+        } else {
+            errorMsg.style.display = 'block';
+            document.getElementById('adminPass').value = "";
+        }
+    }
+    // === نهاية كود الحماية ===
+
+    // === الكود البرمجي الأصلي الخاص بك موجود بالكامل دون نقص أي سطر ===
+    function pushJobToFirebase() {
+        const title = document.getElementById('jobTitle').value;
+        const hospital = document.getElementById('hospitalName').value;
+        const type = document.getElementById('jobType').value;
+        const loc = document.getElementById('jobLoc').value;
+        const exp = document.getElementById('jobExp').value;
+        const color = document.getElementById('jobColor').value;
+
+        if (!title || !hospital) return alert("يا الرشيد، املأ البيانات الأساسية!");
+
+        const newJobRef = database.ref('jobs').push();
+        newJobRef.set({
+            title, hospital, type, loc, exp, color,
+            timestamp: Date.now()
+        }).then(() => {
+            alert("✅ تم نشر الوظيفة بنجاح!");
+            document.getElementById('jobTitle').value = "";
+        });
+    }
+
+    database.ref('jobs').on('value', (snapshot) => {
+        const list = document.getElementById('activeJobs');
+        list.innerHTML = '';
+        snapshot.forEach(child => {
+            const data = child.val();
+            list.innerHTML += `
+                <div class="job-item">
+                    <span><strong>${data.title}</strong> - ${data.hospital}</span>
+                    <button class="btn-delete" onclick="deleteJob('${child.key}')">حذف</button>
+                </div>`;
+        });
+    });
+
+    function deleteJob(key) {
+        if(confirm("هل تريد حذف هذه الوظيفة نهائياً؟")) database.ref('jobs/' + key).remove();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة بنك الدم | لوحة التحكم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* التنسيقات الأصلية الخاصة بك كما هي تماماً */
+        :root { --blood-red: #c0392b; --bright-red: #e74c3c; --dark-blue: #2c3e50; }
+        body { font-family: 'Cairo', sans-serif; background-color: #f4f7f6; padding: 20px; direction: rtl; }
+        .admin-card { background: white; max-width: 700px; margin: 0 auto; padding: 35px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-top: 8px solid var(--blood-red); }
+        h2 { color: var(--dark-blue); text-align: center; margin-bottom: 25px; font-weight: 900; }
+        .form-section { background: #f8f9fa; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #eef0f2; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; color: #34495e; }
+        input, select { width: 100%; padding: 14px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 10px; font-family: 'Cairo'; box-sizing: border-box; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--blood-red); }
+        .btn-update { width: 100%; padding: 18px; background: linear-gradient(45deg, var(--blood-red), var(--bright-red)); color: white; border: none; border-radius: 10px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(192, 57, 43, 0.3); }
+        .btn-update:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(192, 57, 43, 0.4); }
+        .data-list { margin-top: 30px; border-top: 2px solid #eee; padding-top: 20px; }
+        .data-item { background: #fff; border: 1px solid #eee; padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .btn-delete { background: #fee2e2; color: #ef4444; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        
+        /* --- الإضافات الجديدة الخاصة بشاشة الدخول وزر التعديل (لحفظ التنسيق) --- */
+        #loginSection { max-width: 400px; margin: 100px auto; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); text-align: center; border-top: 8px solid var(--blood-red); }
+        #adminPanel { display: none; /* هذا الكود هو المسؤول عن إخفاء لوحتك حتى يتم الدخول */ }
+        .user-select { margin-bottom: 15px; border: 2px solid #ddd; }
+        .user-select:focus { border-color: var(--blood-red); }
+        .logout-link { display: block; text-align: center; margin-top: 25px; color: var(--bright-red); cursor: pointer; font-weight: bold; text-decoration: underline; }
+        
+        /* أزرار الإجراءات (تعديل وحذف) */
+        .action-btns { display: flex; gap: 8px; }
+        .btn-edit { background: #e0f2fe; color: #0284c7; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Cairo'; transition: 0.3s; }
+        .btn-edit:hover { background: #bae6fd; }
+    </style>
+</head>
+<body>
+
+<div id="loginSection">
+    <i class="fas fa-user-shield" style="font-size: 4rem; color: var(--blood-red); margin-bottom: 20px;"></i>
+    <h2>دخول إدارة بنك الدم</h2>
+    <p style="color: #7f8c8d;">اختر المستخدم وأدخل كلمة السر</p>
+    
+    <select id="userName" class="user-select">
+        <option value="">-- اختر المستخدم --</option>
+        <option value="admin">المدير العام</option>
+        <option value="user1">د. أحمد</option>
+        <option value="user2">الممرض الرشيد</option>
+    </select>
+
+    <input type="password" id="adminPass" placeholder="كلمة المرور السرية">
+    <button class="btn-update" onclick="verifyAccess()">دخول اللوحة</button>
+    <p id="loginError" style="color: red; display: none; margin-top: 10px;">بيانات الدخول غير صحيحة!</p>
+</div>
+
+<div id="adminPanel">
+    
+    <div class="admin-card">
+        <h2><i class="fas fa-droplet"></i> إدارة بنك الدم التفاعلي</h2>
+        
+        <div class="form-section">
+            <label>نوع الحالة</label>
+            <select id="caseType">
+                <option value="donor">متبرع متاح (لون أخضر)</option>
+                <option value="urgent">طلب عاجل (لون برتقالي/أحمر)</option>
+            </select>
+
+            <label>الاسم أو عنوان الطلب</label>
+            <input type="text" id="donorName" placeholder="مثلاً: محمد علي أو مطلوب متبرع لعملية">
+            
+            <label>فصيلة الدم</label>
+            <select id="bloodType">
+                <option value="O+">O+</option><option value="O-">O-</option>
+                <option value="A+">A+</option><option value="A-">A-</option>
+                <option value="B+">B+</option><option value="B-">B-</option>
+                <option value="AB+">AB+</option><option value="AB-">AB-</option>
+            </select>
+
+            <label>الموقع (المدينة والمستشفى)</label>
+            <input type="text" id="bloodLoc" placeholder="مثلاً: الخرطوم - مستشفى رويال كير">
+
+            <label>رقم الهاتف</label>
+            <input type="tel" id="bloodPhone" placeholder="09xxxxxxx">
+
+            <label>ملاحظة الوقت (اختياري)</label>
+            <input type="text" id="bloodTime" placeholder="مثلاً: منذ 4 أشهر أو عاجل جداً">
+        </div>
+
+        <button class="btn-update" id="mainSubmitBtn" onclick="pushBloodData()">نشر البيانات في البنك الآن <i class="fas fa-heart"></i></button>
+        
+        <div class="data-list">
+            <h3>البيانات المنشورة حالياً:</h3>
+            <div id="activeBloodList"></div>
+        </div>
+        
+        <span class="logout-link" onclick="location.reload()"><i class="fas fa-lock"></i> تسجيل الخروج وإقفال اللوحة</span>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBltsN_YuPhicWCv4MmbYf7-kSp9u66lBE",
+        authDomain: "sudanse-nursing-network.firebaseapp.com",
+        databaseURL: "https://sudanse-nursing-network-default-rtdb.firebaseio.com/",
+        projectId: "sudanse-nursing-network",
+        storageBucket: "sudanse-nursing-network.firebasestorage.app",
+        messagingSenderId: "577008528931",
+        appId: "1:577008528931:web:febfbc9ce086a07b8ccb96"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // === الكود الجديد المسؤول عن تسجيل الدخول والحماية ===
+    const usersList = {
+        "admin": "0960",   // كلمة سر المدير العام
+        "user1": "Pass123",      // كلمة سر د. أحمد
+        "user2": "096020"       // كلمة سر الممرض الرشيد
+    };
+
+    function verifyAccess() {
+        const user = document.getElementById('userName').value;
+        const pass = document.getElementById('adminPass').value;
+        const errorMsg = document.getElementById('loginError');
+
+        if (user && usersList[user] === pass) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+        } else {
+            errorMsg.style.display = 'block';
+            document.getElementById('adminPass').value = "";
+        }
+    }
+    // === نهاية كود الحماية ===
+
+    // === متغيرات التحكم بالتعديل ===
+    let currentEditKey = null;
+    window.bloodDataMap = {}; // تخزين البيانات محلياً للتعديل
+
+    // === الكود البرمجي الأصلي الخاص بك موجود بالكامل مع إضافة خيار التعديل ===
+    function pushBloodData() {
+        const name = document.getElementById('donorName').value;
+        const type = document.getElementById('bloodType').value;
+        const loc = document.getElementById('bloodLoc').value;
+        const phone = document.getElementById('bloodPhone').value;
+        const status = document.getElementById('caseType').value;
+        const timeNote = document.getElementById('bloodTime').value;
+
+        if (!name || !phone) return alert("يا الرشيد، املأ الاسم والهاتف!");
+
+        if (currentEditKey) {
+            // تحديث البيانات الموجودة
+            database.ref('blood_bank/' + currentEditKey).update({
+                name, type, loc, phone, status, timeNote,
+                timestamp: Date.now()
+            }).then(() => {
+                alert("✅ تم تعديل البيانات في بنك الدم بنجاح!");
+                resetForm();
+            });
+        } else {
+            // الكود الأصلي (إضافة بيانات جديدة) بدون أي حذف
+            const newRef = database.ref('blood_bank').push();
+            newRef.set({
+                name, type, loc, phone, status, timeNote,
+                timestamp: Date.now()
+            }).then(() => {
+                alert("✅ تم النشر في بنك الدم!");
+                resetForm();
+            });
+        }
+    }
+
+    // دالة لتفريغ الخانات وإرجاع الزر لشكله الأصلي
+    function resetForm() {
+        document.getElementById('donorName').value = "";
+        document.getElementById('bloodType').value = "O+";
+        document.getElementById('bloodLoc').value = "";
+        document.getElementById('bloodPhone').value = "";
+        document.getElementById('caseType').value = "donor";
+        document.getElementById('bloodTime').value = "";
+        
+        currentEditKey = null;
+        
+        const btn = document.getElementById('mainSubmitBtn');
+        btn.innerHTML = 'نشر البيانات في البنك الآن <i class="fas fa-heart"></i>';
+        btn.style.background = 'linear-gradient(45deg, var(--blood-red), var(--bright-red))';
+    }
+
+    database.ref('blood_bank').on('value', (snapshot) => {
+        const list = document.getElementById('activeBloodList');
+        list.innerHTML = '';
+        window.bloodDataMap = {}; // تفريغ الذاكرة
+        
+        snapshot.forEach(child => {
+            const data = child.val();
+            window.bloodDataMap[child.key] = data; // حفظ البيانات لزر التعديل
+            
+            // الكود الأصلي مع إضافة زر التعديل بجانب زر الحذف
+            list.innerHTML += `
+                <div class="data-item">
+                    <span><strong>[${data.type}]</strong> ${data.name}</span>
+                    <div class="action-btns">
+                        <button class="btn-edit" onclick="prepareEdit('${child.key}')"><i class="fas fa-edit"></i> تعديل</button>
+                        <button class="btn-delete" onclick="deleteData('${child.key}')"><i class="fas fa-trash"></i> حذف</button>
+                    </div>
+                </div>`;
+        });
+    });
+
+    function deleteData(key) {
+        if(confirm("هل تريد إزالة هذه البيانات من البنك؟")) database.ref('blood_bank/' + key).remove();
+    }
+
+    // === دالة جديدة تقوم بسحب البيانات للخانات عند ضغط زر التعديل ===
+    function prepareEdit(key) {
+        const data = window.bloodDataMap[key];
+        if(!data) return;
+        
+        document.getElementById('caseType').value = data.status || "donor";
+        document.getElementById('donorName').value = data.name || "";
+        document.getElementById('bloodType').value = data.type || "O+";
+        document.getElementById('bloodLoc').value = data.loc || "";
+        document.getElementById('bloodPhone').value = data.phone || "";
+        document.getElementById('bloodTime').value = data.timeNote || "";
+        
+        currentEditKey = key;
+        
+        // تغيير شكل الزر لتنبيه المستخدم أنه يقوم بتعديل وليس إضافة
+        const btn = document.getElementById('mainSubmitBtn');
+        btn.innerHTML = 'حفظ التعديلات 💾';
+        btn.style.background = 'linear-gradient(45deg, #0284c7, #0369a1)'; // اللون الأزرق
+        
+        // الصعود لأعلى الشاشة تلقائياً
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* تعريف المتغيرات الأساسية */
+        /* تعريف المتغيرات الأساسية كما هي */
         :root {
             --main-color: #00a884;
             --main-hover: #008f6f;
@@ -18,310 +18,202 @@
             --accent-yellow: #f1c40f;
         }
 
-        body {
-            font-family: 'Cairo', sans-serif;
-            margin: 0;
-            background-color: var(--light-bg);
-            color: #333;
-            scroll-behavior: smooth;
-        }
+        body { font-family: 'Cairo', sans-serif; margin: 0; background-color: var(--light-bg); color: #333; scroll-behavior: smooth; }
 
-        /* تخصيص شكل شريط التمرير (Scrollbar) للصفحة بالكامل */
+        /* تنسيقاتك الأصلية للجمال والتمرير */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: var(--main-color); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--main-hover); }
-
-        /* شريط التنقل */
-        .navbar {
-            padding: 15px 5%;
-            background: white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
+        
+        .navbar { padding: 15px 5%; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
         .logo { text-decoration: none; color: var(--dark-blue); font-weight: bold; font-size: 1.4rem; display: flex; align-items: center; gap: 8px; }
         .logo span { color: var(--main-color); }
-        .logo i { color: var(--main-color); }
-        .nav-links { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; flex-wrap: wrap; justify-content: center; }
-        .nav-links a { text-decoration: none; color: #555; font-weight: 600; transition: 0.3s; display: flex; align-items: center; gap: 6px; }
-        .nav-links a:hover { color: var(--main-color); transform: translateY(-2px); }
+        .nav-links { list-style: none; display: flex; gap: 20px; align-items: center; margin: 0; padding: 0; }
+        .nav-links a { text-decoration: none; color: #555; font-weight: 600; display: flex; align-items: center; gap: 6px; }
 
-        /* الجزء العلوي (Hero) */
-        .hero { 
-            display: flex; align-items: center; justify-content: center; 
-            text-align: center; color: white; height: 35vh; 
-            background: linear-gradient(135deg, rgba(30, 39, 46, 0.9), rgba(0, 168, 132, 0.85));
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            border-radius: 0 0 30px 30px;
-        }
-        .hero-content h1 { font-size: 2.5rem; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-        .hero-content p { font-size: 1.1rem; opacity: 0.9; }
+        .hero { display: flex; align-items: center; justify-content: center; text-align: center; color: white; height: 35vh; background: linear-gradient(135deg, rgba(30, 39, 46, 0.9), rgba(0, 168, 132, 0.85)); border-radius: 0 0 30px 30px; }
+        .hero-content h1 { font-size: 2.5rem; }
 
-        /* العناوين */
-        .section-title { text-align: center; margin-bottom: 40px; position: relative; color: var(--dark-blue); font-size: 1.8rem; }
+        .section-title { text-align: center; margin: 60px 0 40px; position: relative; color: var(--dark-blue); font-size: 1.8rem; }
         .section-title::after { content: ''; width: 80px; height: 4px; background: var(--main-color); position: absolute; bottom: -12px; right: 50%; transform: translateX(50%); border-radius: 2px; }
 
-        /* تنسيقات الأزرار */
-        .btn {
-            padding: 12px 25px; border-radius: 10px; border: none; cursor: pointer;
-            font-family: 'Cairo'; font-weight: bold; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-size: 1rem; display: inline-flex; justify-content: center; align-items: center; gap: 8px;
-        }
-        .btn-primary { background: var(--main-color); color: white; box-shadow: 0 4px 15px rgba(0, 168, 132, 0.3); }
-        .btn-primary:hover { background: var(--main-hover); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 168, 132, 0.4); }
-        .btn-secondary { background: transparent; border: 2px solid; }
-        .btn-secondary:hover { transform: translateY(-3px); }
-
-        /* بطاقات الدورات */
-        .training-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-top: 40px; }
-        .course-card {
-            background: white; border-radius: 15px; overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05); transition: all 0.4s ease;
-            border-top: 6px solid var(--main-color); display: flex; flex-direction: column;
-        }
-        .course-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-        .course-header { padding: 25px 20px; background: #f9fdfc; border-bottom: 1px solid #f0f0f0; }
+        .training-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-top: 40px; padding: 0 5%; }
+        
+        /* تصميم كروت الدورات الموحد */
+        .course-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.05); transition: 0.4s; border-top: 6px solid var(--main-color); display: flex; flex-direction: column; }
+        .course-card:hover { transform: translateY(-10px); }
+        .course-header { padding: 25px 20px; background: #f9fdfc; }
         .course-category { background: var(--main-color); color: white; padding: 6px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
         .course-body { padding: 25px 20px; flex-grow: 1; }
-        .course-body p { color: #666; line-height: 1.6; }
-        .course-info-list { list-style: none; padding: 0; margin: 0; font-size: 0.95rem; color: #555; }
+        .course-info-list { list-style: none; padding: 0; margin: 0; font-size: 0.95rem; }
         .course-info-list li { margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
-        .course-info-list i { color: var(--main-color); width: 25px; text-align: center; font-size: 1.1rem; }
+        .course-info-list i { color: var(--main-color); width: 25px; text-align: center; }
         .availability { font-weight: bold; color: var(--accent-orange); background: #fdebd0; padding: 2px 8px; border-radius: 5px; }
-        .course-footer { padding: 20px; background: #fcfcfc; border-top: 1px solid #f0f0f0; }
-
-        /* قسم الترشيح */
-        .nominate-section {
-            background: linear-gradient(135deg, var(--dark-blue), #2c3e50);
-            color: white; padding: 50px 30px; border-radius: 20px; margin-top: 60px; text-align: center;
-            box-shadow: 0 15px 30px rgba(30, 39, 46, 0.2);
-        }
-        .nominate-section i.fa-lightbulb { animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
-        .upcoming-badge { background: var(--accent-orange); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; margin-bottom: 5px; display: inline-block; }
-
-        /* تنسيقات النافذة المنبثقة (Modal) وحقول الإدخال */
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); }
-        .modal-content { background-color: #fff; margin: 8% auto; padding: 40px; border-radius: 20px; position: relative; animation: slideDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
-        @keyframes slideDown { from { transform: translateY(-50px) scale(0.9); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
-        .close-btn { position: absolute; left: 20px; top: 15px; font-size: 32px; cursor: pointer; color: #aaa; transition: 0.3s; }
-        .close-btn:hover { color: var(--accent-orange); transform: rotate(90deg); }
         
-        .modal form input, .modal form textarea {
-            padding: 15px; border: 2px solid #eee; border-radius: 10px; font-family: 'Cairo'; 
-            font-size: 1rem; width: 100%; box-sizing: border-box; transition: all 0.3s ease; background: #fafafa;
-        }
-        .modal form input:focus, .modal form textarea:focus {
-            border-color: var(--main-color); background: #fff; outline: none; box-shadow: 0 0 0 4px rgba(0, 168, 132, 0.1);
-        }
+        .btn { padding: 12px 25px; border-radius: 10px; border: none; cursor: pointer; font-family: 'Cairo'; font-weight: bold; width: 100%; transition: 0.3s; }
+        .btn-primary { background: var(--main-color); color: white; }
+        .btn-secondary { background: transparent; border: 2px solid var(--accent-orange); color: var(--accent-orange); }
 
-        /* تنسيقات القائمة السريعة مع التمرير */
-        .quick-access-btn {
-            position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, var(--main-color), #007a60); color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; cursor: pointer; box-shadow: 0 10px 25px rgba(0, 168, 132, 0.4); z-index: 1001; transition: 0.3s;
-        }
-        .quick-access-btn:hover { transform: scale(1.1) rotate(15deg); }
+        /* الترشيح وModal */
+        .nominate-section { background: linear-gradient(135deg, var(--dark-blue), #2c3e50); color: white; padding: 50px 30px; border-radius: 20px; margin: 60px 5%; text-align: center; }
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); }
+        .modal-content { background: white; margin: 8% auto; padding: 40px; border-radius: 20px; position: relative; max-width: 450px; }
+        .close-btn { position: absolute; left: 20px; top: 15px; font-size: 32px; cursor: pointer; color: #aaa; }
+        .close-btn:hover { color: #e74c3c; }
 
-        .quick-menu {
-            display: none; position: fixed; bottom: 110px; right: 30px; background: white; width: 260px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.15); z-index: 1000; border: 1px solid #eee; animation: fadeInUp 0.3s ease;
-            /* تفعيل التمرير (Scroll) */
-            max-height: 400px;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: var(--main-color) #f0f0f0;
-        }
+        .quick-access-btn { position: fixed; bottom: 30px; right: 30px; background: var(--main-color); color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; cursor: pointer; z-index: 1001; transition: 0.3s; }
+        .quick-access-btn:hover, .quick-access-btn.active-btn { transform: scale(1.1) rotate(90deg); background: var(--dark-blue); }
         
-        /* تصميم شريط التمرير للقائمة السريعة */
-        .quick-menu::-webkit-scrollbar { width: 6px; }
-        .quick-menu::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 10px; }
-        .quick-menu::-webkit-scrollbar-thumb { background: var(--main-color); border-radius: 10px; }
+        .quick-menu { display: none; position: fixed; bottom: 110px; right: 30px; background: white; width: 260px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.15); z-index: 1000; max-height: 400px; overflow-y: auto; border: 1px solid #eee; }
+        .quick-menu.active { display: block !important; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .quick-menu ul { list-style: none; padding: 10px 0; margin: 0; }
+        .quick-menu li { border-bottom: 1px solid #f9f9f9; }
+        .quick-menu li a { display: flex; align-items: center; gap: 15px; padding: 12px 20px; text-decoration: none; color: var(--dark-blue); font-weight: 700; transition: 0.3s; }
+        .quick-menu li a:hover { background: var(--light-bg); color: var(--main-color); padding-right: 30px; }
+        .quick-menu li a i { width: 25px; text-align: center; color: var(--main-color); font-size: 1.2rem; transition: 0.3s; }
+        .quick-menu li a:hover i { transform: scale(1.2); }
+        
+        footer { text-align: center; padding: 30px; background: var(--dark-blue); color: white; margin-top: 60px; }
 
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* ========================================= */
+        /* التنسيقات المضافة لزر ونافذة المبرمج */
+        /* ========================================= */
+        .nav-dev-btn { 
+            background: rgba(0, 168, 132, 0.1); 
+            color: var(--main-color) !important; 
+            border: 1px solid var(--main-color); 
+            padding: 6px 15px !important; 
+            border-radius: 10px; 
+            margin-right: 10px; 
+            font-weight: 900; 
+            transition: 0.3s; 
+            cursor: pointer; 
+            display: inline-flex; 
+            align-items: center; 
+        }
+        .nav-dev-btn:hover { 
+            background: var(--main-color); 
+            color: white !important; 
+            box-shadow: 0 4px 15px rgba(0,168,132,0.4); 
+            transform: translateY(-2px); 
+        }
 
-        .quick-menu ul { list-style: none; padding: 10px; margin: 0; }
-        .quick-menu li a { display: flex; align-items: center; gap: 15px; padding: 12px 15px; text-decoration: none; color: #444; transition: 0.2s; border-radius: 10px; font-weight: 600; }
-        .quick-menu li a:hover { background: #e8f6f3; color: var(--main-color); transform: translateX(-5px); }
-        .quick-menu i { width: 20px; text-align: center; color: var(--main-color); }
+        .copyright-btn { 
+            background: rgba(255,255,255,0.05); 
+            border: 1px solid rgba(255,255,255,0.2); 
+            color: #fff; 
+            padding: 10px 25px; 
+            border-radius: 30px; 
+            cursor: pointer; 
+            font-family: 'Cairo'; 
+            font-size: 1rem; 
+            margin-top: 15px; 
+            transition: 0.3s; 
+            font-weight: bold; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+        .copyright-btn:hover { 
+            background: var(--main-color); 
+            border-color: var(--main-color); 
+            transform: translateY(-3px); 
+            box-shadow: 0 5px 15px rgba(0,168,132,0.4); 
+        }
 
-        footer { text-align: center; padding: 30px; background: var(--dark-blue); color: white; margin-top: 60px; font-weight: 600; }
+        .dev-modal { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); opacity: 0; transition: opacity 0.3s ease; }
+        .dev-modal.show-modal { display: flex; opacity: 1; justify-content: center; align-items: center; }
+        .dev-content { background: white; width: 90%; max-width: 420px; padding: 40px 30px; border-radius: 25px; text-align: center; position: relative; border-bottom: 8px solid var(--main-color); color: #333; box-shadow: 0 25px 50px rgba(0,0,0,0.4); transform: translateY(-50px); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .dev-modal.show-modal .dev-content { transform: translateY(0); opacity: 1; }
+        .dev-img { width: 140px; height: 140px; border-radius: 50%; border: 5px solid var(--main-color); margin-bottom: 20px; object-fit: cover; box-shadow: 0 10px 25px rgba(0,168,132,0.4); padding: 4px; background: white; }
+        .close-dev { position: absolute; left: 25px; top: 20px; font-size: 30px; cursor: pointer; color: #aaa; transition: 0.3s; line-height: 1; }
+        .close-dev:hover { color: #e74c3c; transform: rotate(90deg) scale(1.2); }
+        .dev-contact-info { text-align: right; margin-top: 25px; background: #f4fdfa; padding: 25px; border-radius: 15px; border: 2px dashed var(--main-color); }
+        .dev-contact-info p { margin: 15px 0; font-size: 1.1rem; display: flex; align-items: center; gap: 15px; font-weight: bold; }
+        .dev-contact-info a { color: var(--dark-blue); text-decoration: none; transition: 0.3s; }
+        .dev-contact-info a:hover { color: var(--main-color); padding-right: 5px; }
+        .dev-contact-info i { color: var(--main-color); width: 25px; font-size: 1.3rem; text-align: center; }
+
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; gap: 15px; padding: 10px; }
+            .nav-links { display: flex; flex-wrap: nowrap; overflow-x: auto; width: 100%; justify-content: flex-start; padding-bottom: 5px; -webkit-overflow-scrolling: touch; }
+            .nav-links::-webkit-scrollbar { display: none; }
+            .nav-links li { flex: 0 0 auto; }
+        }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <a href="index.html" class="logo">
-            <i class="fas fa-heart-pulse"></i> شبكة الممرضين <span>السودانيين</span>
-        </a>
+        <a href="index.html" class="logo"><i class="fas fa-heart-pulse"></i> شبكة الممرضين <span>السودانيين</span></a>
         <ul class="nav-links">
             <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
             <li><a href="training.html" style="color: var(--main-color);"><i class="fas fa-users"></i> التدريب</a></li>
+            <li><button class="nav-dev-btn" onclick="openDevModal(event)"><i class="fas fa-code"></i> المبرمج</button></li>
         </ul>
     </nav>
 
     <header class="hero">
         <div class="hero-content">
-            <h1>مركز <span class="highlight" style="color: var(--accent-yellow);">التدريب والترشيح</span></h1>
+            <h1>مركز <span style="color: var(--accent-yellow);">التدريب والترشيح</span></h1>
             <p>سجل في دوراتنا الحالية، ترقب برامجنا القادمة، أو شاركنا بترشيحك.</p>
         </div>
     </header>
 
-    <section class="section" style="padding: 50px 20px;">
-        <div class="container" style="max-width: 1200px; margin: auto;">
-            
-            <h2 class="section-title">الدورات التدريبية المتاحة (3 دورات)</h2>
-            <div class="training-grid">
-                <div class="course-card">
-                    <div class="course-header">
-                        <span class="course-category">طوارئ</span>
-                        <h3 style="margin: 15px 0 5px 0; color: var(--dark-blue);">إنعاش قلبي رئوي (CPR/BLS)</h3>
-                    </div>
-                    <div class="course-body">
-                        <ul class="course-info-list">
-                            <li><i class="fas fa-calendar-alt"></i> <b>تاريخ البدء:</b> 15 مارس 2026</li>
-                            <li><i class="fas fa-clock"></i> <b>المدة:</b> 10 ساعات تدريبية</li>
-                            <li><i class="fas fa-users"></i> <b>العدد المتاح:</b> <span class="availability">5 مقاعد</span></li>
-                            <li><i class="fas fa-map-marker-alt"></i> <b>الحضور:</b> مقر الشبكة</li>
-                        </ul>
-                    </div>
-                    <div class="course-footer">
-                        <button class="btn btn-primary" style="width: 100%;" onclick="openModal('regModal', 'إنعاش قلبي رئوي (CPR/BLS)')">سجل الآن</button>
-                    </div>
-                </div>
-
-                <div class="course-card" style="border-top-color: #27ae60;">
-                    <div class="course-header">
-                        <span class="course-category" style="background:#27ae60;">وقاية</span>
-                        <h3 style="margin: 15px 0 5px 0; color: var(--dark-blue);">مكافحة العدوى والتعقيم</h3>
-                    </div>
-                    <div class="course-body">
-                        <ul class="course-info-list">
-                            <li><i class="fas fa-calendar-alt"></i> <b>تاريخ البدء:</b> 22 مارس 2026</li>
-                            <li><i class="fas fa-clock"></i> <b>المدة:</b> 4 أيام (مسائي)</li>
-                            <li><i class="fas fa-users"></i> <b>العدد المتاح:</b> <span class="availability">10 مقاعد</span></li>
-                            <li><i class="fas fa-laptop"></i> <b>الحضور:</b> تعليم هجين</li>
-                        </ul>
-                    </div>
-                    <div class="course-footer">
-                        <button class="btn btn-primary" style="width: 100%; background:#27ae60;" onclick="openModal('regModal', 'مكافحة العدوى والتعقيم')">سجل الآن</button>
-                    </div>
-                </div>
-
-                <div class="course-card" style="border-top-color: var(--dark-blue);">
-                    <div class="course-header">
-                        <span class="course-category" style="background:var(--dark-blue);">أبحاث</span>
-                        <h3 style="margin: 15px 0 5px 0; color: var(--dark-blue);">التحليل الإحصائي (SPSS)</h3>
-                    </div>
-                    <div class="course-body">
-                        <ul class="course-info-list">
-                            <li><i class="fas fa-calendar-alt"></i> <b>تاريخ البدء:</b> 1 أبريل 2026</li>
-                            <li><i class="fas fa-clock"></i> <b>المدة:</b> 15 ساعة</li>
-                            <li><i class="fas fa-users"></i> <b>العدد المتاح:</b> <span class="availability">18 مقعد</span></li>
-                            <li><i class="fas fa-desktop"></i> <b>الحضور:</b> أونلاين (Zoom)</li>
-                        </ul>
-                    </div>
-                    <div class="course-footer">
-                        <button class="btn btn-primary" style="width: 100%; background:var(--dark-blue);" onclick="openModal('regModal', 'التحليل الإحصائي (SPSS)')">سجل الآن</button>
-                    </div>
-                </div>
-            </div>
-
-            <h2 class="section-title" style="margin-top: 80px;">دورات تدريبية لاحقاً (3 برامج مرتقبة)</h2>
-            <div class="training-grid">
-                <div class="course-card" style="border-top-color: var(--accent-orange); opacity: 0.95;">
-                    <div class="course-header">
-                        <span class="upcoming-badge">مرتقب</span>
-                        <h3 style="margin: 15px 0 5px 0; color: var(--dark-blue);">تمريض الكلى والديلزة</h3>
-                    </div>
-                    <div class="course-body"><p>برنامج تخصصي متقدم يشمل التدريب السريري في وحدات غسيل الكلى المعتمدة.</p></div>
-                    <div class="course-footer">
-                        <button class="btn btn-secondary" style="width: 100%; border-color: var(--accent-orange); color: var(--accent-orange);" onclick="openModal('notifyModal', 'تمريض الكلى والديلزة')"><i class="fas fa-bell"></i> أعلمني عند البدء</button>
-                    </div>
-                </div>
-
-                <div class="course-card" style="border-top-color: var(--accent-orange); opacity: 0.95;">
-                    <div class="course-header">
-                        <span class="upcoming-badge">مرتقب</span>
-                        <h3 style="margin: 15px 0 5px 0; color: var(--dark-blue);">التمريض النفسي المجتمعي</h3>
-                    </div>
-                    <div class="course-body"><p>دورة في تقديم الدعم النفسي وإدارة حالات الاضطراب في مراكز الصحة الأولية.</p></div>
-                    <div class="course-footer">
-                        <button class="btn btn-secondary" style="width: 100%; border-color: var(--accent-orange); color: var(--accent-orange);" onclick="openModal('notifyModal', 'التمريض النفسي المجتمعي')"><i class="fas fa-bell"></i> أعلمني عند البدء</button>
-                    </div>
-                </div>
-
-                <div class="course-card" style="border-top-color: var(--accent-orange); opacity: 0.95;">
-                    <div class="course-header">
-                        <span class="upcoming-badge">مرتقب</span>
-                        <h3 style="margin: 15px 0 5px 0; color: var(--dark-blue);">إدارة الجودة في التمريض</h3>
-                    </div>
-                    <div class="course-body"><p>تعلم معايير الجودة العالمية وكيفية تطبيقها في الأقسام التمريضية المختلفة.</p></div>
-                    <div class="course-footer">
-                        <button class="btn btn-secondary" style="width: 100%; border-color: var(--accent-orange); color: var(--accent-orange);" onclick="openModal('notifyModal', 'إدارة الجودة في التمريض')"><i class="fas fa-bell"></i> أعلمني عند البدء</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="nominate-section">
-                <i class="fas fa-lightbulb" style="font-size: 3.5rem; color: var(--accent-yellow); margin-bottom: 20px;"></i>
-                <h2 style="font-size: 2.2rem; margin-top: 0;">رشح موضوعاً تدريبياً</h2>
-                <p style="margin-bottom: 30px; font-size: 1.1rem;">ساهم في بناء الخطة التدريبية القادمة؛ رشح الدورة التي تحتاجها لمهنتك.</p>
-                <button class="btn btn-primary" style="padding: 18px 45px; background: var(--accent-yellow); color: #333; font-size: 1.1rem;" onclick="openModal('nominateModal', '')">أرسل ترشيحك الآن <i class="fas fa-paper-plane"></i></button>
-            </div>
+    <h2 class="section-title" id="availableTitle">الدورات التدريبية المتاحة</h2>
+    <div class="training-grid" id="availableContainer">
         </div>
-    </section>
+
+    <h2 class="section-title" id="upcomingTitle">دورات تدريبية لاحقاً (برامج مرتقبة)</h2>
+    <div class="training-grid" id="upcomingContainer">
+        </div>
+
+    <div class="nominate-section">
+        <i class="fas fa-lightbulb" style="font-size: 3.5rem; color: var(--accent-yellow); margin-bottom: 20px;"></i>
+        <h2>رشح موضوعاً تدريبياً</h2>
+        <button class="btn btn-primary" style="width:auto; background: var(--accent-yellow); color: #333;" onclick="openModal('nominateModal', '')">أرسل ترشيحك الآن</button>
+    </div>
 
     <div id="regModal" class="modal">
-        <div class="modal-content" style="max-width: 450px;">
+        <div class="modal-content">
             <span class="close-btn" onclick="closeModals()">&times;</span>
-            <h2 id="regTitle" style="color: var(--dark-blue); border-bottom: 3px solid var(--main-color); padding-bottom: 15px; margin-top: 0;">التسجيل في الدورة</h2>
-            <form id="regForm" action="https://formspree.io/f/meerewpw" method="POST" style="display: flex; flex-direction: column; gap: 20px; margin-top: 25px;">
-                <input type="hidden" name="_subject" value="🎓 طلب تسجيل في دورة تدريبية">
-                <input type="hidden" name="نوع_الطلب" value="🎓 تسجيل دورة">
+            <h2 id="regTitle">التسجيل في الدورة</h2>
+            <form id="regForm" action="https://formspree.io/f/meerewpw" method="POST">
                 <input type="hidden" name="اسم_الدورة" id="hiddenCourseReg">
-                <input type="text" name="الاسم_الكامل" placeholder="الاسم الكامل" required>
-                <input type="tel" name="رقم_الواتساب" placeholder="رقم الواتساب" required>
-                <button type="submit" class="btn btn-primary" style="padding: 15px; font-size: 1.1rem;">تأكيد طلب التسجيل <i class="fas fa-check-circle"></i></button>
+                <input type="text" name="الاسم_الكامل" placeholder="الاسم الكامل" required style="width:100%; margin-bottom:10px; padding:10px; border-radius:10px; border:1px solid #ddd;">
+                <input type="tel" name="رقم_الواتساب" placeholder="رقم الواتساب" required style="width:100%; margin-bottom:15px; padding:10px; border-radius:10px; border:1px solid #ddd;">
+                <button type="submit" class="btn btn-primary">تأكيد طلب التسجيل</button>
             </form>
         </div>
     </div>
 
     <div id="notifyModal" class="modal">
-        <div class="modal-content" style="max-width: 450px; text-align: center;">
+        <div class="modal-content">
             <span class="close-btn" onclick="closeModals()">&times;</span>
-            <i class="fas fa-bell" style="font-size: 3.5rem; color: var(--accent-orange); margin-bottom: 20px;"></i>
-            <h2 id="notifyTitle" style="color: var(--dark-blue); margin-top: 0;">أعلمني عند البدء</h2>
-            <form id="notifyForm" action="https://formspree.io/f/meerewpw" method="POST" style="display: flex; flex-direction: column; gap: 20px; margin-top: 25px;">
-                <input type="hidden" name="_subject" value="🔔 طلب تنبيه لدورة مرتقبة">
-                <input type="hidden" name="نوع_الطلب" value="🔔 تنبيه دورة مرتقبة">
+            <h2 id="notifyTitle">أعلمني عند البدء</h2>
+            <form id="notifyForm" action="https://formspree.io/f/meerewpw" method="POST">
                 <input type="hidden" name="اسم_الدورة" id="hiddenCourseNotify">
-                <input type="email" name="البريد_الإلكتروني" placeholder="أدخل بريدك الإلكتروني هنا" required style="text-align: center;">
-                <button type="submit" class="btn btn-secondary" style="background:var(--accent-orange); border:none; color:white; padding: 15px; font-size: 1.1rem;">تفعيل التنبيه <i class="fas fa-bolt"></i></button>
+                <input type="email" name="البريد_الإلكتروني" placeholder="أدخل بريدك الإلكتروني" required style="width:100%; margin-bottom:15px; padding:10px; border-radius:10px; border:1px solid #ddd;">
+                <button type="submit" class="btn btn-secondary" style="background:var(--accent-orange); color:white;">تفعيل التنبيه</button>
             </form>
         </div>
     </div>
 
     <div id="nominateModal" class="modal">
-        <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-content">
             <span class="close-btn" onclick="closeModals()">&times;</span>
-            <h2 style="color: var(--dark-blue); border-bottom: 3px solid var(--accent-yellow); padding-bottom: 15px; margin-top: 0;"><i class="fas fa-lightbulb" style="color: var(--accent-yellow);"></i> رشح دورة جديدة</h2>
-            <form id="nomForm" action="https://formspree.io/f/meerewpw" method="POST" style="display: flex; flex-direction: column; gap: 20px; margin-top: 25px;">
-                <input type="hidden" name="_subject" value="💡 ترشيح دورة تدريبية جديدة">
-                <input type="hidden" name="نوع_الطلب" value="💡 ترشيح دورة">
-                <input type="text" name="اسم_الدورة_المقترحة" placeholder="اسم الدورة المقترحة" required>
-                <textarea name="أهمية_الترشيح" placeholder="لماذا هذا الترشيح مهم وكيف سيفيد الممرضين؟" rows="5" required></textarea>
-                <button type="submit" class="btn btn-primary" style="background:var(--accent-yellow); color:#333; border:none; padding: 15px; font-size: 1.1rem;">إرسال الترشيح الآن <i class="fas fa-paper-plane"></i></button>
+            <h2>رشح دورة جديدة</h2>
+            <form id="nomForm" action="https://formspree.io/f/meerewpw" method="POST">
+                <input type="text" name="اسم_الدورة_المقترحة" placeholder="اسم الدورة" required style="width:100%; margin-bottom:10px; padding:10px; border-radius:10px; border:1px solid #ddd;">
+                <textarea name="أهمية_الترشيح" placeholder="لماذا هذا الترشيح مهم؟" required style="width:100%; height:100px; padding:10px; border-radius:10px; border:1px solid #ddd;"></textarea>
+                <button type="submit" class="btn btn-primary">إرسال الترشيح</button>
             </form>
         </div>
     </div>
 
-    <div class="quick-access-btn" onclick="toggleQuickMenu()" title="القائمة السريعة">
-        <i class="fas fa-th-large"></i>
+    <div class="quick-access-btn" id="quickToggleBtn" title="كل الشاشات">
+        <i class="fas fa-th-large" style="pointer-events: none;"></i>
     </div>
 
     <div id="quickMenu" class="quick-menu">
@@ -345,89 +237,154 @@
             <li><a href="forum.html"><i class="fas fa-comments"></i> صوت التمريض (المنتدى)</a></li>
             <li><a href="locator.html"><i class="fas fa-search-location"></i> الرادار الطبي</a></li>
             <li><a href="archive.html"><i class="fas fa-book-medical"></i> أرشيف الأبحاث</a></li>
-            <li><a href="upload-research.html"><i class="fas fa-cloud-upload-alt"></i> شارك بحثك العلمي</a></li>
+            <li><a href="upload.html"><i class="fas fa-cloud-upload-alt"></i> شارك بحثك العلمي</a></li>
         </ul>
     </div>
 
+    <div id="devModal" class="dev-modal">
+        <div class="dev-content">
+            <span class="close-dev" id="closeDevBtn">&times;</span>
+            
+            <img src="me.jpeg" alt="المبرمج الرشيد كمال" class="dev-img" onerror="this.src='https://via.placeholder.com/150?text=Al-Rasheed'">
+            
+            <h3 style="color: var(--dark-blue); margin-bottom: 5px; font-weight: 900; font-size: 1.6rem;">تطوير المبرمج: الرشيد كمال</h3>
+            <p style="color: #666; font-size: 1.1rem; font-weight: bold;">متخصص في حلول الويب والأنظمة الصحية</p>
+            
+            <div class="dev-contact-info">
+                <p><i class="fas fa-phone-alt"></i> <a href="tel:0127825456">0127825456</a></p>
+                <p><i class="fas fa-phone-alt"></i> <a href="tel:0964278052">0964278052</a></p>
+                <p><i class="fas fa-envelope"></i> <a href="mailto:alrsheedkamal6002@gmail.com">alrsheedkamal6002@gmail.com</a></p>
+            </div>
+
+            <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
+            <p style="margin-top: 10px; font-weight: 900; font-size: 1.2rem; color: var(--main-color);">Al-Rasheed Company © 2026</p>
+            <p style="font-size: 0.9rem; color: #888; font-weight: bold;">صنع بكل فخر لدعم الكوادر الصحية السودانية</p>
+        </div>
+    </div>
+
     <footer>
-        <p>جميع الحقوق محفوظة &copy; 2026 - شبكة الممرضين السودانيين</p>
+        <p style="margin: 0;">جميع الحقوق محفوظة © 2026 - شبكة الممرضين السودانيين</p>
+        <button class="copyright-btn" onclick="openDevModal(event)">
+            <i class="fas fa-code"></i> حقوق البرمجة والتطوير
+        </button>
     </footer>
 
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+
     <script>
-        // وظائف النوافذ المنبثقة
-        function openModal(modalId, title) {
-            const modal = document.getElementById(modalId);
-            if (title) {
-                if (modalId === 'regModal') {
-                    document.getElementById('regTitle').innerText = "التسجيل في: " + title;
-                    document.getElementById('hiddenCourseReg').value = title;
-                }
-                if (modalId === 'notifyModal') {
-                    document.getElementById('notifyTitle').innerText = "تنبيه لدورة: " + title;
-                    document.getElementById('hiddenCourseNotify').value = title;
-                }
-            }
-            modal.style.display = "block";
-        }
-
-        function closeModals() {
-            document.querySelectorAll('.modal').forEach(m => m.style.display = "none");
-        }
-
-        // إغلاق النوافذ والقائمة السريعة عند الضغط في أي مكان فارغ
-        window.onclick = (e) => { 
-            if (e.target.classList.contains('modal')) closeModals(); 
-            
-            // إغلاق القائمة السريعة إذا تم الضغط خارجها
-            if (!e.target.closest('.quick-access-btn') && !e.target.closest('.quick-menu')) {
-                document.getElementById('quickMenu').style.display = 'none';
-            }
+        const firebaseConfig = {
+            apiKey: "AIzaSyBltsN_YuPhicWCv4MmbYf7-kSp9u66lBE",
+            authDomain: "sudanse-nursing-network.firebaseapp.com",
+            databaseURL: "https://sudanse-nursing-network-default-rtdb.firebaseio.com/",
+            projectId: "sudanse-nursing-network",
+            storageBucket: "sudanse-nursing-network.firebasestorage.app",
+            messagingSenderId: "577008528931",
+            appId: "1:577008528931:web:febfbc9ce086a07b8ccb96"
         };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
 
-        // القائمة السريعة
-        function toggleQuickMenu() {
-            const menu = document.getElementById('quickMenu');
-            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-        }
+        // جلب وتوزيع البيانات تلقائياً
+        database.ref('training_center').on('value', (snapshot) => {
+            const availCont = document.getElementById('availableContainer');
+            const upCont = document.getElementById('upcomingContainer');
+            availCont.innerHTML = ''; upCont.innerHTML = '';
+            
+            let availCount = 0; let upCount = 0;
 
-        // سكريبت الإرسال FormSubmit كما هو مع ميزات بصرية
-        function handleFormSubmit(formId, successMessage) {
-            const form = document.getElementById(formId);
-            if(form) {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    const submitBtn = form.querySelector('button[type="submit"]');
-                    const originalBtnText = submitBtn.innerHTML;
+            snapshot.forEach(child => {
+                const c = child.val();
+                const card = `
+                    <div class="course-card" style="border-top-color: ${c.status === 'available' ? 'var(--main-color)' : 'var(--accent-orange)'}">
+                        <div class="course-header">
+                            <span class="course-category" style="background: ${c.status === 'available' ? 'var(--main-color)' : 'var(--accent-orange)'}">${c.category}</span>
+                            <h3 style="margin-top:15px;">${c.title}</h3>
+                        </div>
+                        <div class="course-body">
+                            <ul class="course-info-list">
+                                <li><i class="fas fa-calendar-alt"></i> <b>البدء:</b> ${c.date}</li>
+                                <li><i class="fas fa-clock"></i> ${c.info}</li>
+                                ${c.status === 'available' ? `<li><i class="fas fa-users"></i> <span class="availability">${c.seats}</span></li>` : ''}
+                            </ul>
+                        </div>
+                        <div style="padding:20px;">
+                            ${c.status === 'available' ? 
+                                `<button class="btn btn-primary" onclick="openModal('regModal', '${c.title}')">سجل الآن</button>` :
+                                `<button class="btn btn-secondary" onclick="openModal('notifyModal', '${c.title}')">أعلمني عند البدء</button>`
+                            }
+                        </div>
+                    </div>`;
+                
+                if(c.status === 'available') { availCont.innerHTML += card; availCount++; }
+                else { upCont.innerHTML += card; upCount++; }
+            });
+            document.getElementById('availableTitle').innerText = `الدورات التدريبية المتاحة (${availCount} دورة)`;
+        });
 
-                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
-                    submitBtn.disabled = true;
-
-                    fetch(form.action, {
-                        method: form.method,
-                        body: new FormData(form),
-                        headers: { 'Accept': 'application/json' }
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            alert(successMessage);
-                            form.reset();
-                            closeModals();
-                        } else {
-                            alert('عذراً، حدثت مشكلة أثناء الإرسال.');
-                        }
-                    })
-                    .catch(error => alert('خطأ في الاتصال! يرجى التأكد من الإنترنت.'))
-                    .finally(() => {
-                        submitBtn.innerHTML = originalBtnText;
-                        submitBtn.disabled = false;
-                    });
-                });
+        // وظائف الرشيد الأصلية للمودالز
+        function openModal(id, title) {
+            document.getElementById(id).style.display = 'block';
+            if(title) {
+                if(id === 'regModal') { document.getElementById('regTitle').innerText = "سجل في: " + title; document.getElementById('hiddenCourseReg').value = title; }
+                if(id === 'notifyModal') { document.getElementById('notifyTitle').innerText = "تنبيه لـ: " + title; document.getElementById('hiddenCourseNotify').value = title; }
             }
         }
+        function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
+        
+        // ========================================================
+        // سكريبت القائمة السريعة ونافذة المبرمج (الجديد)
+        // ========================================================
+        const quickMenu = document.getElementById('quickMenu');
+        const quickToggleBtn = document.getElementById('quickToggleBtn');
 
-        handleFormSubmit('regForm', 'تم استلام طلب التسجيل بنجاح! سنتواصل معك قريباً.');
-        handleFormSubmit('notifyForm', 'تم تفعيل التنبيه! سنخطرك فور بدء الدورة.');
-        handleFormSubmit('nomForm', 'شكراً لترشيحك! سنقوم بدراسة مقترحك.');
+        if (quickToggleBtn && quickMenu) {
+            quickToggleBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation(); // منع انتقال النقرة لإغلاقها فوراً
+                quickMenu.classList.toggle('active');
+                quickToggleBtn.classList.toggle('active-btn');
+            });
+        }
+
+        // مستمع نقرات لإغلاق النوافذ عند النقر خارجها
+        document.addEventListener('click', function(e) {
+            if (quickMenu && quickToggleBtn) {
+                if (!quickMenu.contains(e.target) && !quickToggleBtn.contains(e.target)) {
+                    quickMenu.classList.remove('active');
+                    quickToggleBtn.classList.remove('active-btn');
+                }
+            }
+            
+            const devModal = document.getElementById('devModal');
+            if (devModal && e.target === devModal) {
+                devModal.classList.remove('show-modal');
+            }
+            
+            // إغلاق موديلات الدورات عند النقر خارجها
+            if(e.target.classList.contains('modal')) {
+                closeModals();
+            }
+        });
+
+        // دوال فتح وإغلاق نافذة المبرمج
+        function openDevModal(e) { 
+            if(e) { e.preventDefault(); e.stopPropagation(); }
+            document.getElementById('devModal').classList.add('show-modal'); 
+        }
+        
+        const closeDevBtn = document.getElementById('closeDevBtn');
+        if (closeDevBtn) {
+            closeDevBtn.addEventListener('click', function() {
+                document.getElementById('devModal').classList.remove('show-modal');
+            });
+        }
+        
+        // للتوافق مع دالة toggleQuickMenu القديمة إذا تم استدعاؤها من مكان آخر
+        function toggleQuickMenu() {
+            if(quickMenu) quickMenu.classList.toggle('active');
+            if(quickToggleBtn) quickToggleBtn.classList.toggle('active-btn');
+        }
     </script>
 </body>
 </html>

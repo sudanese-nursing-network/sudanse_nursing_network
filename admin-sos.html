@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة نداءات الاستغاثة | لوحة التحكم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* التنسيقات الأصلية الخاصة بك كما هي تماماً بدون حذف أي حرف */
+        :root { --sos-red: #e74c3c; --dark-blue: #1e272e; }
+        body { font-family: 'Cairo', sans-serif; background-color: #f0f2f5; padding: 20px; direction: rtl; }
+        .admin-card { background: white; max-width: 600px; margin: 0 auto; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-top: 8px solid var(--sos-red); }
+        h2 { color: var(--dark-blue); text-align: center; margin-bottom: 25px; }
+        .form-section { background: #f8f9fa; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #eef0f2; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; color: #34495e; }
+        input, select, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 10px; font-family: 'Cairo'; box-sizing: border-box; }
+        .btn-update { width: 100%; padding: 15px; background: linear-gradient(45deg, var(--sos-red), #c0392b); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-update:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(231,76,60,0.4); }
+        .sos-list { margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; }
+        .sos-item { background: #fff; border: 1px solid #eee; padding: 10px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .btn-delete { background: #fee2e2; color: #ef4444; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
+        
+        /* --- الإضافات الجديدة الخاصة بشاشة الدخول وزر التعديل --- */
+        #loginSection { max-width: 420px; margin: 80px auto; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); text-align: center; border-top: 8px solid var(--sos-red); }
+        #adminPanel { display: none; /* هذا السطر يخفي اللوحة حتى يتم الدخول */ }
+        .user-select { margin-bottom: 15px; border: 2px solid #ddd; outline: none; }
+        .user-select:focus { border-color: var(--sos-red); }
+        .logout-link { display: block; text-align: center; margin-top: 25px; color: var(--sos-red); cursor: pointer; font-weight: bold; text-decoration: underline; transition: 0.3s; }
+        .logout-link:hover { color: #c0392b; }
+        .btn-edit { background: #e0f2fe; color: #0284c7; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-left: 5px; }
+    </style>
+</head>
+<body>
+
+<div id="loginSection">
+    <i class="fas fa-satellite-dish" style="font-size: 4rem; color: var(--sos-red); margin-bottom: 20px;"></i>
+    <h2>إدارة الاستغاثة العاجلة</h2>
+    <p style="color: #34495e; margin-bottom: 25px;">اختر حسابك وأدخل كلمة السر للتحكم بالنداءات</p>
+    
+    <select id="userName" class="user-select" style="width: 100%; padding: 12px; border-radius: 10px; font-family: 'Cairo';">
+        <option value="">-- اختر المستخدم --</option>
+        <option value="admin">أدمن الطوارئ</option>
+        <option value="user1">د. أحمد</option>
+        <option value="user2">الممرض الرشيد</option>
+    </select>
+
+    <input type="password" id="adminPass" placeholder="كلمة المرور السرية" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 10px; font-family: 'Cairo'; box-sizing: border-box; outline: none;">
+    <button class="btn-update" onclick="verifyAccess()">فتح اللوحة الآمنة</button>
+    <p id="loginError" style="color: #ef4444; display: none; margin-top: 15px; font-weight: bold;">بيانات الدخول غير صحيحة!</p>
+</div>
+
+<div id="adminPanel">
+    
+    <div class="admin-card">
+        <h2><i class="fas fa-satellite-dish"></i> إدارة نداءات الاستغاثة</h2>
+        
+        <div class="form-section">
+            <label>نوع الحالة (العنوان العريض)</label>
+            <input type="text" id="sosType" placeholder="مثلاً: تركيب فراشة (Canula)">
+            
+            <label>اسم المريض</label>
+            <input type="text" id="patientName" placeholder="مثلاً: أحمد (حالة سكري)">
+
+            <label>الموقع (الحي والمدينة)</label>
+            <input type="text" id="sosLoc" placeholder="مثلاً: أم درمان - الثورة">
+
+            <label>رقم هاتف المريض</label>
+            <input type="tel" id="sosPhone" placeholder="0123456789">
+
+            <label>رابط الموقع (Google Maps) - اختياري</label>
+            <input type="url" id="sosMap" placeholder="انسخ الرابط هنا">
+
+            <label>درجة الاستعجال</label>
+            <select id="sosUrgency">
+                <option value="urgent">حالة طارئة جداً (تحذير أحمر)</option>
+                <option value="normal">حالة عادية (برتقالي)</option>
+            </select>
+        </div>
+
+        <button class="btn-update" id="mainSubmitBtn" onclick="pushSOSToFirebase()">نشر نداء الاستغاثة الآن</button>
+        <div id="statusMsg" style="text-align:center; margin-top:15px; font-weight:bold;"></div>
+
+        <div class="sos-list">
+            <h3>النداءات النشطة حالياً:</h3>
+            <div id="activeSosList"></div>
+        </div>
+        
+        <span class="logout-link" onclick="location.reload()"><i class="fas fa-lock"></i> تسجيل الخروج وإقفال اللوحة</span>
+    </div>
+    </div>
+
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBltsN_YuPhicWCv4MmbYf7-kSp9u66lBE",
+        authDomain: "sudanse-nursing-network.firebaseapp.com",
+        databaseURL: "https://sudanse-nursing-network-default-rtdb.firebaseio.com/",
+        projectId: "sudanse-nursing-network",
+        storageBucket: "sudanse-nursing-network.firebasestorage.app",
+        messagingSenderId: "577008528931",
+        appId: "1:577008528931:web:febfbc9ce086a07b8ccb96"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // === الكود الخاص بتسجيل الدخول ===
+    const usersList = {
+        "admin": "0960",   
+        "user1": "SOS123",        
+        "user2": "096020"       // كلمة السر الخاصة بالرشيد
+    };
+
+    function verifyAccess() {
+        const user = document.getElementById('userName').value;
+        const pass = document.getElementById('adminPass').value;
+        const errorMsg = document.getElementById('loginError');
+
+        if (user && usersList[user] === pass) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+        } else {
+            errorMsg.style.display = 'block';
+            document.getElementById('adminPass').value = "";
+        }
+    }
+
+    // === متغيرات برمجة التعديل ===
+    let currentEditKey = null;
+    window.sosDataMap = {}; // لتخزين البيانات محلياً لتسهيل التعديل
+
+    // === الكود البرمجي الأصلي الخاص بك مع إضافة ميزة التعديل ===
+    function pushSOSToFirebase() {
+        const title = document.getElementById('sosType').value;
+        const patient = document.getElementById('patientName').value;
+        const loc = document.getElementById('sosLoc').value;
+        const phone = document.getElementById('sosPhone').value;
+        const urgency = document.getElementById('sosUrgency').value;
+        const map = document.getElementById('sosMap').value || "http://maps.google.com";
+
+        if (!title || !phone || !loc) return alert("يا الرشيد، املأ البيانات الأساسية!");
+
+        if (currentEditKey) {
+            // حالة التعديل (تحديث بيانات موجودة)
+            database.ref('sos_calls/' + currentEditKey).update({
+                title, patient, loc, phone, urgency, map,
+                time: new Date().toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'})
+            }).then(() => {
+                alert("تم تحديث نداء الاستغاثة بنجاح!");
+                resetForm();
+            });
+        } else {
+            // الكود الأصلي: حالة الإضافة الجديدة (لم يتم حذف أي شيء)
+            const newSosRef = database.ref('sos_calls').push();
+            newSosRef.set({
+                title, patient, loc, phone, urgency, map,
+                time: new Date().toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'})
+            }).then(() => {
+                alert("تم نشر النداء!");
+                resetForm();
+            });
+        }
+    }
+
+    function resetForm() {
+        document.getElementById('sosType').value = "";
+        document.getElementById('patientName').value = "";
+        document.getElementById('sosLoc').value = "";
+        document.getElementById('sosPhone').value = "";
+        document.getElementById('sosMap').value = "";
+        document.getElementById('sosUrgency').value = "urgent";
+        
+        currentEditKey = null;
+        const btn = document.getElementById('mainSubmitBtn');
+        btn.innerText = "نشر نداء الاستغاثة الآن";
+        btn.style.background = "linear-gradient(45deg, var(--sos-red), #c0392b)";
+    }
+
+    database.ref('sos_calls').on('value', (snapshot) => {
+        const list = document.getElementById('activeSosList');
+        list.innerHTML = '';
+        window.sosDataMap = {}; // تفريغ الذاكرة
+        
+        snapshot.forEach(child => {
+            const data = child.val();
+            window.sosDataMap[child.key] = data; // حفظ البيانات لزر التعديل
+            
+            // إضافة زر التعديل بجانب زر الحذف مع المحافظة على التصميم
+            list.innerHTML += `<div class="sos-item">
+                <span>${data.title} - ${data.patient}</span>
+                <div>
+                    <button class="btn-edit" onclick="prepareEdit('${child.key}')"><i class="fas fa-edit"></i> تعديل</button>
+                    <button class="btn-delete" onclick="deleteSos('${child.key}')"><i class="fas fa-trash"></i> حذف</button>
+                </div>
+            </div>`;
+        });
+    });
+
+    function deleteSos(key) {
+        if(confirm("هل تم تقديم الخدمة وحذف النداء؟")) database.ref('sos_calls/' + key).remove();
+    }
+
+    // دالة جديدة تقوم بسحب البيانات للخانات عند ضغط زر التعديل
+    function prepareEdit(key) {
+        const data = window.sosDataMap[key];
+        if(!data) return;
+        
+        document.getElementById('sosType').value = data.title || "";
+        document.getElementById('patientName').value = data.patient || "";
+        document.getElementById('sosLoc').value = data.loc || "";
+        document.getElementById('sosPhone').value = data.phone || "";
+        document.getElementById('sosUrgency').value = data.urgency || "urgent";
+        document.getElementById('sosMap').value = (data.map && data.map !== "http://maps.google.com") ? data.map : "";
+        
+        currentEditKey = key;
+        
+        // تغيير شكل الزر لتنبيه المستخدم أنه يقوم بتعديل وليس إضافة
+        const btn = document.getElementById('mainSubmitBtn');
+        btn.innerText = "حفظ التعديلات للنداء 💾";
+        btn.style.background = "linear-gradient(45deg, #0284c7, #0369a1)"; // لون أزرق لزر التعديل
+        
+        // الصعود لأعلى الشاشة تلقائياً
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>

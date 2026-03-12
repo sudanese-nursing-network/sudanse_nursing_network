@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الرادار الطبي | لوحة التحكم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --main-color: #00a884; --dark-blue: #1a237e; --bg-color: #f8fafc; }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--bg-color); padding: 20px; direction: rtl; margin: 0; }
+        
+        .admin-card { background: white; max-width: 800px; margin: 0 auto; padding: 40px; border-radius: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.08); border-top: 8px solid var(--main-color); animation: fadeIn 0.5s ease; }
+        h2 { color: var(--dark-blue); text-align: center; margin-bottom: 25px; font-weight: 900; font-size: 2rem; }
+        
+        .form-section { background: #ffffff; padding: 25px; border-radius: 20px; margin-bottom: 25px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.02); display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-section label { font-weight: bold; margin-bottom: 8px; color: #334155; display: block; }
+        .form-section .full-width { grid-column: 1 / -1; }
+        
+        input, select, textarea { width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 12px; font-family: 'Cairo'; box-sizing: border-box; outline: none; transition: 0.3s; font-size: 1rem; background: #f8fafc; }
+        input:focus, select:focus, textarea:focus { border-color: var(--main-color); background: white; box-shadow: 0 0 0 4px rgba(0, 168, 132, 0.1); }
+        
+        .btn-main { width: 100%; padding: 18px; background: linear-gradient(135deg, var(--main-color), var(--dark-blue)); color: white; border: none; border-radius: 15px; font-size: 1.3rem; font-weight: bold; cursor: pointer; transition: 0.4s; box-shadow: 0 10px 25px rgba(0, 168, 132, 0.3); }
+        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0, 168, 132, 0.4); }
+        
+        .data-list { margin-top: 40px; border-top: 2px dashed #cbd5e0; padding-top: 30px; }
+        .data-item { background: white; border: 1px solid #e2e8f0; padding: 20px; border-radius: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition: 0.3s; border-right: 5px solid var(--main-color); }
+        .data-item:hover { transform: translateX(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.05); }
+        
+        /* أزرار الإجراءات */
+        .action-btns { display: flex; gap: 10px; }
+        .btn-edit { background: #e0f2fe; color: #0284c7; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; font-family: 'Cairo'; transition: 0.3s; display: flex; align-items: center; gap: 5px; }
+        .btn-edit:hover { background: #bae6fd; }
+        .btn-delete { background: #fee2e2; color: #ef4444; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; font-family: 'Cairo'; transition: 0.3s; display: flex; align-items: center; gap: 5px; }
+        .btn-delete:hover { background: #fecaca; }
+        
+        /* شاشة الدخول */
+        #loginSection { max-width: 450px; margin: 10vh auto; background: white; padding: 50px; border-radius: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); text-align: center; border-top: 8px solid var(--main-color); }
+        #adminPanel { display: none; }
+        .logout-link { display: block; text-align: center; margin-top: 30px; color: #ef4444; cursor: pointer; font-weight: bold; font-size: 1.1rem; transition: 0.3s; }
+        .logout-link:hover { text-decoration: underline; color: #b91c1c; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media (max-width: 768px) { .form-section { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div id="loginSection">
+    <i class="fas fa-radar" style="font-size: 5rem; color: var(--main-color); margin-bottom: 20px;"></i>
+    <h2 style="color: var(--dark-blue);">إدارة الرادار الطبي</h2>
+    <p style="color: #64748b; margin-bottom: 30px;">قم بتسجيل الدخول للتحكم في بيانات مقدمي الخدمة</p>
+    
+    <select id="userName" style="margin-bottom: 20px;">
+        <option value="">-- اختر المستخدم --</option>
+        <option value="admin">المدير العام</option>
+        <option value="user1">د. أحمد</option>
+        <option value="user2">الممرض الرشيد</option>
+    </select>
+
+    <input type="password" id="adminPass" placeholder="كلمة المرور السرية" style="margin-bottom: 25px;">
+    <button class="btn-main" onclick="verifyAccess()">دخول اللوحة <i class="fas fa-sign-in-alt"></i></button>
+    <p id="loginError" style="color: #ef4444; display: none; margin-top: 15px; font-weight: bold;"><i class="fas fa-exclamation-circle"></i> بيانات الدخول غير صحيحة!</p>
+</div>
+
+<div id="adminPanel">
+    <div class="admin-card">
+        <h2><i class="fas fa-search-location" style="color: var(--main-color);"></i> لوحة تحكم الرادار الطبي</h2>
+        
+        <div class="form-section">
+            <div class="full-width">
+                <label>الفئة المهنية</label>
+                <select id="staffRole">
+                    <option value="nurse">ممرض / ممرضة</option>
+                    <option value="doctor">طبيب / طبيبة</option>
+                    <option value="pharmacist">صيدلي / صيدلانية</option>
+                </select>
+            </div>
+
+            <div>
+                <label>الاسم الرباعي</label>
+                <input type="text" id="staffName" placeholder="مثلاً: الرشيد كمال">
+            </div>
+            
+            <div>
+                <label>محل الإقامة (المدينة والحي)</label>
+                <input type="text" id="staffArea" placeholder="مثلاً: أم درمان الثورة">
+            </div>
+
+            <div>
+                <label>رقم الهاتف (للاتصال)</label>
+                <input type="tel" id="staffPhone" placeholder="012xxxxxxx">
+            </div>
+
+            <div>
+                <label>رقم الواتساب (بالرمز الدولي)</label>
+                <input type="tel" id="staffWa" placeholder="24912xxxxxxx">
+            </div>
+
+            <div class="full-width">
+                <label>النبذة المهنية (Bio)</label>
+                <input type="text" id="staffBio" placeholder="مثلاً: بكالوريوس تمريض - طوارئ">
+            </div>
+
+            <div class="full-width">
+                <label>الخدمات والمهارات (افصل بينها بفاصلة , )</label>
+                <textarea id="staffSkills" rows="3" placeholder="مثلاً: تركيب محاليل, غيارات جروح, سحب دم"></textarea>
+            </div>
+        </div>
+
+        <button class="btn-main" id="mainSubmitBtn" onclick="saveStaffData()">إضافة للرادار <i class="fas fa-plus-circle"></i></button>
+        
+        <div class="data-list">
+            <h3 style="color: var(--dark-blue); margin-bottom: 20px;"><i class="fas fa-list-alt"></i> الكوادر المسجلة حالياً:</h3>
+            <div id="activeStaffList">
+                <div style="text-align: center; color: #94a3b8;"><i class="fas fa-spinner fa-spin"></i> جاري جلب البيانات...</div>
+            </div>
+        </div>
+        
+        <span class="logout-link" onclick="location.reload()"><i class="fas fa-power-off"></i> إغلاق اللوحة وتسجيل الخروج</span>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, push, update, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBltsN_YuPhicWCv4MmbYf7-kSp9u66lBE",
+        authDomain: "sudanse-nursing-network.firebaseapp.com",
+        projectId: "sudanse-nursing-network",
+        storageBucket: "sudanse-nursing-network.firebasestorage.app",
+        messagingSenderId: "577008528931",
+        appId: "1:577008528931:web:febfbc9ce086a07b8ccb96"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // نظام الحماية
+    const usersList = { "admin": "0960", "user1": "Pass123", "user2": "096020" };
+    window.verifyAccess = function() {
+        const user = document.getElementById('userName').value;
+        const pass = document.getElementById('adminPass').value;
+        if (user && usersList[user] === pass) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+        } else {
+            document.getElementById('loginError').style.display = 'block';
+            document.getElementById('adminPass').value = "";
+        }
+    }
+
+    let currentEditKey = null;
+    window.staffDataMap = {};
+
+    window.saveStaffData = function() {
+        const role = document.getElementById('staffRole').value;
+        const name = document.getElementById('staffName').value;
+        const area = document.getElementById('staffArea').value;
+        const phone = document.getElementById('staffPhone').value;
+        const wa = document.getElementById('staffWa').value;
+        const bio = document.getElementById('staffBio').value;
+        const skillsString = document.getElementById('staffSkills').value;
+
+        if (!name || !phone || !area) return alert("الرجاء ملء البيانات الأساسية (الاسم، الموقع، الهاتف)!");
+
+        // تحويل النص إلى مصفوفة (Array)
+        const skillsArray = skillsString.split(',').map(s => s.trim()).filter(s => s !== "");
+
+        const staffObject = { role, name, area, phone, wa, bio, skills: skillsArray, timestamp: Date.now() };
+
+        if (currentEditKey) {
+            update(ref(db, 'medical_radar/' + currentEditKey), staffObject).then(() => {
+                alert("✅ تم تعديل بيانات الكادر بنجاح!");
+                resetForm();
+            });
+        } else {
+            push(ref(db, 'medical_radar'), staffObject).then(() => {
+                alert("✅ تمت إضافة الكادر للرادار بنجاح!");
+                resetForm();
+            });
+        }
+    }
+
+    function resetForm() {
+        document.getElementById('staffRole').value = "nurse";
+        document.getElementById('staffName').value = "";
+        document.getElementById('staffArea').value = "";
+        document.getElementById('staffPhone').value = "";
+        document.getElementById('staffWa').value = "";
+        document.getElementById('staffBio').value = "";
+        document.getElementById('staffSkills').value = "";
+        
+        currentEditKey = null;
+        const btn = document.getElementById('mainSubmitBtn');
+        btn.innerHTML = 'إضافة للرادار <i class="fas fa-plus-circle"></i>';
+        btn.style.background = 'linear-gradient(135deg, var(--main-color), var(--dark-blue))';
+    }
+
+    // جلب البيانات للعرض في لوحة التحكم
+    onValue(ref(db, 'medical_radar'), (snapshot) => {
+        const list = document.getElementById('activeStaffList');
+        list.innerHTML = '';
+        window.staffDataMap = {};
+        
+        if (!snapshot.exists()) { list.innerHTML = "<p style='text-align:center;'>لا توجد بيانات مسجلة حالياً.</p>"; return; }
+
+        snapshot.forEach(child => {
+            const data = child.val();
+            window.staffDataMap[child.key] = data;
+            
+            const roleAr = data.role === 'nurse' ? 'ممرض' : (data.role === 'doctor' ? 'طبيب' : 'صيدلي');
+            
+            list.innerHTML += `
+                <div class="data-item">
+                    <div>
+                        <strong style="color: var(--dark-blue); font-size: 1.1rem;">${data.name}</strong> 
+                        <span style="color: #64748b; font-size: 0.9rem;">(${roleAr} - ${data.area})</span>
+                    </div>
+                    <div class="action-btns">
+                        <button class="btn-edit" onclick="prepareEdit('${child.key}')"><i class="fas fa-edit"></i> تعديل</button>
+                        <button class="btn-delete" onclick="deleteStaff('${child.key}')"><i class="fas fa-trash"></i> حذف</button>
+                    </div>
+                </div>`;
+        });
+    });
+
+    window.deleteStaff = function(key) {
+        if(confirm("هل أنت متأكد من حذف هذا الكادر من الرادار؟")) remove(ref(db, 'medical_radar/' + key));
+    }
+
+    window.prepareEdit = function(key) {
+        const data = window.staffDataMap[key];
+        if(!data) return;
+        
+        document.getElementById('staffRole').value = data.role || "nurse";
+        document.getElementById('staffName').value = data.name || "";
+        document.getElementById('staffArea').value = data.area || "";
+        document.getElementById('staffPhone').value = data.phone || "";
+        document.getElementById('staffWa').value = data.wa || "";
+        document.getElementById('staffBio').value = data.bio || "";
+        document.getElementById('staffSkills').value = data.skills ? data.skills.join(', ') : "";
+        
+        currentEditKey = key;
+        const btn = document.getElementById('mainSubmitBtn');
+        btn.innerHTML = 'حفظ التعديلات <i class="fas fa-save"></i>';
+        btn.style.background = 'linear-gradient(135deg, #0284c7, #0369a1)';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>

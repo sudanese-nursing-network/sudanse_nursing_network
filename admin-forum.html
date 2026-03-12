@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>إدارة صوت التمريض | لوحة التحكم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* التنسيقات الأصلية الخاصة بك كما هي تماماً */
+        :root { --main-green: #059669; --dark-blue: #1e293b; }
+        body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; padding: 20px; direction: rtl; }
+        .admin-card { background: white; max-width: 750px; margin: 0 auto; padding: 35px; border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-top: 8px solid var(--main-green); }
+        h2 { color: var(--dark-blue); text-align: center; margin-bottom: 25px; font-weight: 900; }
+        .form-section { background: #f1f5f9; padding: 20px; border-radius: 15px; margin-bottom: 25px; border: 1px solid #e2e8f0; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; color: #334155; }
+        input, select, textarea { width: 100%; padding: 14px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 12px; font-family: 'Cairo'; box-sizing: border-box; outline: none; transition: 0.3s; }
+        .btn-publish { width: 100%; padding: 18px; background: linear-gradient(45deg, var(--main-green), #10b981); color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-publish:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(5,150,105,0.3); }
+        .posts-list { margin-top: 40px; border-top: 2px solid #eee; padding-top: 20px; }
+        .post-item { background: #fff; border: 1px solid #eee; padding: 15px; border-radius: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .btn-delete { background: #fee2e2; color: #ef4444; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .badge-admin { background: var(--main-green); color: white; padding: 2px 8px; border-radius: 5px; font-size: 0.7rem; }
+        
+        /* --- الإضافات الخاصة بشاشة الدخول --- */
+        #loginSection { max-width: 420px; margin: 80px auto; background: white; padding: 40px; border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); text-align: center; border-top: 8px solid var(--main-green); }
+        #adminPanel { display: none; /* هذا السطر هو الذي يخفي اللوحة حتى يتم تسجيل الدخول */ }
+        .logout-link { display: block; text-align: center; margin-top: 25px; color: #ef4444; cursor: pointer; font-weight: bold; text-decoration: underline; transition: 0.3s; }
+        .logout-link:hover { color: #dc2626; }
+
+        /* --- الإضافات الجديدة الخاصة بأزرار التعديل --- */
+        .action-btns { display: flex; gap: 8px; align-items: center; }
+        .btn-edit { background: #e0f2fe; color: #0284c7; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Cairo'; transition: 0.3s; }
+        .btn-edit:hover { background: #bae6fd; }
+    </style>
+</head>
+<body>
+
+<div id="loginSection">
+    <i class="fas fa-shield-alt" style="font-size: 4rem; color: var(--main-green); margin-bottom: 20px;"></i>
+    <h2>دخول إدارة المنتدى</h2>
+    <p style="color: #64748b; margin-bottom: 25px;">اختر حسابك وأدخل كلمة السر للتحكم</p>
+    
+    <select id="userName" style="border: 2px solid #e2e8f0; width: 100%; padding: 14px; border-radius: 12px; font-family: 'Cairo'; margin-bottom: 15px; outline: none;">
+        <option value="">-- اختر المستخدم --</option>
+        <option value="admin">أدمن الشبكة</option>
+        <option value="user1">د. أحمد</option>
+        <option value="user2">الممرض الرشيد</option>
+    </select>
+
+    <input type="password" id="adminPass" placeholder="كلمة المرور السرية" style="width: 100%; padding: 14px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 12px; font-family: 'Cairo'; box-sizing: border-box; outline: none;">
+    <button class="btn-publish" onclick="verifyAccess()">دخول اللوحة الآمنة</button>
+    <p id="loginError" style="color: #ef4444; display: none; margin-top: 15px; font-weight: bold;">بيانات الدخول غير صحيحة!</p>
+</div>
+
+<div id="adminPanel">
+    
+    <div class="admin-card">
+        <h2><i class="fas fa-user-shield"></i> إدارة منتدى صوت التمريض</h2>
+        
+        <div class="form-section">
+            <label>اسم الكاتب (المرسل)</label>
+            <input type="text" id="postAuthor" placeholder="مثلاً: الرشيد كمال">
+            
+            <label>رتبة الكاتب</label>
+            <select id="postRole">
+                <option value="أدمن الشبكة">أدمن الشبكة (منشور مميز)</option>
+                <option value="ممرض/ة">عضو / ممرض</option>
+                <option value="طبيب/ة">طبيب مشارك</option>
+            </select>
+
+            <label>عنوان المنشور</label>
+            <input type="text" id="postTitle" placeholder="عنوان جذاب للموضوع">
+
+            <label>محتوى المنشور</label>
+            <textarea id="postContent" rows="5" placeholder="اكتب تفاصيل المنشور هنا..."></textarea>
+        </div>
+
+        <button class="btn-publish" id="mainSubmitBtn" onclick="pushPost()">نشر المنشور في المنتدى الآن <i class="fas fa-paper-plane"></i></button>
+        
+        <div class="posts-list">
+            <h3>المنشورات الحالية:</h3>
+            <div id="activePosts"></div>
+        </div>
+        
+        <span class="logout-link" onclick="location.reload()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج وإقفال اللوحة</span>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBltsN_YuPhicWCv4MmbYf7-kSp9u66lBE",
+        authDomain: "sudanse-nursing-network.firebaseapp.com",
+        databaseURL: "https://sudanse-nursing-network-default-rtdb.firebaseio.com/",
+        projectId: "sudanse-nursing-network",
+        storageBucket: "sudanse-nursing-network.firebasestorage.app",
+        messagingSenderId: "577008528931",
+        appId: "1:577008528931:web:febfbc9ce086a07b8ccb96"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // === الكود الجديد المسؤول عن تسجيل الدخول والحماية ===
+    const usersList = {
+        "admin": "0960",   // كلمة سر الأدمن
+        "user1": "Pass123",      // كلمة سر د. أحمد
+        "user2": "096020"       // كلمة سر الممرض الرشيد
+    };
+
+    function verifyAccess() {
+        const user = document.getElementById('userName').value;
+        const pass = document.getElementById('adminPass').value;
+        const errorMsg = document.getElementById('loginError');
+
+        if (user && usersList[user] === pass) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+        } else {
+            errorMsg.style.display = 'block';
+            document.getElementById('adminPass').value = "";
+        }
+    }
+    // === نهاية كود الحماية ===
+
+    // === متغيرات التحكم بالتعديل ===
+    let currentEditKey = null;
+    window.forumDataMap = {}; // لتخزين البيانات محلياً لتسهيل التعديل
+
+    // === الكود البرمجي الأصلي الخاص بك موجود بالكامل مع إضافة خيار التعديل ===
+    function pushPost() {
+        const author = document.getElementById('postAuthor').value;
+        const role = document.getElementById('postRole').value;
+        const title = document.getElementById('postTitle').value;
+        const content = document.getElementById('postContent').value;
+        const isAdmin = (role === "أدمن الشبكة");
+
+        if (!title || !content || !author) return alert("يا الرشيد، املأ جميع البيانات المكتوبة!");
+
+        if (currentEditKey) {
+            // حالة التعديل: تحديث منشور موجود
+            // نأخذ البيانات القديمة (مثل عدد الإعجابات) لكي لا نفقدها
+            const oldData = window.forumDataMap[currentEditKey];
+            
+            database.ref('forum_posts/' + currentEditKey).update({
+                author, role, title, content, isAdmin,
+                // نحافظ على الإعجابات والتعليقات السابقة
+                likes: oldData.likes || 0,
+                reaction: oldData.reaction || "❤️",
+                comments: oldData.comments || [],
+                timestamp: oldData.timestamp || new Date().toISOString()
+            }).then(() => {
+                alert("✅ تم تعديل المنشور بنجاح!");
+                resetForm();
+            });
+        } else {
+            // الكود الأصلي: إضافة منشور جديد بدون أي حذف
+            const newPostRef = database.ref('forum_posts').push();
+            newPostRef.set({
+                id: Date.now(),
+                author, role, title, content, isAdmin,
+                likes: 0, reaction: "❤️", comments: [],
+                timestamp: new Date().toISOString()
+            }).then(() => {
+                alert("✅ تم النشر بنجاح!");
+                resetForm();
+            });
+        }
+    }
+
+    // دالة لتفريغ الخانات وإرجاع الزر لشكله الأصلي بعد الإرسال أو التعديل
+    function resetForm() {
+        document.getElementById('postAuthor').value = "";
+        document.getElementById('postRole').value = "أدمن الشبكة";
+        document.getElementById('postTitle').value = "";
+        document.getElementById('postContent').value = "";
+        
+        currentEditKey = null;
+        
+        const btn = document.getElementById('mainSubmitBtn');
+        btn.innerHTML = 'نشر المنشور في المنتدى الآن <i class="fas fa-paper-plane"></i>';
+        btn.style.background = 'linear-gradient(45deg, var(--main-green), #10b981)';
+    }
+
+    database.ref('forum_posts').on('value', (snapshot) => {
+        const list = document.getElementById('activePosts');
+        list.innerHTML = '';
+        window.forumDataMap = {}; // تفريغ الذاكرة
+        
+        snapshot.forEach(child => {
+            const data = child.val();
+            window.forumDataMap[child.key] = data; // حفظ البيانات لزر التعديل
+            
+            // الكود الأصلي لعرض البيانات مع إضافة زر التعديل بجانب زر الحذف
+            list.innerHTML += `
+                <div class="post-item">
+                    <span style="flex:1;"><strong>${data.title}</strong> - ${data.author} ${data.isAdmin ? '<span class="badge-admin">أدمن</span>' : ''}</span>
+                    <div class="action-btns">
+                        <button class="btn-edit" onclick="prepareEdit('${child.key}')"><i class="fas fa-edit"></i> تعديل</button>
+                        <button class="btn-delete" onclick="deletePost('${child.key}')"><i class="fas fa-trash"></i> حذف</button>
+                    </div>
+                </div>`;
+        });
+    });
+
+    function deletePost(key) {
+        if(confirm("هل تريد حذف هذا المنشور نهائياً من المنتدى؟")) database.ref('forum_posts/' + key).remove();
+    }
+
+    // === دالة جديدة تقوم بسحب البيانات للخانات عند ضغط زر التعديل ===
+    function prepareEdit(key) {
+        const data = window.forumDataMap[key];
+        if(!data) return;
+        
+        document.getElementById('postAuthor').value = data.author || "";
+        document.getElementById('postRole').value = data.role || "أدمن الشبكة";
+        document.getElementById('postTitle').value = data.title || "";
+        document.getElementById('postContent').value = data.content || "";
+        
+        currentEditKey = key;
+        
+        // تغيير شكل الزر لتنبيه المستخدم أنه يقوم بتعديل وليس إضافة جديدة
+        const btn = document.getElementById('mainSubmitBtn');
+        btn.innerHTML = 'حفظ التعديلات 💾';
+        btn.style.background = 'linear-gradient(45deg, #0284c7, #0369a1)'; // اللون الأزرق
+        
+        // الصعود لأعلى الشاشة تلقائياً
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>

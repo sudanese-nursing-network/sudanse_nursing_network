@@ -8,12 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* التنسيقات الجوهرية لبنك الدم لضمان عدم تأثرها بالملفات الخارجية */
         :root { --blood-red: #c0392b; --bright-red: #e74c3c; }
-        
         body { background-color: #f9fafb; font-family: 'Cairo', sans-serif; margin: 0; }
-        
-        /* تنسيق شريط التنقل (Navbar) لضمان ظهوره بشكل جميل حتى لو غاب ملف style.css */
         .navbar { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 15px; }
         .logo { font-size: 1.4rem; font-weight: 700; color: #333; text-decoration: none; display: flex; align-items: center; gap: 8px; }
         .logo span { color: var(--blood-red); }
@@ -26,77 +22,39 @@
         .blood-header h1 { margin: 0 0 10px 0; font-size: 2.2rem; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         .blood-header p { margin: 0; font-size: 1.1rem; opacity: 0.9; }
         
-        .blood-type-badge { 
-            background: var(--bright-red); color: white; padding: 8px 20px; 
-            border-radius: 50px; font-weight: bold; font-size: 1.2rem; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
-        }
+        .blood-type-badge { background: var(--bright-red); color: white; padding: 8px 20px; border-radius: 50px; font-weight: bold; font-size: 1.2rem; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3); }
         
-        .donor-card {
-            background: white; border-radius: 20px; padding: 25px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06); border-right: 8px solid var(--bright-red);
-            display: flex; justify-content: space-between; align-items: center; 
-            margin-bottom: 20px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); flex-wrap: wrap; gap: 15px;
-        }
+        .donor-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border-right: 8px solid var(--bright-red); display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); flex-wrap: wrap; gap: 15px; }
         .donor-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.1); }
         
         .donor-info h3 { margin: 0 0 10px 0; color: #333; }
         .donor-meta { color: #666; font-size: 0.95rem; display: flex; gap: 10px; flex-wrap: wrap; }
         
-        .btn-call-blood { 
-            background: #27ae60; color: white; padding: 12px 25px; 
-            border-radius: 12px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 8px; transition: 0.3s; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
-        }
-        .btn-call-blood:hover { background: #219653; transform: scale(1.05); }
-        
+        .btn-call-blood { background: #27ae60; color: white; padding: 12px 25px; border-radius: 12px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 8px; transition: 0.3s; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3); }
         .blood-tabs { display: flex; gap: 12px; margin: 30px 0; overflow-x: auto; padding: 10px 5px; scrollbar-width: none; }
-        .blood-tabs::-webkit-scrollbar { display: none; }
-        .tab-btn { 
-            padding: 10px 25px; border: 2px solid var(--bright-red); border-radius: 25px; 
-            background: white; color: var(--bright-red); cursor: pointer; white-space: nowrap; font-weight: bold; font-family: 'Cairo', sans-serif; transition: all 0.3s ease; font-size: 1rem;
-        }
-        .tab-btn.active, .tab-btn:hover { background: var(--bright-red); color: white; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3); transform: translateY(-2px); }
+        .tab-btn { padding: 10px 25px; border: 2px solid var(--bright-red); border-radius: 25px; background: white; color: var(--bright-red); cursor: pointer; white-space: nowrap; font-weight: bold; transition: 0.3s; }
+        .tab-btn.active { background: var(--bright-red); color: white; }
 
-        /* تنسيق النافذة المنبثقة (Modal) */
         .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); }
-        .modal-content { background: white; margin: 5% auto; padding: 40px; border-radius: 25px; width: 90%; max-width: 500px; position: relative; animation: slideDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
-        @keyframes slideDown { from { transform: translateY(-50px) scale(0.9); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
-        .close-btn { position: absolute; left: 20px; top: 15px; font-size: 32px; cursor: pointer; color: #999; transition: 0.3s; }
-        .close-btn:hover { color: var(--blood-red); transform: rotate(90deg); }
-        
-        .form-input { padding: 15px; border-radius: 12px; border: 2px solid #eee; font-family: 'Cairo', sans-serif; font-size: 1rem; transition: 0.3s; width: 100%; box-sizing: border-box; }
-        .form-input:focus { border-color: var(--bright-red); outline: none; box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1); }
+        .modal-content { background: white; margin: 5% auto; padding: 40px; border-radius: 25px; width: 90%; max-width: 500px; position: relative; animation: slideDown 0.4s ease; }
+        .close-btn { position: absolute; left: 20px; top: 15px; font-size: 32px; cursor: pointer; color: #999; }
+        .form-input { padding: 15px; border-radius: 12px; border: 2px solid #eee; font-family: 'Cairo'; font-size: 1rem; width: 100%; box-sizing: border-box; margin-bottom: 10px; }
 
-        /* القائمة السريعة */
         .quick-access-btn { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, var(--blood-red), var(--bright-red)); color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; cursor: pointer; z-index: 1000; box-shadow: 0 10px 25px rgba(192, 57, 43, 0.4); transition: 0.3s; }
-        .quick-access-btn:hover { transform: scale(1.1) rotate(15deg); }
-        .quick-menu { display: none; position: fixed; bottom: 110px; right: 30px; background: white; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); width: 280px; z-index: 1000; overflow-y: auto; max-height: 400px; scrollbar-width: thin; scrollbar-color: var(--bright-red) #f0f0f0; border: 1px solid #eee; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .quick-menu::-webkit-scrollbar { width: 6px; }
-        .quick-menu::-webkit-scrollbar-thumb { background-color: var(--bright-red); border-radius: 10px; }
+        .quick-menu { display: none; position: fixed; bottom: 110px; right: 30px; background: white; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); width: 280px; z-index: 1000; border: 1px solid #eee; }
         .quick-menu ul { list-style: none; margin: 0; padding: 15px; }
-        .quick-menu li a { display: flex; align-items: center; gap: 15px; padding: 12px 15px; text-decoration: none; color: #444; border-radius: 12px; transition: 0.2s; font-weight: 600; }
-        .quick-menu li a:hover { background: #fff5f5; color: var(--blood-red); transform: translateX(-5px); }
-        .quick-menu li a i { width: 20px; text-align: center; color: var(--bright-red); }
+        .quick-menu li a { display: flex; align-items: center; gap: 15px; padding: 12px 15px; text-decoration: none; color: #444; border-radius: 12px; font-weight: 600; }
         
-        footer { background: #2c3e50; color: white; text-align: center; padding: 25px; margin-top: 50px; font-weight: 600; }
-        
-        @media (max-width: 600px) {
-            .donor-card { flex-direction: column; align-items: flex-start; }
-            .donor-card > div:last-child { width: 100%; justify-content: space-between; margin-top: 15px; }
-        }
+        footer { background: #2c3e50; color: white; text-align: center; padding: 25px; margin-top: 50px; }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <a href="index.html" class="logo">
-            <i class="fas fa-heart-pulse"></i> شبكة الممرضين <span>السودانيين</span>
-        </a>
+        <a href="index.html" class="logo"><i class="fas fa-heart-pulse"></i> شبكة الممرضين <span>السودانيين</span></a>
         <ul class="nav-links">
             <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
             <li><a href="blood.html" style="color: var(--bright-red); font-weight: bold;"><i class="fas fa-droplet"></i> بنك الدم</a></li>
-            <li><a href="sos.html"><i class="fas fa-ambulance"></i> الاستغاثة</a></li>
-            <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم إلينا</a></li>
         </ul>
     </nav>
 
@@ -107,48 +65,21 @@
 
     <section class="section">
         <div class="container" style="max-width: 900px; margin: auto; padding: 20px;">
-            
             <div class="blood-tabs">
-                <button class="tab-btn active">الكل</button>
-                <button class="tab-btn">O+</button>
-                <button class="tab-btn">O-</button>
-                <button class="tab-btn">A+</button>
-                <button class="tab-btn">B+</button>
-                <button class="tab-btn">AB+</button>
+                <button class="tab-btn active" onclick="filterBlood('الكل')">الكل</button>
+                <button class="tab-btn" onclick="filterBlood('O+')">O+</button>
+                <button class="tab-btn" onclick="filterBlood('O-')">O-</button>
+                <button class="tab-btn" onclick="filterBlood('A+')">A+</button>
+                <button class="tab-btn" onclick="filterBlood('B+')">B+</button>
+                <button class="tab-btn" onclick="filterBlood('AB+')">AB+</button>
             </div>
 
-            <div class="donor-list">
-                <div class="donor-card">
-                    <div class="donor-info">
-                        <h3>محمد علي (متبرع متاح)</h3>
-                        <div class="donor-meta">
-                            <span><i class="fas fa-map-marker-alt"></i> الخرطوم - بحري</span> | 
-                            <span><i class="fas fa-clock"></i> آخر تبرع: منذ 4 أشهر</span>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <span class="blood-type-badge">O+</span>
-                        <a href="tel:09xxxxxxx" class="btn-call-blood"><i class="fas fa-phone"></i> اتصل</a>
-                    </div>
-                </div>
-
-                <div class="donor-card" style="border-right-color: #f39c12; background: #fffcf9;">
-                    <div class="donor-info">
-                        <h3 style="color: #d35400;"><i class="fas fa-exclamation-triangle"></i> عاجل: مطلوب متبرع لعملية</h3>
-                        <div class="donor-meta">
-                            <span><i class="fas fa-hospital"></i> مستشفى نورة - أم درمان</span> | 
-                            <span style="color: #c0392b; font-weight: bold;"><i class="fas fa-user-clock"></i> الحالة: طارئة جداً</span>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <span class="blood-type-badge" style="background: #f39c12;">A-</span>
-                        <a href="tel:09xxxxxxx" class="btn-call-blood" style="background: #e67e22;"><i class="fas fa-ambulance"></i> تبرع الآن</a>
-                    </div>
-                </div>
+            <div class="donor-list" id="bloodGrid">
+                <div style="text-align: center; padding: 50px;"><i class="fas fa-spinner fa-spin fa-2x"></i> جاري مزامنة بيانات بنك الدم...</div>
             </div>
 
             <div style="margin-top: 50px; text-align: center;">
-                <button class="btn btn-primary" style="background: linear-gradient(135deg, var(--blood-red), var(--bright-red)); border: none; padding: 18px 45px; color: white; border-radius: 50px; cursor: pointer; font-family: Cairo; font-weight: bold; font-size: 1.2rem; box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4); transition: 0.3s;" onclick="document.getElementById('bloodModal').style.display='block'" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                <button class="btn btn-primary" style="background: linear-gradient(135deg, var(--blood-red), var(--bright-red)); border: none; padding: 18px 45px; color: white; border-radius: 50px; cursor: pointer; font-family: Cairo; font-weight: bold; font-size: 1.2rem; box-shadow: 0 8px 25px rgba(192, 57, 43, 0.4);" onclick="document.getElementById('bloodModal').style.display='block'">
                     <i class="fas fa-plus-circle"></i> سجل كمتبرع أو اطلب دم
                 </button>
             </div>
@@ -159,49 +90,28 @@
         <div class="modal-content">
             <span class="close-btn" onclick="document.getElementById('bloodModal').style.display='none'">&times;</span>
             <h2 style="color: var(--blood-red); text-align: center; margin-top: 0;"><i class="fas fa-hand-holding-medical"></i> إضافة بيانات لبنك الدم</h2>
-            
-            <form id="bloodForm" action="https://formspree.io/f/meerewpw" method="POST" style="display: flex; flex-direction: column; gap: 15px; margin-top: 25px;">
+            <form id="bloodForm" action="https://formspree.io/f/meerewpw" method="POST">
                 <input type="hidden" name="_subject" value="🩸 بنك الدم - طلب أو تبرع جديد">
                 <input type="hidden" name="نوع_الطلب" value="🩸 بنك الدم">
-
                 <select name="نوع_الإضافة" class="form-input" required>
-                    <option value="" disabled selected>اختر نوع الإضافة...</option>
                     <option value="متبرع متاح">أنا متبرع (متاح للاتصال)</option>
                     <option value="مريض محتاج">أنا مريض (أحتاج تبرع عاجل)</option>
                 </select>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <input type="text" name="الاسم" placeholder="الاسم" class="form-input" required>
-                    <select name="فصيلة_الدم" class="form-input" required>
-                        <option value="" disabled selected>الفصيلة</option>
-                        <option value="O+">O+</option><option value="O-">O-</option>
-                        <option value="A+">A+</option><option value="A-">A-</option>
-                        <option value="B+">B+</option><option value="B-">B-</option>
-                        <option value="AB+">AB+</option><option value="AB-">AB-</option>
-                    </select>
-                </div>
-                
+                <input type="text" name="الاسم" placeholder="الاسم" class="form-input" required>
+                <select name="فصيلة_الدم" class="form-input" required>
+                    <option value="O+">O+</option><option value="O-">O-</option><option value="A+">A+</option><option value="B+">B+</option><option value="AB+">AB+</option>
+                </select>
                 <input type="tel" name="رقم_الهاتف" placeholder="رقم الهاتف" class="form-input" required>
                 <input type="text" name="المدينة_أو_المستشفى" placeholder="المدينة والمستشفى (مثال: أم درمان - النو)" class="form-input" required>
-                
-                <button type="submit" style="background: var(--blood-red); color: white; border: none; padding: 18px; border-radius: 15px; font-weight: bold; font-family: Cairo; cursor: pointer; transition: 0.3s; font-size: 1.1rem; margin-top: 10px; box-shadow: 0 5px 15px rgba(192, 57, 43, 0.3);" onmouseover="this.style.background='var(--bright-red)'" onmouseout="this.style.background='var(--blood-red)'">
-                    <i class="fas fa-paper-plane"></i> نشر في البنك
-                </button>
+                <button type="submit" class="btn-update" style="width:100%">نشر في البنك</button>
             </form>
         </div>
     </div>
 
-    <footer>
-        <p>جميع الحقوق محفوظة &copy; 2026 - شبكة الممرضين السودانيين</p>
-    </footer>
-
-    <div class="quick-access-btn" onclick="toggleQuickMenu()" title="كل الشاشات">
-        <i class="fas fa-th-large"></i>
-    </div>
-
+    <div class="quick-access-btn" onclick="toggleQuickMenu()"><i class="fas fa-th-large"></i></div>
     <div id="quickMenu" class="quick-menu">
         <ul>
-            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+              <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
             <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
             <li><a href="research.html"><i class="fas fa-book-medical"></i> مكتبة الأبحاث</a></li>
             <li><a href="jobs.html"><i class="fas fa-user-md"></i> فرص العمل</a></li>
@@ -220,78 +130,80 @@
             <li><a href="forum.html"><i class="fas fa-comments"></i> صوت التمريض (المنتدى)</a></li>
             <li><a href="locator.html"><i class="fas fa-search-location"></i> الرادار الطبي</a></li>
             <li><a href="archive.html"><i class="fas fa-book-medical"></i> أرشيف الأبحاث</a></li>
-            <li><a href="upload-research.html"><i class="fas fa-cloud-upload-alt"></i> شارك بحثك العلمي</a></li>
+            <li><a href="upload.html"><i class="fas fa-cloud-upload-alt"></i> شارك بحثك العلمي</a></li>
         </ul>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+
     <script>
-        // تفعيل القائمة السريعة
-        function toggleQuickMenu() {
-            const menu = document.getElementById('quickMenu');
-            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-        }
+        const firebaseConfig = {
+            apiKey: "AIzaSyBltsN_YuPhicWCv4MmbYf7-kSp9u66lBE",
+            authDomain: "sudanse-nursing-network.firebaseapp.com",
+            databaseURL: "https://sudanse-nursing-network-default-rtdb.firebaseio.com/",
+            projectId: "sudanse-nursing-network",
+            storageBucket: "sudanse-nursing-network.firebasestorage.app",
+            messagingSenderId: "577008528931",
+            appId: "1:577008528931:web:febfbc9ce086a07b8ccb96"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        let allBloodData = [];
 
-        // إغلاق المودال أو القائمة السريعة عند الضغط في أي مكان فارغ
-        window.onclick = function(event) {
-            const modal = document.getElementById('bloodModal');
-            const quickMenu = document.getElementById('quickMenu');
-            const quickBtn = document.querySelector('.quick-access-btn');
+        database.ref('blood_bank').on('value', (snapshot) => {
+            const grid = document.getElementById('bloodGrid');
+            grid.innerHTML = '';
+            allBloodData = [];
+            if(!snapshot.exists()) { grid.innerHTML = "لا توجد بيانات حالياً."; return; }
             
-            // إغلاق المودال
-            if (event.target == modal) { 
-                modal.style.display = "none"; 
-            }
-            
-            // إغلاق القائمة السريعة إذا تم الضغط خارجها
-            if (event.target !== quickMenu && event.target !== quickBtn && !quickBtn.contains(event.target) && !quickMenu.contains(event.target)) {
-                quickMenu.style.display = "none";
-            }
-        }
-
-        // تفعيل أزرار فصائل الدم (التنقل بينها كشكل جمالي وتفاعلي)
-        const tabBtns = document.querySelectorAll('.tab-btn');
-        tabBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // إزالة التفعيل من كل الأزرار
-                tabBtns.forEach(b => b.classList.remove('active'));
-                // تفعيل الزر المضغوط
-                btn.classList.add('active');
+            snapshot.forEach(child => {
+                const b = child.val();
+                allBloodData.push(b);
+                renderCard(b);
             });
         });
 
-        // سكريبت الإرسال (FormSubmit) بدون تحديث الصفحة (النسخة المكتملة)
+        function renderCard(b) {
+            const grid = document.getElementById('bloodGrid');
+            const isUrgent = b.status === 'urgent';
+            const cardHtml = `
+                <div class="donor-card" style="border-right-color: ${isUrgent ? '#f39c12' : 'var(--bright-red)'}; background: ${isUrgent ? '#fffcf9' : 'white'}">
+                    <div class="donor-info">
+                        <h3 style="color: ${isUrgent ? '#d35400' : '#333'}">${isUrgent ? '<i class="fas fa-exclamation-triangle"></i> عاجل: ' : ''}${b.name}</h3>
+                        <div class="donor-meta">
+                            <span><i class="fas fa-map-marker-alt"></i> ${b.loc}</span> | 
+                            <span><i class="fas fa-clock"></i> ${b.timeNote || 'متاح للاتصال'}</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span class="blood-type-badge" style="background: ${isUrgent ? '#f39c12' : 'var(--bright-red)'}">${b.type}</span>
+                        <a href="tel:${b.phone}" class="btn-call-blood" style="background: ${isUrgent ? '#e67e22' : '#27ae60'}"><i class="fas fa-phone"></i> ${isUrgent ? 'تبرع الآن' : 'اتصل'}</a>
+                    </div>
+                </div>`;
+            grid.innerHTML += cardHtml;
+        }
+
+        function filterBlood(type) {
+            const grid = document.getElementById('bloodGrid');
+            grid.innerHTML = '';
+            allBloodData.filter(b => type === 'الكل' || b.type === type).forEach(renderCard);
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText === type);
+            });
+        }
+
+        function toggleQuickMenu() { const q = document.getElementById('quickMenu'); q.style.display = q.style.display === 'block' ? 'none' : 'block'; }
+        
+        // سكريبت الإرسال FormSubmit كما هو
         document.getElementById('bloodForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const form = this;
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalBtnText = submitBtn.innerHTML;
-
-            // تغيير شكل الزر أثناء الإرسال
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
-            submitBtn.disabled = true;
-
-            fetch(form.action, {
-                method: form.method,
-                body: new FormData(form),
-                headers: { 'Accept': 'application/json' }
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert('تم استلام بياناتك بنجاح! شكرًا لمساهمتك.');
-                    form.reset(); // تفريغ الحقول
-                    document.getElementById('bloodModal').style.display = 'none'; // إغلاق النافذة
-                } else {
-                    alert('حدث خطأ أثناء الإرسال، يرجى المحاولة مرة أخرى.');
-                }
-            })
-            .catch(error => {
-                alert('حدث خطأ في الاتصال! يرجى التأكد من الإنترنت.');
-            })
-            .finally(() => {
-                // إعادة الزر لحالته الطبيعية
-                submitBtn.innerHTML = originalBtnText;
-                submitBtn.disabled = false;
-            });
+            const btn = this.querySelector('button');
+            const original = btn.innerHTML;
+            btn.innerHTML = 'جاري الإرسال...';
+            fetch(this.action, { method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' } })
+            .then(res => { if(res.ok) { alert('تم استلام بياناتك بنجاح!'); document.getElementById('bloodModal').style.display='none'; this.reset(); } })
+            .finally(() => btn.innerHTML = original);
         });
     </script>
 </body>

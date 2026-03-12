@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>الرادار الطبي | شبكة الممرضين السودانيين</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
@@ -13,59 +13,80 @@
 
         body { font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 100px; background: #f8fafc; }
         
-        .locator-header { background: linear-gradient(135deg, #00a884, #1a237e); color: white; padding: 60px 20px; text-align: center; border-radius: 0 0 50px 50px; }
-        .search-area { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.12); margin: -50px auto 40px; max-width: 1000px; display: flex; gap: 15px; flex-wrap: wrap; border: 1px solid #eee; position: relative; z-index: 10; }
-        .search-area input, .search-area select { flex: 1; min-width: 180px; padding: 14px; border: 2px solid #f0f0f0; border-radius: 12px; font-family: 'Cairo'; outline: none; }
+        /* لمسات إضافية للتنقل (Navbar) لزيادة الجمال */
+        .navbar { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 30px; box-shadow: 0 2px 15px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; flex-wrap: wrap; gap: 15px; }
+        .logo { font-size: 1.5rem; font-weight: 900; color: #333; display: flex; align-items: center; text-decoration: none; }
+        .logo span { color: var(--main-color); }
+        .nav-links { list-style: none; margin: 0; padding: 0; display: flex; gap: 20px; flex-wrap: wrap; }
+        .nav-links li a { text-decoration: none; color: #555; font-weight: 700; transition: 0.3s; padding: 5px 10px; border-radius: 8px; }
+        .nav-links li a:hover { background: #f0fdf4; color: var(--main-color); }
+
+        .locator-header { background: linear-gradient(135deg, #00a884, #1a237e); color: white; padding: 70px 20px 80px; text-align: center; border-radius: 0 0 50px 50px; box-shadow: 0 10px 30px rgba(0, 168, 132, 0.2); }
+        .locator-header h1 { font-size: 2.5rem; margin: 0 0 15px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); font-weight: 900; }
+        .locator-header p { font-size: 1.2rem; margin: 0; opacity: 0.9; }
+
+        .search-area { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); margin: -60px auto 40px; max-width: 1000px; display: flex; gap: 15px; flex-wrap: wrap; border: 1px solid #eee; position: relative; z-index: 10; }
+        .search-area input, .search-area select { flex: 1; min-width: 180px; padding: 16px; border: 2px solid #e2e8f0; border-radius: 15px; font-family: 'Cairo'; outline: none; font-size: 1rem; transition: 0.3s; background: #f8fafc; }
+        .search-area input:focus, .search-area select:focus { border-color: var(--main-color); background: white; box-shadow: 0 0 0 4px rgba(0,168,132,0.1); }
+        .btn-primary { background: linear-gradient(135deg, var(--main-color), #059669); color: white; border: none; padding: 16px 30px; border-radius: 15px; font-family: 'Cairo'; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 20px rgba(0,168,132,0.3); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(0,168,132,0.4); }
         
-        .nurse-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-bottom: 50px; padding: 20px; }
-        .nurse-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); transition: 0.4s; position: relative; border-top: 6px solid #ddd; display: flex; flex-direction: column; justify-content: space-between; }
-        .nurse-card:hover { transform: translateY(-10px); }
+        .nurse-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-bottom: 50px; padding: 20px; max-width: 1200px; margin-left: auto; margin-right: auto; }
+        .nurse-card { background: white; border-radius: 25px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; border-top: 8px solid #ddd; display: flex; flex-direction: column; justify-content: space-between; }
+        .nurse-card:hover { transform: translateY(-15px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
         
         .card-nurse { border-top-color: #27ae60; }
         .card-doctor { border-top-color: #2980b9; }
         .card-pharmacist { border-top-color: #e67e22; }
 
-        .role-badge { position: absolute; left: 20px; top: -15px; padding: 5px 15px; border-radius: 20px; color: white; font-size: 0.8rem; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .bg-nurse { background: #27ae60; }
-        .bg-doctor { background: #2980b9; }
-        .bg-pharmacist { background: #e67e22; }
+        .role-badge { position: absolute; left: 25px; top: -18px; padding: 8px 20px; border-radius: 25px; color: white; font-size: 0.9rem; font-weight: bold; box-shadow: 0 8px 15px rgba(0,0,0,0.15); letter-spacing: 0.5px; }
+        .bg-nurse { background: linear-gradient(135deg, #27ae60, #2ecc71); }
+        .bg-doctor { background: linear-gradient(135deg, #2980b9, #3498db); }
+        .bg-pharmacist { background: linear-gradient(135deg, #d35400, #e67e22); }
 
-        .nurse-info h3 { margin: 10px 0 15px 0; color: #2c3e50; font-size: 1.3rem; }
-        .nurse-info p { margin: 8px 0; color: #555; font-size: 0.95rem; display: flex; align-items: center; gap: 12px; }
-        .skill-tag { display: inline-block; background: #f8f9fa; color: #444; padding: 4px 12px; border-radius: 8px; font-size: 0.8rem; margin: 5px 3px 0 0; border: 1px solid #eee; font-weight: bold; }
+        .nurse-info h3 { margin: 15px 0; color: #1e293b; font-size: 1.5rem; font-weight: 900; }
+        .nurse-info p { margin: 10px 0; color: #475569; font-size: 1rem; display: flex; align-items: center; gap: 12px; font-weight: 600; }
+        .skill-tag { display: inline-block; background: #f1f5f9; color: #334155; padding: 6px 15px; border-radius: 10px; font-size: 0.85rem; margin: 8px 5px 0 0; border: 1px solid #e2e8f0; font-weight: 700; transition: 0.3s; }
+        .skill-tag:hover { background: var(--main-color); color: white; border-color: var(--main-color); }
         
-        .contact-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .btn-wa { background: #25d366; color: white; text-align: center; padding: 10px; border-radius: 10px; text-decoration: none; font-weight: bold; }
-        .btn-call { background: #f4f4f4; color: #333; text-align: center; padding: 10px; border-radius: 10px; text-decoration: none; font-weight: bold; }
+        .contact-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px; }
+        .btn-wa { background: #25d366; color: white; text-align: center; padding: 12px; border-radius: 12px; text-decoration: none; font-weight: bold; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 1.1rem; }
+        .btn-wa:hover { background: #128C7E; transform: translateY(-2px); }
+        .btn-call { background: #f1f5f9; color: #334155; text-align: center; padding: 12px; border-radius: 12px; text-decoration: none; font-weight: bold; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 1.1rem; border: 1px solid #e2e8f0; }
+        .btn-call:hover { background: #e2e8f0; transform: translateY(-2px); }
         
-        .register-section { background: #fff; border: 2px dashed #cbd5e0; border-radius: 30px; padding: 50px 20px; text-align: center; margin-top: 60px; margin-bottom: 50px; }
+        .register-section { background: white; border: 3px dashed #cbd5e0; border-radius: 30px; padding: 50px 20px; text-align: center; margin: 60px auto 50px; max-width: 800px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); transition: 0.3s; }
+        .register-section:hover { border-color: var(--main-color); background: #f0fdf4; }
 
-        .modal { display: none; position: fixed; z-index: 9000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); overflow-y: auto; }
-        .modal-content { background-color: #fefefe; margin: 5vh auto; padding: 30px; border-radius: 20px; width: 90%; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-height: 85vh; overflow-y: auto; position: relative; }
+        .modal { display: none; position: fixed; z-index: 9000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); backdrop-filter: blur(8px); overflow-y: auto; }
+        .modal-content { background-color: #ffffff; margin: 5vh auto; padding: 40px; border-radius: 25px; width: 90%; max-width: 550px; box-shadow: 0 25px 50px rgba(0,0,0,0.25); max-height: 85vh; overflow-y: auto; position: relative; animation: zoomIn 0.4s ease; border-top: 8px solid var(--main-color); }
+        @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .close-btn { position: absolute; left: 25px; top: 20px; font-size: 2rem; color: #94a3b8; cursor: pointer; transition: 0.3s; }
+        .close-btn:hover { color: #ef4444; transform: rotate(90deg); }
 
         /* --- تنسيق الزر العائم الموحد --- */
         .quick-access-btn {
             position: fixed; bottom: 30px; left: 30px;
-            background: var(--main-color); color: white; width: 65px; height: 65px;
+            background: linear-gradient(135deg, var(--main-color), #059669); color: white; width: 70px; height: 70px;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; cursor: pointer; z-index: 8000;
-            box-shadow: 0 10px 25px rgba(0,168,132,0.4); 
+            font-size: 1.8rem; cursor: pointer; z-index: 8000;
+            box-shadow: 0 15px 30px rgba(0,168,132,0.4); 
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .quick-access-btn:hover { transform: scale(1.1) rotate(90deg); background: var(--dark-blue); }
 
         .quick-menu {
-            display: none; position: fixed; bottom: 110px; left: 30px;
-            background: white; border-radius: 20px; width: 260px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2); z-index: 7999;
-            overflow-y: auto; max-height: 70vh; border: 1px solid #eee;
+            display: none; position: fixed; bottom: 120px; left: 30px;
+            background: white; border-radius: 25px; width: 280px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); z-index: 7999;
+            overflow-y: auto; max-height: 70vh; border: 1px solid #f1f5f9;
             animation: slideUpNav 0.4s ease forwards;
         }
-        .quick-menu ul { list-style: none; padding: 10px; margin: 0; }
-        .quick-menu li { border-bottom: 1px solid #f8fafc; }
-        .quick-menu li a { display: flex; align-items: center; gap: 12px; padding: 12px 15px; text-decoration: none; color: #334155; transition: 0.3s; font-weight: 600; }
-        .quick-menu li a i { color: var(--main-color); width: 20px; text-align: center; }
-        .quick-menu li a:hover { background: #f0fdf4; color: var(--main-color); padding-right: 25px; }
+        .quick-menu ul { list-style: none; padding: 15px; margin: 0; }
+        .quick-menu li { border-bottom: 1px solid #f8fafc; margin-bottom: 5px; }
+        .quick-menu li a { display: flex; align-items: center; gap: 15px; padding: 12px 15px; text-decoration: none; color: #334155; transition: 0.3s; font-weight: 700; border-radius: 12px; }
+        .quick-menu li a i { color: var(--main-color); width: 25px; text-align: center; font-size: 1.2rem; }
+        .quick-menu li a:hover { background: #f0fdf4; color: var(--main-color); padding-right: 25px; transform: translateX(-5px); }
 
         @keyframes slideUpNav { from { opacity: 0; transform: translateY(30px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
     </style>
@@ -73,12 +94,12 @@
 <body>
 
     <nav class="navbar">
-        <div class="logo"><img src="logo.jpeg" alt="" style="height:35px; vertical-align: middle; margin-left: 10px;"> الرادار <span>الطبي</span></div>
+        <a href="index.html" class="logo"><img src="logo.jpeg" alt="" style="height:40px; vertical-align: middle; margin-left: 10px; border-radius: 50%;"> الرادار <span>الطبي</span></a>
         <ul class="nav-links">
-            <li><a href="index.html">الرئيسية</a></li>
-            <li><a href="locator.html" style="color: var(--main-color);">الرادار</a></li>
-            <li><a href="sos.html">استغاثة</a></li>
-            <li><a href="join.html">انضم لنا</a></li>
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="locator.html" style="color: var(--main-color); background: #f0fdf4;"><i class="fas fa-search-location"></i> الرادار</a></li>
+            <li><a href="sos.html"><i class="fas fa-ambulance"></i> استغاثة</a></li>
+            <li><a href="join.html"><i class="fas fa-user-plus"></i> انضم لنا</a></li>
         </ul>
     </nav>
 
@@ -99,11 +120,15 @@
             <button class="btn btn-primary" style="margin:0" onclick="filterStaff()"><i class="fas fa-search"></i> بحث</button>
         </div>
 
-        <div class="nurse-grid" id="staffGrid"></div>
+        <div class="nurse-grid" id="staffGrid">
+            <div style="text-align: center; grid-column: 1/-1; padding: 50px; color: #64748b; font-size: 1.2rem;">
+                <i class="fas fa-radar fa-spin fa-2x" style="color: var(--main-color); margin-bottom: 15px; display: block;"></i> جاري البحث في الرادار...
+            </div>
+        </div>
 
         <div class="register-section">
-            <h2>سجل كـ "مقدم خدمة" في الرادار</h2>
-            <p>انضم إلينا لتسهيل الوصول للمحتاجين في منطقتك</p>
+            <h2 style="color: var(--dark-blue); font-weight: 900;">سجل كـ "مقدم خدمة" في الرادار</h2>
+            <p style="color: #64748b; font-size: 1.1rem; margin-bottom: 25px;">انضم إلينا لتسهيل الوصول للمحتاجين في منطقتك</p>
             <button class="btn btn-primary" onclick="document.getElementById('regModal').style.display='block'">
                 <i class="fas fa-user-plus"></i> سجل بياناتك الآن
             </button>
@@ -139,59 +164,113 @@
     <div id="regModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="document.getElementById('regModal').style.display='none'">&times;</span>
-            <h2 style="text-align:center; margin-bottom: 20px; color: var(--dark-blue); border-bottom: 2px solid var(--main-color); padding-bottom: 10px;">نموذج الانضمام للرادار</h2>
+            <h2 style="text-align:center; margin-bottom: 25px; color: var(--dark-blue); border-bottom: 3px solid var(--main-color); padding-bottom: 15px; font-weight: 900;"><i class="fas fa-user-md"></i> نموذج الانضمام للرادار</h2>
             <form action="https://formsubmit.co/alrsheedkamal5003@gmail.com" method="POST" id="nurseRegForm">
                 <input type="hidden" name="_subject" value="📍 تسجيل جديد في الرادار الطبي">
                 <input type="hidden" name="_captcha" value="false">
-                <label style="font-weight: bold; display: block; margin-top: 10px;">الفئة المهنية:</label>
-                <select name="التخصص" required style="width:100%; padding:12px; margin:5px 0 15px; border-radius:10px; font-family:'Cairo'; border: 1px solid #ddd;">
+                
+                <label style="font-weight: bold; display: block; margin-top: 10px; color: #334155;">الفئة المهنية:</label>
+                <select name="التخصص" required style="width:100%; padding:15px; margin:8px 0 20px; border-radius:12px; font-family:'Cairo'; border: 2px solid #e2e8f0; outline: none; background: #f8fafc;">
                     <option value="ممرض">ممرض / ممرضة</option>
                     <option value="طبيب">طبيب / طبيبة</option>
                     <option value="صيدلي">صيدلي / صيدلانية</option>
                 </select>
-                <label style="font-weight: bold; display: block;">الاسم الكامل:</label>
-                <input type="text" name="الاسم" placeholder="الاسم الرباعي" required style="width:100%; padding:12px; margin:5px 0 15px; border-radius:10px; font-family:'Cairo'; border: 1px solid #ddd;">
-                <label style="font-weight: bold; display: block;">محل الإقامة الحالية:</label>
-                <input type="text" name="الحي" placeholder="المدينة والحي" required style="width:100%; padding:12px; margin:5px 0 15px; border-radius:10px; font-family:'Cairo'; border: 1px solid #ddd;">
-                <label style="font-weight: bold; display: block;">رقم الواتساب:</label>
-                <input type="tel" name="الهاتف" placeholder="012xxxxxxx" required style="width:100%; padding:12px; margin:5px 0 15px; border-radius:10px; font-family:'Cairo'; border: 1px solid #ddd;">
-                <label style="font-weight: bold; display: block;">الخدمات:</label>
-                <textarea name="الخدمات" placeholder="غيارات، حقن، إلخ..." rows="3" style="width:100%; padding:12px; margin:5px 0 15px; border-radius:10px; font-family:'Cairo'; border: 1px solid #ddd;"></textarea>
-                <button type="submit" class="btn btn-primary" style="width:100%; margin-top: 10px; font-size: 1.1rem; padding: 15px;">إرسال الطلب</button>
+                
+                <label style="font-weight: bold; display: block; color: #334155;">الاسم الكامل:</label>
+                <input type="text" name="الاسم" placeholder="الاسم الرباعي" required style="width:100%; padding:15px; margin:8px 0 20px; border-radius:12px; font-family:'Cairo'; border: 2px solid #e2e8f0; outline: none; background: #f8fafc;">
+                
+                <label style="font-weight: bold; display: block; color: #334155;">محل الإقامة الحالية:</label>
+                <input type="text" name="الحي" placeholder="المدينة والحي" required style="width:100%; padding:15px; margin:8px 0 20px; border-radius:12px; font-family:'Cairo'; border: 2px solid #e2e8f0; outline: none; background: #f8fafc;">
+                
+                <label style="font-weight: bold; display: block; color: #334155;">رقم الواتساب:</label>
+                <input type="tel" name="الهاتف" placeholder="012xxxxxxx" required style="width:100%; padding:15px; margin:8px 0 20px; border-radius:12px; font-family:'Cairo'; border: 2px solid #e2e8f0; outline: none; background: #f8fafc;">
+                
+                <label style="font-weight: bold; display: block; color: #334155;">الخدمات:</label>
+                <textarea name="الخدمات" placeholder="غيارات، حقن، إلخ..." rows="3" style="width:100%; padding:15px; margin:8px 0 20px; border-radius:12px; font-family:'Cairo'; border: 2px solid #e2e8f0; outline: none; background: #f8fafc;"></textarea>
+                
+                <button type="submit" class="btn btn-primary" style="width:100%; margin-top: 15px; font-size: 1.2rem; padding: 18px; border-radius: 15px;"><i class="fas fa-paper-plane"></i> إرسال الطلب</button>
             </form>
         </div>
     </div>
 
-    <script>
-        const staffData = [
-            { name: "الرشيد كمال", role: "nurse", area: "أم درمان الثورة", bio: "بكالوريوس تمريض - طوارئ", skills: ["تركيب محاليل", "غيارات جروح"], phone: "0127825456", wa: "249127825456" },
-            { name: "د. محمد علي", role: "doctor", area: "الخرطوم المعمورة", bio: "ممارس عام - استشارات منزلية", skills: ["فحص سريري", "متابعة مزمنة"], phone: "0964278052", wa: "249964278052" },
-            { name: "د. سارة أحمد", role: "pharmacist", area: "بحري شمبات", bio: "صيدلانية - استشارات دوائية", skills: ["توفير بدائل", "شرح جرعات"], phone: "0123456789", wa: "249123456789" },
-            { name: "فاطمة إبراهيم", role: "nurse", area: "الخرطوم جبرة", bio: "ممرضة قابلة - رعاية أمومة", skills: ["رعاية حديثي ولادة", "حقن عضل"], phone: "0123456789", wa: "249123456789" },
-            { name: "أحمد ياسر", role: "nurse", area: "أم درمان المهندسين", bio: "ممرض تخدير وعناية", skills: ["سحب دم", "تركيب كانيولا"], phone: "0123456789", wa: "249123456789" }
-        ];
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-        function displayStaff(data) {
+        const firebaseConfig = {
+            apiKey: "AIzaSyBltsN_YuPhicWCv4MmbYf7-kSp9u66lBE",
+            authDomain: "sudanse-nursing-network.firebaseapp.com",
+            projectId: "sudanse-nursing-network",
+            storageBucket: "sudanse-nursing-network.firebasestorage.app",
+            messagingSenderId: "577008528931",
+            appId: "1:577008528931:web:febfbc9ce086a07b8ccb96"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // جعل المتغير متاح عالمياً لتتمكن دوال البحث من استخدامه
+        window.staffData = [];
+
+        onValue(ref(db, 'medical_radar'), (snapshot) => {
+            window.staffData = [];
+            if(snapshot.exists()) {
+                snapshot.forEach(child => {
+                    window.staffData.push({ id: child.key, ...child.val() });
+                });
+            }
+            displayStaff(window.staffData);
+        });
+
+        window.displayStaff = function(data) {
             const grid = document.getElementById('staffGrid');
             grid.innerHTML = '';
-            if(data.length === 0) { grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color:#888; padding:50px;">عذراً، لم يتم العثور على نتائج..</p>'; return; }
+            
+            if(data.length === 0) { 
+                grid.innerHTML = '<div style="text-align:center; grid-column: 1/-1; padding:50px; background: white; border-radius: 20px; border: 2px dashed #cbd5e0;"><i class="fas fa-search fa-3x" style="color:#cbd5e0; margin-bottom:15px; display:block;"></i><h3 style="color:#64748b;">عذراً، لم يتم العثور على نتائج تطابق بحثك.</h3></div>'; 
+                return; 
+            }
+
             data.forEach(item => {
                 const roleText = item.role === 'nurse' ? 'ممرض/ة' : (item.role === 'doctor' ? 'طبيب/ة' : 'صيدلي/ة');
                 const roleClass = item.role === 'nurse' ? 'card-nurse' : (item.role === 'doctor' ? 'card-doctor' : 'card-pharmacist');
                 const badgeClass = item.role === 'nurse' ? 'bg-nurse' : (item.role === 'doctor' ? 'bg-doctor' : 'bg-pharmacist');
                 const iconColor = item.role === 'nurse' ? '#27ae60' : (item.role === 'doctor' ? '#2980b9' : '#e67e22');
-                grid.innerHTML += `<div class="nurse-card ${roleClass}"><span class="role-badge ${badgeClass}">${roleText}</span><div class="nurse-info"><h3>${item.name}</h3><p><i class="fas fa-map-marker-alt" style="color:${iconColor}"></i> ${item.area}</p><p><i class="fas fa-certificate" style="color:${iconColor}"></i> ${item.bio}</p><div class="skills">${item.skills.map(s => `<span class="skill-tag">${s}</span>`).join('')}</div><div class="contact-btns"><a href="https://wa.me/${item.wa}" class="btn-wa"><i class="fab fa-whatsapp"></i> واتساب</a><a href="tel:${item.phone}" class="btn-call"><i class="fas fa-phone"></i> اتصال</a></div></div></div>`;
+                
+                // معالجة المهارات سواء كانت مصفوفة أو غير موجودة
+                const skillsHtml = (item.skills && Array.isArray(item.skills)) 
+                    ? item.skills.map(s => `<span class="skill-tag">${s}</span>`).join('') 
+                    : '';
+
+                grid.innerHTML += `
+                <div class="nurse-card ${roleClass}">
+                    <span class="role-badge ${badgeClass}"><i class="fas ${item.role === 'nurse' ? 'fa-user-nurse' : (item.role === 'doctor' ? 'fa-user-md' : 'fa-pills')}"></i> ${roleText}</span>
+                    <div class="nurse-info">
+                        <h3>${item.name}</h3>
+                        <p><i class="fas fa-map-marker-alt" style="color:${iconColor}; width: 20px; text-align: center;"></i> ${item.area}</p>
+                        <p><i class="fas fa-certificate" style="color:${iconColor}; width: 20px; text-align: center;"></i> ${item.bio || 'مقدم خدمة طبية'}</p>
+                        <div class="skills">${skillsHtml}</div>
+                        <div class="contact-btns">
+                            <a href="https://wa.me/${item.wa}" target="_blank" class="btn-wa"><i class="fab fa-whatsapp fa-lg"></i> واتساب</a>
+                            <a href="tel:${item.phone}" class="btn-call"><i class="fas fa-phone-alt"></i> اتصال</a>
+                        </div>
+                    </div>
+                </div>`;
             });
         }
 
-        function filterStaff() {
+        window.filterStaff = function() {
             const areaVal = document.getElementById('areaSearch').value.toLowerCase();
             const roleVal = document.getElementById('roleFilter').value;
-            const filtered = staffData.filter(item => item.area.toLowerCase().includes(areaVal) && (roleVal === "" || item.role === roleVal));
+            const filtered = window.staffData.filter(item => 
+                (item.area && item.area.toLowerCase().includes(areaVal)) && 
+                (roleVal === "" || item.role === roleVal)
+            );
             displayStaff(filtered);
         }
 
-        function toggleQuickMenu() {
+        // دوال القوائم والمودال (كما هي من كودك)
+        window.toggleQuickMenu = function() {
             const menu = document.getElementById('quickMenu');
             menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
         }
@@ -210,11 +289,9 @@
             const original = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
             fetch(this.action, { method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' } })
-            .then(response => { if (response.ok) { alert('تم استلام بياناتك بنجاح. 🌟'); this.reset(); document.getElementById('regModal').style.display='none'; } })
+            .then(response => { if (response.ok) { alert('تم استلام بياناتك بنجاح. سنقوم بإضافتك للرادار قريباً 🌟'); this.reset(); document.getElementById('regModal').style.display='none'; } })
             .finally(() => btn.innerHTML = original);
         });
-
-        displayStaff(staffData);
     </script>
 </body>
 </html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة إدارة بيانات المستشفيات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* التنسيقات الأصلية بالكامل */
+        body { font-family: 'Cairo', sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; direction: rtl; }
+        
+        /* شاشة تسجيل الدخول */
+        #loginSection { 
+            max-width: 400px; margin: 100px auto; background: white; padding: 40px; 
+            border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); text-align: center;
+        }
+        
+        /* لوحة التحكم (مخفية في البداية) */
+        #adminPanel { display: none; }
+
+        .admin-card { background: white; max-width: 600px; margin: 0 auto; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-top: 8px solid #3498db; }
+        h2 { color: #2c3e50; text-align: center; margin-bottom: 25px; }
+        .form-section { background: #f8f9fa; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #eef0f2; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; color: #34495e; }
+        input[type="text"], input[type="tel"], select { width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 10px; font-family: 'Cairo'; box-sizing: border-box; }
+        
+        .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .service-item { display: flex; align-items: center; background: white; padding: 10px; border-radius: 8px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem; }
+        .service-item input { width: auto; margin-left: 10px; margin-bottom: 0; }
+        
+        .btn-primary { width: 100%; padding: 15px; background: linear-gradient(45deg, #3498db, #2980b9); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(52,152,219,0.4); }
+        
+        #statusMsg { text-align: center; margin-top: 15px; font-weight: bold; }
+        .logout-link { display: block; text-align: center; margin-top: 20px; color: #e74c3c; cursor: pointer; font-weight: bold; }
+        
+        /* تنسيق إضافي لخانة اختيار المستخدم */
+        .user-select { margin-bottom: 15px; border: 2px solid #3498db; }
+
+        /* --- الإضافات الجديدة الخاصة بقائمة المستشفيات (أزرار التعديل والحذف) --- */
+        .hosp-list { margin-top: 30px; border-top: 2px solid #eee; padding-top: 20px; }
+        .hosp-item { background: #fff; border: 1px solid #eee; padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .action-btns { display: flex; gap: 8px; align-items: center; }
+        .btn-edit { background: #e0f2fe; color: #0284c7; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Cairo'; transition: 0.3s; }
+        .btn-edit:hover { background: #bae6fd; }
+        .btn-delete { background: #fee2e2; color: #ef4444; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Cairo'; transition: 0.3s; }
+        .btn-delete:hover { background: #fecaca; }
+    </style>
+</head>
+<body>
+
+<div id="loginSection">
+    <i class="fas fa-users-cog" style="font-size: 4rem; color: #3498db; margin-bottom: 20px;"></i>
+    <h2>دخول الإدارة</h2>
+    <p style="color: #7f8c8d;">اختر المستخدم وأدخل كلمة السر</p>
+    
+    <select id="userName" class="user-select">
+        <option value="">-- اختر المستخدم --</option>
+        <option value="admin">المدير العام</option>
+        <option value="user1">نائب المدير</option>
+        <option value="user2"> كادر طبي</option>
+        <option value="user3">موظف</option>
+    </select>
+
+    <input type="password" id="adminPass" placeholder="كلمة المرور السرية" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 10px; font-family: 'Cairo'; box-sizing: border-box; text-align: center;">
+    <button class="btn-primary" onclick="verifyAccess()">دخول اللوحة</button>
+    <p id="loginError" style="color: red; display: none; margin-top: 10px;">بيانات الدخول غير صحيحة!</p>
+</div>
+
+<div id="adminPanel">
+    <div class="admin-card">
+        <div id="welcomeUser" style="text-align: left; color: #7f8c8d; font-size: 0.9rem;"></div>
+        <h2><i class="fas fa-hospital-user"></i> تحديث بيانات المستشفى</h2>
+        
+        <div class="form-section">
+            <label>اسم المستشفى</label>
+            <input type="text" id="hospName" placeholder="مثلاً: مستشفى النو التعليمي">
+            
+            <label>الموقع / العنوان</label>
+            <input type="text" id="hospLoc" placeholder="المدينة - الحي">
+
+            <label>رقم الهاتف للاتصال</label>
+            <input type="tel" id="hospPhone" placeholder="0123456789">
+        </div>
+
+        <div class="form-section">
+            <label><i class="fas fa-vials"></i> حالة الخدمات (متوفر / غير متوفر):</label>
+            <div class="services-grid">
+                <label class="service-item"><input type="checkbox" id="mri"> رنين مغناطيسي (MRI)</label>
+                <label class="service-item"><input type="checkbox" id="ct"> أشعة مقطعية (CT)</label>
+                <label class="service-item"><input type="checkbox" id="xray"> أشعة سينية (X-Ray)</label>
+                <label class="service-item"><input type="checkbox" id="icu"> عناية مكثفة (ICU)</label>
+                <label class="service-item"><input type="checkbox" id="blood"> بنك دم</label>
+                <label class="service-item"><input type="checkbox" id="peds"> عناية أطفال / حضانات</label>
+            </div>
+        </div>
+
+        <button class="btn-primary" id="mainSubmitBtn" onclick="pushToFirebase()">تحديث البيانات في الشبكة الآن</button>
+        <div id="statusMsg"></div>
+
+        <div class="hosp-list">
+            <h3>المستشفيات المسجلة حالياً:</h3>
+            <div id="activeHospitals"></div>
+        </div>
+
+        <span class="logout-link" onclick="location.reload()">تسجيل الخروج الآمن</span>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBltsN_YuPhicWCv4MmbYf7-kSp9u66lBE",
+        authDomain: "sudanse-nursing-network.firebaseapp.com",
+        databaseURL: "https://sudanse-nursing-network-default-rtdb.firebaseio.com/",
+        projectId: "sudanse-nursing-network",
+        storageBucket: "sudanse-nursing-network.firebasestorage.app",
+        messagingSenderId: "577008528931",
+        appId: "1:577008528931:web:febfbc9ce086a07b8ccb96"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // قائمة المستخدمين وكلمات السر 
+    const usersList = {
+        "admin": "0960",   // المدير العام
+        "user1": "1111",      // مستخدم 1
+        "user2": "2222",    // مستخدم 2
+        "user3": "3333"      // مستخدم 3
+    };
+
+    function verifyAccess() {
+        const user = document.getElementById('userName').value;
+        const pass = document.getElementById('adminPass').value;
+        const errorMsg = document.getElementById('loginError');
+
+        if (user && usersList[user] === pass) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            document.getElementById('welcomeUser').innerText = "المستخدم الحالي: " + document.getElementById('userName').options[document.getElementById('userName').selectedIndex].text;
+        } else {
+            errorMsg.style.display = 'block';
+            document.getElementById('adminPass').value = "";
+        }
+    }
+
+    // === متغير لحفظ البيانات لتسهيل التعديل ===
+    window.hospitalsDataMap = {};
+    let isEditingMode = false;
+
+    // === الكود البرمجي الأصلي مدمج مع التحديث وإعادة الزر لوضعه الطبيعي ===
+    function pushToFirebase() {
+        const name = document.getElementById('hospName').value;
+        const location = document.getElementById('hospLoc').value;
+        const phone = document.getElementById('hospPhone').value;
+        const statusMsg = document.getElementById('statusMsg');
+
+        if (!name || !location) {
+            alert("يرجى كتابة الاسم والموقع!");
+            return;
+        }
+
+        statusMsg.innerText = "جاري الحفظ في السيرفر...";
+        statusMsg.style.color = "#3498db";
+
+        const services = [
+            { name: "رنين مغناطيسي (MRI)", av: document.getElementById('mri').checked },
+            { name: "مقطعية (CT)", av: document.getElementById('ct').checked },
+            { name: "أشعة سينية (X-Ray)", av: document.getElementById('xray').checked },
+            { name: "عناية مكثفة", av: document.getElementById('icu').checked },
+            { name: "بنك دم", av: document.getElementById('blood').checked },
+            { name: "حضانات / أطفال", av: document.getElementById('peds').checked }
+        ];
+
+        // في قاعدة بياناتك، اسم المستشفى هو الـ Key (المفتاح)، لذا فعملية التحديث والإضافة تتم بنفس الدالة (Set)
+        database.ref('hospitals/' + name).set({
+            name: name,
+            location: location,
+            phone: phone,
+            tests: services,
+            time: new Date().toLocaleString('ar-EG'),
+            updatedBy: document.getElementById('userName').value // إضافة معلومة من الذي قام بالتحديث
+        }).then(() => {
+            statusMsg.innerText = "✅ تم تحديث بيانات " + name + " بنجاح!";
+            statusMsg.style.color = "green";
+            resetForm();
+        }).catch((err) => {
+            statusMsg.innerText = "❌ فشل التحديث: " + err.message;
+            statusMsg.style.color = "red";
+        });
+    }
+
+    // دالة لتفريغ الخانات وإرجاع الزر لشكله الأصلي بعد الإرسال
+    function resetForm() {
+        document.getElementById('hospName').value = "";
+        document.getElementById('hospLoc').value = "";
+        document.getElementById('hospPhone').value = "";
+        
+        // تفريغ جميع الـ Checkboxes
+        document.getElementById('mri').checked = false;
+        document.getElementById('ct').checked = false;
+        document.getElementById('xray').checked = false;
+        document.getElementById('icu').checked = false;
+        document.getElementById('blood').checked = false;
+        document.getElementById('peds').checked = false;
+
+        document.getElementById('hospName').readOnly = false; // السماح بكتابة اسم جديد
+        isEditingMode = false;
+        
+        const btn = document.getElementById('mainSubmitBtn');
+        btn.innerText = "تحديث البيانات في الشبكة الآن";
+        btn.style.background = "linear-gradient(45deg, #3498db, #2980b9)"; // اللون الأصلي
+    }
+
+    // === جلب البيانات وعرضها في القائمة مع أزرار التعديل والحذف ===
+    database.ref('hospitals').on('value', (snapshot) => {
+        const list = document.getElementById('activeHospitals');
+        list.innerHTML = '';
+        window.hospitalsDataMap = {}; // تفريغ الذاكرة
+        
+        if (!snapshot.exists()) {
+            list.innerHTML = "<p style='text-align:center; color:#666;'>لا توجد مستشفيات مسجلة.</p>";
+            return;
+        }
+
+        snapshot.forEach(child => {
+            const data = child.val();
+            window.hospitalsDataMap[child.key] = data; // حفظ البيانات لزر التعديل
+            
+            list.innerHTML += `
+                <div class="hosp-item">
+                    <span style="flex:1;"><strong>${data.name}</strong> - <span style="font-size:0.85rem; color:#666;">${data.location}</span></span>
+                    <div class="action-btns">
+                        <button class="btn-edit" onclick="prepareEdit('${child.key}')"><i class="fas fa-edit"></i> تعديل</button>
+                        <button class="btn-delete" onclick="deleteHosp('${child.key}')"><i class="fas fa-trash"></i> حذف</button>
+                    </div>
+                </div>`;
+        });
+    });
+
+    // دالة الحذف
+    function deleteHosp(key) {
+        if(confirm("هل أنت متأكد من رغبتك في حذف هذا المستشفى نهائياً؟ ستختفي بياناته من شاشة العرض!")) {
+            database.ref('hospitals/' + key).remove();
+        }
+    }
+
+    // === دالة جديدة تقوم بسحب البيانات للخانات عند ضغط زر التعديل ===
+    function prepareEdit(key) {
+        const data = window.hospitalsDataMap[key];
+        if(!data) return;
+        
+        document.getElementById('hospName').value = data.name || "";
+        document.getElementById('hospLoc').value = data.location || "";
+        document.getElementById('hospPhone').value = data.phone || "";
+        
+        // تفريغ أولاً ثم تحديد بناءً على البيانات القادمة من السيرفر
+        document.getElementById('mri').checked = false;
+        document.getElementById('ct').checked = false;
+        document.getElementById('xray').checked = false;
+        document.getElementById('icu').checked = false;
+        document.getElementById('blood').checked = false;
+        document.getElementById('peds').checked = false;
+
+        if(data.tests && Array.isArray(data.tests)){
+             data.tests.forEach(test => {
+                 if (test.name.includes("رنين") && test.av) document.getElementById('mri').checked = true;
+                 if (test.name.includes("مقطعية") && test.av) document.getElementById('ct').checked = true;
+                 if (test.name.includes("سينية") && test.av) document.getElementById('xray').checked = true;
+                 if (test.name.includes("مكثفة") && test.av) document.getElementById('icu').checked = true;
+                 if (test.name.includes("دم") && test.av) document.getElementById('blood').checked = true;
+                 if (test.name.includes("حضانات") && test.av) document.getElementById('peds').checked = true;
+             });
+        }
+
+        document.getElementById('hospName').readOnly = true; // منع تغيير اسم المستشفى أثناء التعديل لأنه مفتاح قاعدة البيانات
+        isEditingMode = true;
+        
+        // تغيير شكل الزر لتنبيه المستخدم أنه يقوم بتعديل
+        const btn = document.getElementById('mainSubmitBtn');
+        btn.innerText = "حفظ التعديلات للمستشفى 💾";
+        btn.style.background = "linear-gradient(45deg, #27ae60, #2ecc71)"; // لون أخضر دلالة على التعديل
+        
+        // مسح رسالة الحالة السابقة
+        document.getElementById('statusMsg').innerText = "";
+        
+        // الصعود لأعلى الشاشة تلقائياً
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>

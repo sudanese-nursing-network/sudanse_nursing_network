@@ -19,7 +19,7 @@
         .logo { font-size: 1.4rem; font-weight: bold; color: #2c3e50; display: flex; align-items: center; gap: 8px; }
         .logo i { color: #e74c3c; font-size: 1.8rem; }
         .logo span { color: #3498db; }
-        .nav-links { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; }
+        .nav-links { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; align-items: center; }
         .nav-links li a { color: #555; font-weight: 600; transition: 0.3s; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
         .nav-links li a:hover { color: #3498db; }
         
@@ -103,39 +103,118 @@
         .btn-inquiry { background: #27ae60; color: white; padding: 14px 35px; border: none; border-radius: 10px; font-family: 'Cairo'; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; margin-top: 15px; box-shadow: 0 5px 15px rgba(39,174,96,0.3); }
         .btn-inquiry:hover { background: #219150; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(39,174,96,0.4); }
 
-        /* القائمة السريعة (تنسيقات جديدة للجمال والتفعيل) */
-        .quick-access-btn { 
-            position: fixed; bottom: 30px; left: 30px; 
-            background: linear-gradient(135deg, #3498db, #2980b9); color: white; 
-            width: 65px; height: 65px; border-radius: 50%; 
-            display: flex; justify-content: center; align-items: center; 
-            font-size: 1.8rem; cursor: pointer; z-index: 4000; 
-            box-shadow: 0 5px 20px rgba(52,152,219,0.5); 
-            transition: all 0.3s ease; 
-        }
-        .quick-access-btn:hover { transform: scale(1.1) rotate(10deg); }
-        
-        .quick-menu { 
-            position: fixed; bottom: 105px; left: 30px; 
-            background: white; width: 260px; border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 3999; 
-            opacity: 0; visibility: hidden; transform: translateY(20px);
-            max-height: 60vh; overflow-y: auto; padding: 15px 0; 
-            transition: all 0.3s ease; border: 1px solid #eee;
-        }
-        .quick-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
-        
-        .quick-menu ul { list-style: none; padding: 0; margin: 0; }
-        .quick-menu li a { display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none; color: #444; border-bottom: 1px solid #f5f5f5; font-weight: 600; transition: 0.2s; }
-        .quick-menu li a:hover { background: #f0f8ff; color: #3498db; padding-right: 30px; }
-        .quick-menu li a i { width: 20px; text-align: center; color: #3498db; }
-        .quick-menu li:last-child a { border-bottom: none; }
-        
         /* تخصيص شريط التمرير */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: #bdc3c7; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #95a5a6; }
+
+        /* ========================================= */
+        /* التنسيقات المضافة لزر ونافذة المبرمج (Dev Modal) */
+        /* ========================================= */
+        .nav-dev-btn { 
+            background: rgba(52, 152, 219, 0.1); 
+            color: #3498db !important; 
+            border: 1px solid #3498db; 
+            padding: 6px 15px !important; 
+            border-radius: 10px; 
+            margin-right: 10px; 
+            font-weight: 900; 
+            transition: 0.3s; 
+            cursor: pointer; 
+            display: inline-flex; 
+            align-items: center; 
+            font-family: 'Cairo', sans-serif;
+        }
+        .nav-dev-btn:hover { 
+            background: #3498db; 
+            color: white !important; 
+            box-shadow: 0 4px 15px rgba(52,152,219,0.4); 
+            transform: translateY(-2px); 
+        }
+
+        .copyright-btn { 
+            background: rgba(52, 152, 219, 0.1); 
+            border: 1px solid #3498db; 
+            color: #3498db; 
+            padding: 10px 25px; 
+            border-radius: 30px; 
+            cursor: pointer; 
+            font-family: 'Cairo', sans-serif; 
+            font-size: 1rem; 
+            margin-top: 15px; 
+            transition: 0.3s; 
+            font-weight: bold; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+        .copyright-btn:hover { 
+            background: #3498db; 
+            color: white; 
+            transform: translateY(-3px); 
+            box-shadow: 0 5px 15px rgba(52,152,219,0.4); 
+        }
+
+        .dev-modal { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); opacity: 0; transition: opacity 0.3s ease; }
+        .dev-modal.show-modal { display: flex; opacity: 1; justify-content: center; align-items: center; }
+        .dev-content-prog { background: white; width: 90%; max-width: 420px; padding: 40px 30px; border-radius: 25px; text-align: center; position: relative; border-bottom: 8px solid #3498db; color: #333; box-shadow: 0 25px 50px rgba(0,0,0,0.4); transform: translateY(-50px); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .dev-modal.show-modal .dev-content-prog { transform: translateY(0); opacity: 1; }
+        .dev-img { width: 140px; height: 140px; border-radius: 50%; border: 5px solid #3498db; margin-bottom: 20px; object-fit: cover; box-shadow: 0 10px 25px rgba(52,152,219,0.4); padding: 4px; background: white; }
+        .close-dev { position: absolute; left: 25px; top: 20px; font-size: 30px; cursor: pointer; color: #aaa; transition: 0.3s; line-height: 1; }
+        .close-dev:hover { color: #e74c3c; transform: rotate(90deg) scale(1.2); }
+        .dev-contact-info { text-align: right; margin-top: 25px; background: #ebf5fb; padding: 25px; border-radius: 15px; border: 2px dashed #3498db; }
+        .dev-contact-info p { margin: 15px 0; font-size: 1.1rem; display: flex; align-items: center; gap: 15px; font-weight: bold; }
+        .dev-contact-info a { color: #2c3e50; text-decoration: none; transition: 0.3s; }
+        .dev-contact-info a:hover { color: #3498db; padding-right: 5px; }
+        .dev-contact-info i { color: #3498db; width: 25px; font-size: 1.3rem; text-align: center; }
+
+        /* ========================================= */
+        /* القائمة السريعة المطورة (الزر العائم) */
+        /* ========================================= */
+        .quick-access-btn { 
+            position: fixed; bottom: 30px; left: 30px; 
+            background: linear-gradient(135deg, #3498db, #2980b9); color: white; 
+            width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            font-size: 1.8rem; cursor: pointer; z-index: 100000; box-shadow: 0 10px 20px rgba(52,152,219,0.5); 
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .quick-access-btn:hover, .quick-access-btn.active-btn { transform: scale(1.1) rotate(90deg); background: #2c3e50; }
+
+        .quick-menu { 
+            position: fixed; bottom: 110px; left: 30px; background: rgba(255,255,255,0.98); 
+            backdrop-filter: blur(15px); width: 280px; max-height: 75vh; overflow-y: auto; border-radius: 20px; 
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2); z-index: 99999; border: 1px solid rgba(255,255,255,0.5);
+            display: block !important; 
+            visibility: hidden; opacity: 0; pointer-events: none; 
+            transform: translateY(20px) scale(0.9); 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+        
+        /* كلاس التفعيل للنافذة السريعة */
+        .quick-menu.active { 
+            visibility: visible !important; 
+            opacity: 1 !important; 
+            transform: translateY(0) scale(1) !important; 
+            pointer-events: auto !important; 
+        }
+        
+        .quick-menu::-webkit-scrollbar { width: 5px; }
+        .quick-menu::-webkit-scrollbar-track { background: #f4f7f6; border-radius: 10px; }
+        .quick-menu::-webkit-scrollbar-thumb { background: #3498db; border-radius: 10px; }
+        .quick-menu::-webkit-scrollbar-thumb:hover { background: #2c3e50; }
+        
+        .quick-menu ul { list-style: none; padding: 10px 0; margin: 0; }
+        .quick-menu li { border-bottom: 1px solid #eee; }
+        .quick-menu li:last-child { border-bottom: none; }
+        .quick-menu li a { display: flex; align-items: center; gap: 15px; padding: 15px 25px; color: #2c3e50; font-weight: 800; text-decoration: none; transition: 0.3s; }
+        .quick-menu li a:hover { background: #f0f8ff; color: #3498db; padding-right: 35px; }
+        .quick-menu li a i { width: 25px; text-align: center; color: #3498db; font-size: 1.3rem; transition: 0.3s; }
+        .quick-menu li a:hover i { transform: scale(1.2); }
+
+        footer { text-align: center; padding: 30px; background: white; margin-top: 40px; border-top: 2px solid #eee; }
+
     </style>
 </head>
 <body>
@@ -150,6 +229,7 @@
             <li><a href="calc.html"><i class="fas fa-calculator"></i> الحاسبة</a></li>
             <li><a href="handover.html"><i class="fas fa-exchange-alt"></i> التسليم</a></li>
             <li><a href="sos.html"><i class="fas fa-ambulance"></i> الاستغاثة</a></li>
+            <li><button class="nav-dev-btn" onclick="openDevModal(event)"><i class="fas fa-code"></i> المبرمج</button></li>
         </ul>
     </nav>
 
@@ -262,8 +342,29 @@
         </div>
     </div>
 
-    <div class="quick-access-btn" id="quickBtn" title="كل الشاشات" onclick="toggleQuickMenu()">
-        <i class="fas fa-th-large"></i>
+    <div id="devModal" class="dev-modal">
+        <div class="dev-content-prog">
+            <span class="close-dev" id="closeDevBtn">&times;</span>
+            
+            <img src="me.jpeg" alt="المبرمج الرشيد كمال" class="dev-img" onerror="this.src='https://via.placeholder.com/150?text=Al-Rasheed'">
+            
+            <h3 style="color: #2c3e50; margin-bottom: 5px; font-weight: 900; font-size: 1.6rem;">تطوير المبرمج: الرشيد كمال</h3>
+            <p style="color: #666; font-size: 1.1rem; font-weight: bold;">متخصص في حلول الويب والأنظمة الصحية</p>
+            
+            <div class="dev-contact-info">
+                <p><i class="fas fa-phone-alt"></i> <a href="tel:0127825456">0127825456</a></p>
+                <p><i class="fas fa-phone-alt"></i> <a href="tel:0964278052">0964278052</a></p>
+                <p><i class="fas fa-envelope"></i> <a href="mailto:alrsheedkamal6002@gmail.com">alrsheedkamal6002@gmail.com</a></p>
+            </div>
+
+            <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
+            <p style="margin-top: 10px; font-weight: 900; font-size: 1.2rem; color: #3498db;">Al-Rasheed Company © 2026</p>
+            <p style="font-size: 0.9rem; color: #888; font-weight: bold;">صنع بكل فخر لدعم الكوادر الصحية السودانية</p>
+        </div>
+    </div>
+
+    <div class="quick-access-btn" id="quickToggleBtn" title="كل الشاشات">
+        <i class="fas fa-th-large" style="pointer-events: none;"></i>
     </div>
     
     <div id="quickMenu" class="quick-menu">
@@ -291,72 +392,54 @@
         </ul>
     </div>
 
-    <script src="script.js"></script>
-    <script src="hospitals.js"></script>
+    <footer>
+        <p style="margin-bottom: 10px; color: #666; font-weight: bold;">جميع الحقوق محفوظة © 2026 - شبكة الممرضين السودانيين</p>
+        <button class="copyright-btn" onclick="openDevModal(event)">
+            <i class="fas fa-code"></i> حقوق البرمجة والتطوير
+        </button>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
 
     <script>
-        // 1. تفعيل النوافذ المنبثقة (Modals)
-        const inquiryModal = document.getElementById('inquiryModal');
-        const transferModal = document.getElementById('transferModal');
-        const destHospitalInput = document.getElementById('destHospital');
+        // إعدادات Firebase الخاصة بك كما هي
+        const firebaseConfig = {
+            apiKey: "AIzaSyBltsN_YuPhicWCv4MmbYf7-kSp9u66lBE",
+            authDomain: "sudanse-nursing-network.firebaseapp.com",
+            databaseURL: "https://sudanse-nursing-network-default-rtdb.firebaseio.com/",
+            projectId: "sudanse-nursing-network",
+            storageBucket: "sudanse-nursing-network.firebasestorage.app",
+            messagingSenderId: "577008528931",
+            appId: "1:577008528931:web:febfbc9ce086a07b8ccb96"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-        function openInquiryModal() {
-            inquiryModal.style.display = 'block';
-        }
-
-        function closeInquiryModal() {
-            inquiryModal.style.display = 'none';
-        }
-
-        function openTransferModal(hospitalName) {
-            destHospitalInput.value = hospitalName; // نقل اسم المستشفى تلقائياً للاستمارة
-            transferModal.style.display = 'block';
-        }
-
-        function closeTransferModal() {
-            transferModal.style.display = 'none';
-        }
-
-        // إغلاق النوافذ عند الضغط على زر X
-        document.getElementById('closeInquiryBtn').onclick = closeInquiryModal;
-        document.getElementById('closeTransferBtn').onclick = closeTransferModal;
-
-        // إغلاق النوافذ عند الضغط في الخلفية (خارج النافذة)
-        window.onclick = function(event) {
-            if (event.target === inquiryModal) closeInquiryModal();
-            if (event.target === transferModal) closeTransferModal();
-            
-            // إغلاق القائمة السريعة إذا تم الضغط خارجها
-            const quickMenu = document.getElementById('quickMenu');
-            const quickBtn = document.getElementById('quickBtn');
-            if(event.target !== quickMenu && event.target !== quickBtn && !quickBtn.contains(event.target) && !quickMenu.contains(event.target)){
-                quickMenu.classList.remove('show');
-            }
-        }
-
-        // 2. تفعيل القائمة السريعة
-        function toggleQuickMenu() {
-            document.getElementById('quickMenu').classList.toggle('show');
-        }
-
-        // 3. إضافة بطاقات مستشفيات تجريبية لتوضيح جمالية التصميم وتجربة زر "التحويل"
-        // ملاحظة: يمكنك حذف هذه الدالة إذا كانت بياناتك تأتي من ملف hospitals.js
-        function renderSampleHospitals() {
+        // 1. تفعيل محرك قراءة البيانات من Firebase وتحويلها لبطاقات ملونة
+        db.ref('hospitals').on('value', (snapshot) => {
             const grid = document.getElementById('hospitalsGrid');
-            const sampleData = [
-                { name: "مستشفى السلاح الطبي", location: "أم درمان - شارع النيل", tests: [{name: "رنين مغناطيسي (MRI)", av: true}, {name: "مقطعية (CT)", av: true}, {name: "عناية مكثفة", av: false}], phone: "0123456789" },
-                { name: "مستشفى النو التعليمي", location: "أم درمان - الثورة", tests: [{name: "أشعة سينية (X-Ray)", av: true}, {name: "مقطعية (CT)", av: false}, {name: "بنك دم", av: true}], phone: "0912345678" },
-                { name: "مستشفى البلك", location: "أم درمان - الثورة النص", tests: [{name: "عناية أطفال", av: true}, {name: "حضانات", av: true}, {name: "رنين مغناطيسي", av: false}], phone: "0111111111" }
-            ];
+            grid.innerHTML = ""; // مسح المحتوى القديم
 
-            let html = '';
-            sampleData.forEach(hosp => {
-                let tagsHtml = hosp.tests.map(t => `<span class="${t.av ? 'tag-on' : 'tag-off'}"><i class="fas ${t.av ? 'fa-check-circle' : 'fa-times-circle'}"></i> ${t.name}</span>`).join('');
-                html += `
+            snapshot.forEach((childSnapshot) => {
+                const hosp = childSnapshot.val();
+                
+                // بناء الـ Tags بناءً على القيمة المرسلة من لوحة التحكم (متوفر/غير متوفر)
+                let tagsHtml = '';
+                if(hosp.tests && Array.isArray(hosp.tests)) {
+                    tagsHtml = hosp.tests.map(t => 
+                        `<span class="${t.av ? 'tag-on' : 'tag-off'}">
+                            <i class="fas ${t.av ? 'fa-check-circle' : 'fa-times-circle'}"></i> ${t.name}
+                        </span>`
+                    ).join('');
+                }
+
+                // إضافة الكرت للشبكة
+                grid.innerHTML += `
                     <div class="hosp-card">
                         <div>
                             <h3 class="hosp-name">${hosp.name}</h3>
-                            <div class="hosp-location"><i class="fas fa-map-marker-alt"></i> ${hosp.location}</div>
+                            <div class="hosp-location"><i class="fas fa-map-marker-alt"></i> ${hosp.location || 'غير محدد'}</div>
                             <div class="tests-section">
                                 <div class="test-title"><i class="fas fa-vials"></i> حالة الفحوصات والخدمات:</div>
                                 <div class="test-tags">${tagsHtml}</div>
@@ -364,17 +447,83 @@
                         </div>
                         <div class="hosp-actions">
                             <button class="btn-transfer" onclick="openTransferModal('${hosp.name}')"><i class="fas fa-ambulance"></i> تحويل مريض</button>
-                            <a href="tel:${hosp.phone}" class="btn-call"><i class="fas fa-phone-alt"></i> اتصال</a>
+                            <a href="tel:${hosp.phone || ''}" class="btn-call"><i class="fas fa-phone-alt"></i> اتصال</a>
                         </div>
                     </div>
                 `;
             });
-            grid.innerHTML = html;
+        });
+
+        // 2. تفعيل النوافذ المنبثقة (Modals) الأصلية الخاصة بك
+        const inquiryModal = document.getElementById('inquiryModal');
+        const transferModal = document.getElementById('transferModal');
+        const destHospitalInput = document.getElementById('destHospital');
+
+        function openInquiryModal() { inquiryModal.style.display = 'block'; }
+        function closeInquiryModal() { inquiryModal.style.display = 'none'; }
+        function openTransferModal(hospitalName) {
+            destHospitalInput.value = hospitalName;
+            transferModal.style.display = 'block';
+        }
+        function closeTransferModal() { transferModal.style.display = 'none'; }
+        
+        if(document.getElementById('closeInquiryBtn')) document.getElementById('closeInquiryBtn').onclick = closeInquiryModal;
+        if(document.getElementById('closeTransferBtn')) document.getElementById('closeTransferBtn').onclick = closeTransferModal;
+
+        // ========================================================
+        // سكريبت القائمة السريعة ونافذة المبرمج (الجديد والمعدل)
+        // ========================================================
+        const quickMenu = document.getElementById('quickMenu');
+        const quickToggleBtn = document.getElementById('quickToggleBtn');
+
+        if (quickToggleBtn && quickMenu) {
+            quickToggleBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                quickMenu.classList.toggle('active');
+                quickToggleBtn.classList.toggle('active-btn');
+            });
         }
 
-        // تشغيل توليد المستشفيات عند تحميل الصفحة
-        document.addEventListener('DOMContentLoaded', renderSampleHospitals);
+        // مستمع نقرات عام لإغلاق النوافذ والقوائم المنسدلة عند النقر خارجها
+        window.onclick = function(event) {
+            // إغلاق القائمة السريعة
+            if (quickMenu && quickToggleBtn) {
+                if (!quickMenu.contains(event.target) && !quickToggleBtn.contains(event.target)) {
+                    quickMenu.classList.remove('active');
+                    quickToggleBtn.classList.remove('active-btn');
+                }
+            }
+            
+            // إغلاق نافذة المبرمج
+            const devModal = document.getElementById('devModal');
+            if (devModal && event.target === devModal) {
+                devModal.classList.remove('show-modal');
+            }
 
+            // إغلاق موديلاتك الأصلية
+            if (event.target === inquiryModal) closeInquiryModal();
+            if (event.target === transferModal) closeTransferModal();
+        }
+
+        // دوال فتح وإغلاق نافذة المبرمج
+        function openDevModal(e) { 
+            if(e) { e.preventDefault(); e.stopPropagation(); }
+            document.getElementById('devModal').classList.add('show-modal'); 
+        }
+        
+        const closeDevBtn = document.getElementById('closeDevBtn');
+        if (closeDevBtn) {
+            closeDevBtn.addEventListener('click', function() {
+                document.getElementById('devModal').classList.remove('show-modal');
+            });
+        }
+
+        // دالة التوافق مع الكود القديم إن استدعت الحاجة
+        function toggleQuickMenu() {
+            if(quickMenu) quickMenu.classList.toggle('active');
+            if(quickToggleBtn) quickToggleBtn.classList.toggle('active-btn');
+        }
     </script>
 </body>
 </html>

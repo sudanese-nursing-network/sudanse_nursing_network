@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الأرشيف | لوحة التحكم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --main-color: #00a884; --dark-blue: #1e272e; --bg-color: #f4f7f6; }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--bg-color); padding: 20px; direction: rtl; margin: 0; }
+        
+        .admin-card { background: white; max-width: 900px; margin: 0 auto; padding: 40px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.08); border-top: 8px solid var(--dark-blue); animation: fadeIn 0.5s ease; }
+        h2 { color: var(--dark-blue); text-align: center; margin-bottom: 25px; font-weight: 900; font-size: 2rem; }
+        
+        .form-section { background: #ffffff; padding: 25px; border-radius: 15px; margin-bottom: 25px; border: 1px solid #eee; box-shadow: 0 4px 15px rgba(0,0,0,0.02); display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-section label { font-weight: bold; margin-bottom: 8px; color: #333; display: block; }
+        .form-section .full-width { grid-column: 1 / -1; }
+        
+        input, select, textarea { width: 100%; padding: 14px; border: 2px solid #ddd; border-radius: 10px; font-family: 'Cairo'; box-sizing: border-box; outline: none; transition: 0.3s; font-size: 1rem; }
+        input:focus, select:focus, textarea:focus { border-color: var(--main-color); background: white; box-shadow: 0 0 0 4px rgba(0, 168, 132, 0.1); }
+        
+        .btn-main { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--dark-blue), var(--main-color)); color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.4s; box-shadow: 0 8px 20px rgba(0, 168, 132, 0.3); }
+        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(0, 168, 132, 0.4); }
+        
+        .data-list { margin-top: 40px; border-top: 2px dashed #ddd; padding-top: 30px; }
+        .data-item { background: white; border: 1px solid #eee; padding: 20px; border-radius: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.02); transition: 0.3s; border-right: 5px solid var(--main-color); }
+        .data-item:hover { transform: translateX(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        
+        .action-btns { display: flex; gap: 10px; }
+        .btn-edit { background: #e0f2fe; color: #0284c7; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Cairo'; }
+        .btn-delete { background: #fee2e2; color: #ef4444; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Cairo'; }
+        
+        #loginSection { max-width: 450px; margin: 10vh auto; background: white; padding: 50px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); text-align: center; border-top: 8px solid var(--main-color); }
+        #adminPanel { display: none; }
+        .logout-link { display: block; text-align: center; margin-top: 30px; color: #ef4444; cursor: pointer; font-weight: bold; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 768px) { .form-section { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div id="loginSection">
+    <i class="fas fa-book-medical" style="font-size: 5rem; color: var(--main-color); margin-bottom: 20px;"></i>
+    <h2 style="color: var(--dark-blue);">إدارة أرشيف الأبحاث</h2>
+    <p style="color: #666; margin-bottom: 30px;">سجل دخولك لإضافة وتعديل الأبحاث العلمية</p>
+    
+    <select id="userName" style="margin-bottom: 20px;">
+        <option value="">-- اختر المستخدم --</option>
+        <option value="admin">المدير العام</option>
+        <option value="user2">الممرض الرشيد</option>
+    </select>
+
+    <input type="password" id="adminPass" placeholder="كلمة المرور السرية" style="margin-bottom: 25px;">
+    <button class="btn-main" onclick="verifyAccess()">دخول اللوحة <i class="fas fa-sign-in-alt"></i></button>
+    <p id="loginError" style="color: #ef4444; display: none; margin-top: 15px; font-weight: bold;">بيانات الدخول غير صحيحة!</p>
+</div>
+
+<div id="adminPanel">
+    <div class="admin-card">
+        <h2><i class="fas fa-server" style="color: var(--main-color);"></i> تحكم أرشيف الأبحاث والمكتبة</h2>
+        
+        <div class="form-section">
+            <div class="full-width">
+                <label>عنوان البحث أو الدراسة</label>
+                <input type="text" id="resTitle" placeholder="مثلاً: معرفة الممرضين ودورهم في طرق انتقال العدوى...">
+            </div>
+            
+            <div>
+                <label>التخصص / القسم</label>
+                <select id="resCategory">
+                    <option value="infection">مكافحة العدوى</option>
+                    <option value="stats">الإحصاء الحيوي</option>
+                    <option value="tech">المعلوماتية الصحية</option>
+                    <option value="emergency">تمريض الطوارئ</option>
+                    <option value="other">تخصصات أخرى</option>
+                </select>
+            </div>
+
+            <div>
+                <label>اسم الباحث / الباحثين</label>
+                <input type="text" id="resAuthor" placeholder="مثلاً: الرشيد">
+            </div>
+
+            <div class="full-width">
+                <label>مكان البحث / المستشفى</label>
+                <input type="text" id="resLocation" placeholder="مثلاً: مستشفى أم درمان التعليمي">
+            </div>
+
+            <div class="full-width">
+                <label>الملخص التفصيلي للبحث (Abstract)</label>
+                <textarea id="resSummary" rows="4" placeholder="اكتب ملخص البحث هنا ليظهر عند الضغط على زر الملخص..."></textarea>
+            </div>
+            
+            <div class="full-width">
+                <label>لون تمييز البحث (اختياري)</label>
+                <select id="resColor">
+                    <option value="#00a884">أخضر (لون الشبكة الافتراضي)</option>
+                    <option value="#1e272e">أزرق داكن</option>
+                    <option value="#f39c12">برتقالي / ذهبي</option>
+                    <option value="#2980b9">أزرق فاتح</option>
+                </select>
+            </div>
+        </div>
+
+        <button class="btn-main" id="mainSubmitBtn" onclick="saveResearch()">نشر البحث في الأرشيف <i class="fas fa-cloud-upload-alt"></i></button>
+        
+        <div class="data-list">
+            <h3 style="color: var(--dark-blue); margin-bottom: 20px;"><i class="fas fa-archive"></i> الأبحاث المنشورة حالياً:</h3>
+            <div id="activeResList">
+                <div style="text-align: center; color: #999;"><i class="fas fa-spinner fa-spin"></i> جاري جلب الأبحاث...</div>
+            </div>
+        </div>
+        
+        <span class="logout-link" onclick="location.reload()"><i class="fas fa-power-off"></i> تسجيل الخروج</span>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, push, update, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBltsN_YuPhicWCv4MmbYf7-kSp9u66lBE",
+        authDomain: "sudanse-nursing-network.firebaseapp.com",
+        projectId: "sudanse-nursing-network",
+        storageBucket: "sudanse-nursing-network.firebasestorage.app",
+        messagingSenderId: "577008528931",
+        appId: "1:577008528931:web:febfbc9ce086a07b8ccb96"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const usersList = { "admin": "0960", "user2": "096020" };
+    window.verifyAccess = function() {
+        const user = document.getElementById('userName').value;
+        const pass = document.getElementById('adminPass').value;
+        if (user && usersList[user] === pass) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+        } else {
+            document.getElementById('loginError').style.display = 'block';
+        }
+    }
+
+    let currentEditKey = null;
+    window.resDataMap = {};
+
+    window.saveResearch = function() {
+        const title = document.getElementById('resTitle').value;
+        const category = document.getElementById('resCategory').value;
+        const author = document.getElementById('resAuthor').value || "باحث مستقل";
+        const location = document.getElementById('resLocation').value || "غير محدد";
+        const summary = document.getElementById('resSummary').value;
+        const color = document.getElementById('resColor').value;
+
+        if (!title || !summary) return alert("الرجاء إدخال عنوان البحث والملخص على الأقل!");
+
+        const resObject = { title, category, author, location, summary, color, timestamp: Date.now() };
+
+        if (currentEditKey) {
+            update(ref(db, 'research_archive/' + currentEditKey), resObject).then(() => {
+                alert("✅ تم تعديل بيانات البحث بنجاح!");
+                resetForm();
+            });
+        } else {
+            push(ref(db, 'research_archive'), resObject).then(() => {
+                alert("✅ تم نشر البحث في الأرشيف بنجاح!");
+                resetForm();
+            });
+        }
+    }
+
+    function resetForm() {
+        document.getElementById('resTitle').value = "";
+        document.getElementById('resCategory').value = "infection";
+        document.getElementById('resAuthor').value = "";
+        document.getElementById('resLocation').value = "";
+        document.getElementById('resSummary').value = "";
+        document.getElementById('resColor').value = "#00a884";
+        
+        currentEditKey = null;
+        const btn = document.getElementById('mainSubmitBtn');
+        btn.innerHTML = 'نشر البحث في الأرشيف <i class="fas fa-cloud-upload-alt"></i>';
+        btn.style.background = 'linear-gradient(135deg, var(--dark-blue), var(--main-color))';
+    }
+
+    onValue(ref(db, 'research_archive'), (snapshot) => {
+        const list = document.getElementById('activeResList');
+        list.innerHTML = '';
+        window.resDataMap = {};
+        
+        if (!snapshot.exists()) { list.innerHTML = "<p style='text-align:center;'>لا توجد أبحاث مسجلة حالياً.</p>"; return; }
+
+        snapshot.forEach(child => {
+            const data = child.val();
+            window.resDataMap[child.key] = data;
+            
+            list.innerHTML += `
+                <div class="data-item" style="border-right-color: ${data.color}">
+                    <div>
+                        <strong style="color: var(--dark-blue); font-size: 1.1rem; display:block;">${data.title}</strong> 
+                        <span style="color: #666; font-size: 0.9rem;"><i class="fas fa-user"></i> ${data.author}</span>
+                    </div>
+                    <div class="action-btns">
+                        <button class="btn-edit" onclick="prepareEdit('${child.key}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn-delete" onclick="deleteRes('${child.key}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>`;
+        });
+    });
+
+    window.deleteRes = function(key) {
+        if(confirm("متأكد من حذف هذا البحث من الأرشيف؟")) remove(ref(db, 'research_archive/' + key));
+    }
+
+    window.prepareEdit = function(key) {
+        const data = window.resDataMap[key];
+        if(!data) return;
+        
+        document.getElementById('resTitle').value = data.title || "";
+        document.getElementById('resCategory').value = data.category || "infection";
+        document.getElementById('resAuthor').value = data.author || "";
+        document.getElementById('resLocation').value = data.location || "";
+        document.getElementById('resSummary').value = data.summary || "";
+        document.getElementById('resColor').value = data.color || "#00a884";
+        
+        currentEditKey = key;
+        const btn = document.getElementById('mainSubmitBtn');
+        btn.innerHTML = 'حفظ التعديلات <i class="fas fa-save"></i>';
+        btn.style.background = 'linear-gradient(135deg, #0284c7, #0369a1)';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>

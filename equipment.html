@@ -4,77 +4,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>موسوعة المعدات | شبكة الممرضين السودانيين</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* --- المتغيرات والتنسيق الأساسي (أكوادك الأصلية) --- */
+        /* --- المتغيرات والتنسيق الأساسي مع التحسينات الجمالية --- */
         :root { 
             --med-blue: #2563eb; 
             --med-dark: #1e3a8a; 
             --bg: #f8fafc; 
             --surgical-red: #be123c; 
             --dev-orange: #f59e0b; 
-            --main-color: #00a884; /* لون الشبكة الموحد */
+            --main-color: #00a884; 
         }
         
         body { background-color: var(--bg); font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 100px; }
 
-        .dev-status-bar { background: var(--dev-orange); color: #000; text-align: center; padding: 12px; font-weight: bold; position: sticky; top: 0; z-index: 6000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; gap: 15px; font-size: 0.9rem; }
-        .dev-status-bar i { animation: fa-spin 2s linear infinite; }
+        /* شريط التنبيه مع نبض جميل */
+        .dev-status-bar { background: linear-gradient(90deg, #f59e0b, #d97706); color: #fff; text-align: center; padding: 12px; font-weight: bold; position: sticky; top: 0; z-index: 6000; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); display: flex; align-items: center; justify-content: center; gap: 15px; font-size: 1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+        .dev-status-bar i { animation: fa-spin 2s linear infinite; font-size: 1.2rem; }
 
-        .eq-header { background: linear-gradient(135deg, var(--med-dark), #334155); color: white; padding: 60px 20px 40px; text-align: center; border-radius: 0 0 40px 40px; }
-        .back-nav { position: fixed; top: 60px; right: 15px; z-index: 5000; background: #fff; color: var(--med-blue); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .eq-header { background: linear-gradient(135deg, var(--med-dark), #0f172a); color: white; padding: 70px 20px 50px; text-align: center; border-radius: 0 0 50px 50px; box-shadow: 0 10px 30px rgba(30, 58, 138, 0.2); position: relative; overflow: hidden; }
+        .eq-header h1 { font-size: 2.5rem; margin: 0 0 15px 0; font-weight: 900; text-shadow: 2px 2px 5px rgba(0,0,0,0.3); }
+        .eq-header p { font-size: 1.2rem; margin: 0; opacity: 0.9; }
+        
+        .back-nav { position: fixed; top: 70px; right: 20px; z-index: 5000; background: rgba(255,255,255,0.9); color: var(--med-dark); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 5px 15px rgba(0,0,0,0.2); font-size: 1.2rem; transition: 0.3s; backdrop-filter: blur(5px); }
+        .back-nav:hover { background: var(--main-color); color: white; transform: translateX(-5px); }
 
         /* --- تنسيق الزر العائم الموحد --- */
         .quick-access-btn {
             position: fixed; bottom: 30px; left: 30px;
-            background: var(--main-color); color: white; width: 65px; height: 65px;
+            background: linear-gradient(135deg, var(--main-color), #059669); color: white; width: 70px; height: 70px;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; cursor: pointer; z-index: 8000;
-            box-shadow: 0 10px 25px rgba(0,168,132,0.4); 
+            font-size: 1.8rem; cursor: pointer; z-index: 8000;
+            box-shadow: 0 15px 30px rgba(0,168,132,0.4); 
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .quick-access-btn:hover { transform: scale(1.1) rotate(90deg); background: var(--med-dark); }
 
         .quick-menu {
-            display: none; position: fixed; bottom: 100px; left: 30px;
-            background: white; border-radius: 20px; width: 260px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2); z-index: 7999;
-            overflow-y: auto; max-height: 70vh; border: 1px solid #eee;
+            display: none; position: fixed; bottom: 120px; left: 30px;
+            background: white; border-radius: 25px; width: 280px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); z-index: 7999;
+            overflow-y: auto; max-height: 70vh; border: 1px solid #f1f5f9;
             animation: slideUpNav 0.4s ease forwards;
         }
-        .quick-menu ul { list-style: none; padding: 10px; margin: 0; }
-        .quick-menu li { border-bottom: 1px solid #f8fafc; }
-        .quick-menu li a { display: flex; align-items: center; gap: 12px; padding: 12px 15px; text-decoration: none; color: #334155; transition: 0.3s; font-weight: 600; }
-        .quick-menu li a i { color: var(--main-color); width: 20px; text-align: center; }
-        .quick-menu li a:hover { background: #f0fdf4; color: var(--main-color); padding-right: 25px; }
+        .quick-menu ul { list-style: none; padding: 15px; margin: 0; }
+        .quick-menu li { border-bottom: 1px solid #f8fafc; margin-bottom: 5px; }
+        .quick-menu li a { display: flex; align-items: center; gap: 15px; padding: 12px 15px; text-decoration: none; color: #334155; transition: 0.3s; font-weight: 700; border-radius: 12px; }
+        .quick-menu li a i { color: var(--main-color); width: 25px; text-align: center; font-size: 1.2rem;}
+        .quick-menu li a:hover { background: #f0fdf4; color: var(--main-color); padding-right: 25px; transform: translateX(-5px); }
 
         @keyframes slideUpNav { from { opacity: 0; transform: translateY(30px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        /* --- بقية تنسيقات الموسوعة (أكوادك الأصلية) --- */
-        .update-notif { background: #fff; border: 1px dashed var(--dev-orange); border-radius: 15px; padding: 10px 20px; margin: 20px auto; max-width: 800px; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #666; }
+        /* --- بقية تنسيقات الموسوعة مع تحسينات بصرية --- */
+        .update-notif { background: white; border: 2px dashed var(--dev-orange); border-radius: 20px; padding: 15px 25px; margin: 30px auto; max-width: 800px; display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; color: #475569; box-shadow: 0 10px 25px rgba(245, 158, 11, 0.05); font-weight: 600; }
+        
         .search-box { max-width: 800px; margin: 0 auto 30px; padding: 0 20px; }
-        .search-input { width: 100%; padding: 18px 25px; border-radius: 30px; border: 2px solid transparent; box-shadow: 0 10px 25px rgba(0,0,0,0.1); font-family: 'Cairo'; outline: none; transition: 0.3s; }
-        .search-input:focus { border-color: var(--med-blue); }
-        .filter-tabs { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; justify-content: center; scrollbar-width: none; }
-        .tab-btn { background: white; border: 1px solid #ddd; padding: 8px 20px; border-radius: 20px; cursor: pointer; white-space: nowrap; font-weight: 600; transition: 0.3s; font-family: 'Cairo'; }
-        .tab-btn.active { background: var(--med-dark); color: white; border-color: var(--med-dark); }
-        .eq-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; padding: 20px; }
-        .eq-card { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; border: 1px solid #eef2f3; position: relative; }
-        .eq-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-        .new-tag { position: absolute; top: 15px; right: 15px; background: var(--surgical-red); color: white; padding: 3px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: bold; z-index: 5; }
-        .eq-img-box { height: 200px; background: #fff; display: flex; align-items: center; justify-content: center; position: relative; padding: 20px; }
-        .eq-img-box img { max-width: 90%; max-height: 90%; object-fit: contain; }
-        .eq-category { position: absolute; top: 15px; left: 15px; background: #f1f5f9; color: var(--med-dark); padding: 4px 12px; border-radius: 10px; font-size: 0.75rem; font-weight: bold; }
-        .eq-info { padding: 20px; }
-        .eq-names h3 { margin: 0; font-size: 1.3rem; color: #1e293b; }
-        .eq-names span { color: var(--med-blue); font-size: 0.95rem; font-weight: 700; display: block; margin-top: 5px; }
-        .eq-usage { background: #f8fafc; padding: 15px; border-radius: 15px; margin: 15px 0; border-right: 4px solid var(--med-blue); }
-        .eq-usage p { margin: 0; font-size: 0.9rem; color: #475569; line-height: 1.6; }
-        .btn-details { width: 100%; padding: 14px; background: var(--med-dark); color: white; border: none; border-radius: 12px; font-family: 'Cairo'; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); }
-        .modal-content { background: white; margin: 5vh auto; padding: 30px; border-radius: 30px; width: 90%; max-width: 650px; max-height: 85vh; overflow-y: auto; position: relative; }
-        .type-tag { display: inline-block; background: #eff6ff; color: #1e40af; margin: 5px; padding: 6px 15px; border-radius: 12px; font-size: 0.85rem; font-weight: 600; border: 1px solid #dbeafe; }
+        .search-input { width: 100%; padding: 20px 30px; border-radius: 35px; border: 2px solid #e2e8f0; box-shadow: 0 15px 35px rgba(0,0,0,0.06); font-family: 'Cairo'; font-size: 1.1rem; outline: none; transition: 0.4s; background: white; }
+        .search-input:focus { border-color: var(--med-blue); box-shadow: 0 15px 35px rgba(37, 99, 235, 0.15); transform: translateY(-2px); }
+        
+        .filter-tabs { display: flex; gap: 15px; overflow-x: auto; padding: 10px 20px; justify-content: center; scrollbar-width: none; margin-bottom: 20px; }
+        .filter-tabs::-webkit-scrollbar { display: none; }
+        .tab-btn { background: white; border: 2px solid #e2e8f0; padding: 10px 25px; border-radius: 25px; cursor: pointer; white-space: nowrap; font-weight: 700; transition: 0.3s; font-family: 'Cairo'; font-size: 1rem; color: #475569; }
+        .tab-btn:hover { border-color: var(--med-dark); color: var(--med-dark); }
+        .tab-btn.active { background: linear-gradient(135deg, var(--med-dark), var(--med-blue)); color: white; border-color: transparent; box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3); }
+        
+        .eq-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 30px; padding: 20px; }
+        .eq-card { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid #f1f5f9; position: relative; display: flex; flex-direction: column; }
+        .eq-card:hover { transform: translateY(-12px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); border-color: #e2e8f0; }
+        
+        .new-tag { position: absolute; top: 15px; right: 15px; background: linear-gradient(135deg, var(--surgical-red), #e11d48); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 900; z-index: 5; box-shadow: 0 4px 10px rgba(190, 18, 60, 0.3); letter-spacing: 0.5px; }
+        .eq-img-box { height: 220px; background: #f8fafc; display: flex; align-items: center; justify-content: center; position: relative; padding: 20px; border-bottom: 1px solid #f1f5f9; }
+        .eq-img-box img { max-width: 85%; max-height: 85%; object-fit: contain; transition: 0.3s; }
+        .eq-card:hover .eq-img-box img { transform: scale(1.05); }
+        .eq-category { position: absolute; top: 15px; left: 15px; background: white; color: var(--med-dark); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 900; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        
+        .eq-info { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .eq-names h3 { margin: 0; font-size: 1.5rem; color: #0f172a; font-weight: 900; }
+        .eq-names span { color: var(--med-blue); font-size: 1rem; font-weight: 700; display: block; margin-top: 5px; }
+        
+        .eq-usage { background: #f1f5f9; padding: 18px; border-radius: 15px; margin: 20px 0; border-right: 4px solid var(--med-blue); }
+        .eq-usage b { color: var(--med-dark); display: block; margin-bottom: 5px; }
+        .eq-usage p { margin: 0; font-size: 0.95rem; color: #475569; line-height: 1.6; font-weight: 600; }
+        
+        .btn-details { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--med-dark), #334155); color: white; border: none; border-radius: 15px; font-family: 'Cairo'; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(30, 58, 138, 0.2); margin-top: auto; }
+        .btn-details:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(30, 58, 138, 0.4); }
+        
+        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px); }
+        .modal-content { background: white; margin: 5vh auto; padding: 40px; border-radius: 30px; width: 90%; max-width: 650px; max-height: 85vh; overflow-y: auto; position: relative; animation: zoomIn 0.3s ease; border-top: 8px solid var(--med-blue); }
+        @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
+        .type-tag { display: inline-block; background: #eff6ff; color: #1e40af; margin: 5px; padding: 8px 18px; border-radius: 20px; font-size: 0.9rem; font-weight: 700; border: 1px solid #bfdbfe; transition: 0.3s; }
+        .type-tag:hover { background: var(--med-blue); color: white; }
     </style>
 </head>
 <body>
@@ -92,8 +113,8 @@
     </header>
 
     <div class="update-notif">
-        <span><i class="fas fa-info-circle" style="color: var(--dev-orange);"></i> جاري إضافة أكثر من 50 أداة جراحية جديدة..</span>
-        <span style="font-weight: bold; color: var(--med-dark);">النسخة v1.2</span>
+        <span><i class="fas fa-info-circle" style="color: var(--dev-orange); margin-left: 8px; font-size: 1.2rem;"></i> جاري إضافة أكثر من 50 أداة جراحية جديدة..</span>
+        <span style="font-weight: 900; color: white; background: var(--med-dark); padding: 5px 15px; border-radius: 20px;">النسخة v1.2</span>
     </div>
 
     <div class="search-box">
@@ -104,13 +125,18 @@
         <button class="tab-btn active" onclick="filterCat('all')">الكل</button>
         <button class="tab-btn" onclick="filterCat('جراحة')">أدوات جراحية</button>
         <button class="tab-btn" onclick="filterCat('طوارئ')">طوارئ</button>
+        <button class="tab-btn" onclick="filterCat('عناية مكثفة')">عناية مكثفة</button>
     </div>
 
-    <div class="eq-grid" id="eqGrid"></div>
+    <div class="eq-grid" id="eqGrid">
+        <div style="text-align: center; grid-column: 1/-1; padding: 50px; color: #64748b; font-size: 1.2rem;">
+            <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--med-blue); margin-bottom: 15px; display: block;"></i> جاري تحميل الموسوعة...
+        </div>
+    </div>
 
     <div id="eqModal" class="modal">
         <div class="modal-content">
-            <span onclick="closeModal()" style="float:left; cursor:pointer; font-size:35px; color:#94a3b8;">&times;</span>
+            <span onclick="closeModal()" style="position:absolute; top:20px; left:25px; cursor:pointer; font-size:40px; color:#94a3b8; transition: 0.3s;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#94a3b8'">&times;</span>
             <div id="modalBody"></div>
         </div>
     </div>
@@ -144,7 +170,23 @@
         </ul>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBltsN_YuPhicWCv4MmbYf7-kSp9u66lBE",
+            authDomain: "sudanse-nursing-network.firebaseapp.com",
+            projectId: "sudanse-nursing-network",
+            storageBucket: "sudanse-nursing-network.firebasestorage.app",
+            messagingSenderId: "577008528931",
+            appId: "1:577008528931:web:febfbc9ce086a07b8ccb96"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // هذه مصفوفتك الأصلية (احتفظت بها كما طلبت)
         const medicalEquipment = [
             { id: 1, nameAr: "المشرط الجراحي", nameEn: "Surgical Scalpel", cat: "جراحة", image: "mesrt.png", usage: "الأداة الأساسية لعمل الشقوق الجراحية وفصل الأنسجة بدقة متناهية.", howTo: "يتم تركيب الشفرة (Blade) على اليد (Handle) المناسبة. يمسك المشرط بوضعية 'قلم الرصاص' للشقوق الدقيقة.", types: ["شفرة رقم 10", "شفرة رقم 11", "شفرة رقم 15"] },
             { id: 2, nameAr: "مقص 'مايو' الجراحي", nameEn: "Mayo Scissors", cat: "جراحة", image: "smaua.png", usage: "يستخدم لقص الأنسجة الثقيلة والكثيفة (مثل اللفافة والعضلات) والخيوط.", howTo: "يتميز بشفرات سميكة. يوجد منه نوع مستقيم (للخيوط) ونوع منحني (للقص العميق).", types: ["مستقيم (Straight)", "منحني (Curved)"] },
@@ -153,14 +195,39 @@
             { id: 5, nameAr: "جهاز الصدمات الكهربائية", nameEn: "Defibrillator", cat: "طوارئ", image: "https://via.placeholder.com/300x200/ffffff/ef4444?text=Defibrillator", usage: "إنقاذ الحياة في حالات توقف القلب المفاجئ واضطرابات النظم.", howTo: "تطبيق الجل، اختيار الطاقة، شحن، ثم تفريغ الشحنة مع ضمان أمان الفريق.", types: ["يدوي", "آلي AED"] }
         ];
 
-        function renderGrid(data) {
+        // مصفوفة ديناميكية تستقبل البيانات من Firebase
+        window.dynamicEquipments = [];
+
+        onValue(ref(db, 'equipment_wiki'), (snapshot) => {
+            window.dynamicEquipments = [];
+            
+            // إذا كان في بيانات في قاعدة البيانات حنجيبها
+            if(snapshot.exists()) {
+                snapshot.forEach(child => {
+                    window.dynamicEquipments.push({ id: child.key, ...child.val() });
+                });
+            } else {
+                // لو قاعدة البيانات فاضية، حنستخدم مصفوفتك الأصلية مؤقتاً
+                window.dynamicEquipments = [...medicalEquipment];
+            }
+            
+            window.renderGrid(window.dynamicEquipments);
+        });
+
+        // دوال العرض والبحث تم جعلها عامة (Global) لتشتغل مع أزرار الـ HTML
+        window.renderGrid = function(data) {
             const grid = document.getElementById('eqGrid');
+            if(data.length === 0) {
+                grid.innerHTML = '<div style="text-align:center; grid-column: 1/-1; padding:50px; background: white; border-radius: 20px; border: 2px dashed #cbd5e0;"><i class="fas fa-search fa-3x" style="color:#cbd5e0; margin-bottom:15px; display:block;"></i><h3 style="color:#64748b;">لم يتم العثور على أداة مطابقة للبحث.</h3></div>'; 
+                return;
+            }
+
             grid.innerHTML = data.map(item => `
                 <div class="eq-card">
-                    <span class="new-tag">قيد التحديث</span>
+                    <span class="new-tag"><i class="fas fa-star"></i> قيد التحديث</span>
                     <div class="eq-img-box">
                         <span class="eq-category">${item.cat}</span>
-                        <img src="${item.image}" alt="${item.nameAr}">
+                        <img src="${item.image}" alt="${item.nameAr}" onerror="this.src='https://via.placeholder.com/300x200/ffffff/000000?text=No+Image'">
                     </div>
                     <div class="eq-info">
                         <div class="eq-names">
@@ -171,46 +238,64 @@
                             <b><i class="fas fa-microscope"></i> الوصف السريري:</b>
                             <p>${item.usage}</p>
                         </div>
-                        <button class="btn-details" onclick="openDetails(${item.id})">الدليل الجراحي للاستعمال</button>
+                        <button class="btn-details" onclick="openDetails('${item.id}')">الدليل الجراحي للاستعمال <i class="fas fa-arrow-left"></i></button>
                     </div>
                 </div>
             `).join('');
         }
 
-        function openDetails(id) {
-            const item = medicalEquipment.find(x => x.id === id);
+        window.openDetails = function(id) {
+            // البحث عن العنصر سواء كان ID رقمي (من الكود القديم) أو نصي (من Firebase)
+            const item = window.dynamicEquipments.find(x => String(x.id) === String(id));
+            if(!item) return;
+
             const body = document.getElementById('modalBody');
+            
+            const typesHtml = (item.types && Array.isArray(item.types)) 
+                ? item.types.map(t => `<span class="type-tag"><i class="fas fa-check-circle" style="margin-left:5px;"></i>${t}</span>`).join('') 
+                : '';
+
             body.innerHTML = `
-                <h2 style="margin-top:0; color:var(--med-dark);">${item.nameAr}</h2>
-                <h4 style="color:var(--med-blue); margin-top:-10px;">${item.nameEn}</h4>
-                <div style="text-align:center; padding:20px; background:#f1f5f9; border-radius:20px; margin:20px 0;">
-                    <img src="${item.image}" style="max-width:100%; height:auto;">
+                <h2 style="margin-top:0; color:var(--med-dark); font-size: 2rem; font-weight: 900;">${item.nameAr}</h2>
+                <h4 style="color:var(--med-blue); margin-top:-10px; font-size: 1.2rem;">${item.nameEn}</h4>
+                <div style="text-align:center; padding:20px; background:#f8fafc; border-radius:20px; margin:20px 0; border: 2px dashed #e2e8f0;">
+                    <img src="${item.image}" style="max-width:100%; height:auto; max-height: 250px; object-fit: contain;">
                 </div>
-                <h4 style="border-right:4px solid var(--surgical-red); padding-right:10px;">طريقة الاستخدام المهني:</h4>
-                <p style="line-height:1.8; color:#334155;">${item.howTo}</p>
-                <h4 style="border-right:4px solid var(--surgical-red); padding-right:10px;">الأنواع والقياسات:</h4>
-                <div style="display:flex; flex-wrap:wrap; gap:5px;">
-                    ${item.types.map(t => `<span class="type-tag">${t}</span>`).join('')}
+                <h4 style="border-right:5px solid var(--surgical-red); padding-right:15px; color: var(--med-dark); font-size: 1.3rem; margin-bottom: 10px;">طريقة الاستخدام المهني:</h4>
+                <p style="line-height:1.8; color:#334155; font-size: 1.1rem; font-weight: 600; background: #f1f5f9; padding: 20px; border-radius: 15px;">${item.howTo}</p>
+                
+                <h4 style="border-right:5px solid var(--surgical-red); padding-right:15px; color: var(--med-dark); font-size: 1.3rem; margin-bottom: 15px; margin-top: 25px;">الأنواع والقياسات:</h4>
+                <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                    ${typesHtml || '<span class="type-tag">قياس موحد</span>'}
                 </div>
-                <button onclick="closeModal()" style="margin-top:30px; width:100%; padding:15px; border:none; border-radius:12px; background:#f1f5f9; color:#475569; font-weight:bold; cursor:pointer; font-family:'Cairo';">إغلاق الموسوعة</button>
+                <button onclick="closeModal()" style="margin-top:35px; width:100%; padding:18px; border:none; border-radius:15px; background:linear-gradient(135deg, #e2e8f0, #cbd5e0); color:#334155; font-size: 1.2rem; font-weight:900; cursor:pointer; font-family:'Cairo'; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">إغلاق الدليل <i class="fas fa-times"></i></button>
             `;
             document.getElementById('eqModal').style.display = 'block';
         }
 
-        function closeModal() { document.getElementById('eqModal').style.display = 'none'; }
+        window.closeModal = function() { 
+            document.getElementById('eqModal').style.display = 'none'; 
+        }
         
-        function filterEquipment() {
+        window.filterEquipment = function() {
             const q = document.getElementById('eqSearch').value.toLowerCase();
-            renderGrid(medicalEquipment.filter(i => i.nameAr.includes(q) || i.nameEn.toLowerCase().includes(q)));
+            window.renderGrid(window.dynamicEquipments.filter(i => 
+                (i.nameAr && i.nameAr.includes(q)) || 
+                (i.nameEn && i.nameEn.toLowerCase().includes(q))
+            ));
         }
 
-        function filterCat(cat) {
+        window.filterCat = function(cat) {
+            // تحديث شكل الأزرار
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
-            renderGrid(cat === 'all' ? medicalEquipment : medicalEquipment.filter(i => i.cat === cat));
+            
+            // فلترة البيانات
+            window.renderGrid(cat === 'all' ? window.dynamicEquipments : window.dynamicEquipments.filter(i => i.cat === cat));
         }
 
-        function toggleQuickMenu() {
+        // دوال القائمة العائمة (كما هي من كودك)
+        window.toggleQuickMenu = function() {
             const menu = document.getElementById('quickMenu');
             menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
         }
@@ -220,16 +305,14 @@
             const btn = document.querySelector('.quick-access-btn');
             const modal = document.getElementById('eqModal');
 
-            if (event.target == modal) closeModal();
+            if (event.target == modal) window.closeModal();
 
-            if (menu.style.display === 'block') {
+            if (menu && menu.style.display === 'block') {
                 if (event.target !== menu && !menu.contains(event.target) && event.target !== btn && !btn.contains(event.target)) {
                     menu.style.display = 'none';
                 }
             }
         }
-
-        renderGrid(medicalEquipment);
     </script>
 </body>
 </html>

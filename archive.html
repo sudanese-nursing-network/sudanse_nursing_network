@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>أرشيف الأبحاث | شبكة الممرضين السودانيين</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -12,103 +12,121 @@
         :root {
             --main-color: #00a884;
             --dark-blue: #1e272e;
-            --light-bg: #f4f7f6;
+            --light-bg: #f8fafc;
         }
 
-        body { font-family: 'Cairo', sans-serif; margin: 0; padding: 0; background-color: #fff; padding-bottom: 80px; }
+        body { font-family: 'Cairo', sans-serif; margin: 0; padding: 0; background-color: var(--light-bg); padding-bottom: 80px; }
 
-        /* تنسيق الناف بار والهيرو */
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .nav-links { display: flex; list-style: none; gap: 20px; padding: 0; }
-        .nav-links a { text-decoration: none; color: #333; font-weight: bold; }
-        .hero { display: flex; align-items: center; justify-content: center; text-align: center; color: white; flex-direction: column; }
-        .highlight { color: var(--main-color); }
+        /* تنسيق الناف بار والهيرو (بلمسات جمالية إضافية) */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 1.5rem; font-weight: 900; color: var(--dark-blue); display: flex; align-items: center; gap: 8px; }
+        .logo span { color: var(--main-color); }
+        .nav-links { display: flex; list-style: none; gap: 25px; padding: 0; margin: 0; }
+        .nav-links a { text-decoration: none; color: #475569; font-weight: 700; transition: 0.3s; padding: 5px 10px; border-radius: 8px; }
+        .nav-links a:hover { color: var(--main-color); background: #f0fdf4; }
+        
+        .hero { display: flex; align-items: center; justify-content: center; text-align: center; color: white; flex-direction: column; position: relative; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(30, 39, 46, 0.95), rgba(0, 168, 132, 0.85)); z-index: 1; }
+        .hero-content { position: relative; z-index: 2; padding: 0 20px; }
+        .hero-content h1 { font-size: 3rem; margin-bottom: 10px; font-weight: 900; text-shadow: 2px 2px 5px rgba(0,0,0,0.3); }
+        .hero-content p { font-size: 1.2rem; opacity: 0.9; font-weight: 600; }
+        .highlight { color: #34d399; }
 
-        /* تنسيقات البحث والنتائج */
-        .section { padding: 40px 5%; }
+        /* تنسيقات البحث والنتائج (مُحسنة) */
+        .section { padding: 50px 5%; }
         .bg-light { background-color: var(--light-bg); }
         .fade-element { opacity: 1 !important; transform: none !important; transition: 0.3s; }
 
         .search-filters {
-            background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 40px;
+            background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            display: flex; flex-wrap: wrap; gap: 15px; margin: -50px auto 40px; position: relative; z-index: 10; max-width: 900px;
         }
         .search-filters input, .search-filters select {
-            flex: 1; min-width: 200px; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-family: 'Cairo';
+            flex: 1; min-width: 200px; padding: 15px 20px; border: 2px solid #e2e8f0; border-radius: 10px; font-family: 'Cairo'; font-size: 1rem; outline: none; transition: 0.3s; background: #f8fafc;
         }
+        .search-filters input:focus, .search-filters select:focus { border-color: var(--main-color); background: white; box-shadow: 0 0 0 4px rgba(0,168,132,0.1); }
+        
         .result-card {
-            background: white; padding: 20px; border-radius: 10px; border-right: 5px solid var(--main-color);
-            margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: 0.3s;
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
+            background: white; padding: 25px; border-radius: 15px; border-right: 6px solid var(--main-color);
+            margin-bottom: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; border-left: 1px solid #f1f5f9; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9;
         }
-        .result-card:hover { transform: translateX(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .result-info h3 { margin: 0 0 10px 0; color: var(--dark-blue); }
-        .result-meta { color: #666; font-size: 0.9rem; display: flex; gap: 15px; flex-wrap: wrap; }
-        .result-meta span { background: #f4f7f6; padding: 5px 10px; border-radius: 5px; }
+        .result-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.08); }
+        .result-info { flex: 1; }
+        .result-info h3 { margin: 0 0 12px 0; color: var(--dark-blue); font-size: 1.3rem; font-weight: 900; line-height: 1.4; }
+        .result-meta { color: #64748b; font-size: 0.95rem; display: flex; gap: 15px; flex-wrap: wrap; font-weight: 600; }
+        .result-meta span { background: #f1f5f9; padding: 6px 12px; border-radius: 8px; display: flex; align-items: center; gap: 5px; }
 
-        .btn { padding: 10px 20px; border-radius: 5px; border: none; cursor: pointer; font-family: 'Cairo'; font-weight: bold; text-decoration: none; display: inline-block; }
-        .btn-primary { background: var(--main-color); color: white; }
-        .btn-secondary { background: transparent; border: 1px solid var(--main-color); color: var(--main-color); }
+        .btn { padding: 12px 25px; border-radius: 10px; border: none; cursor: pointer; font-family: 'Cairo'; font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 1rem; transition: 0.3s; }
+        .btn-primary { background: linear-gradient(135deg, var(--main-color), #059669); color: white; box-shadow: 0 4px 15px rgba(0,168,132,0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,168,132,0.4); }
+        .btn-secondary { background: transparent; border: 2px solid var(--main-color); color: var(--main-color); }
+        .btn-secondary:hover { background: var(--main-color); color: white; }
 
         /* المودال (نافذة الملخص) */
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
-        .modal-content { background: white; margin: 10% auto; padding: 30px; border-radius: 15px; width: 80%; max-width: 600px; position: relative; }
-        .close-btn { position: absolute; left: 20px; top: 10px; font-size: 28px; cursor: pointer; }
+        .modal { display: none; position: fixed; z-index: 9000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(5px); }
+        .modal-content { background: white; margin: 10vh auto; padding: 40px; border-radius: 20px; width: 90%; max-width: 650px; position: relative; animation: zoomIn 0.3s ease; box-shadow: 0 20px 50px rgba(0,0,0,0.3); border-top: 6px solid var(--main-color); }
+        @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .close-btn { position: absolute; left: 25px; top: 20px; font-size: 35px; cursor: pointer; color: #94a3b8; transition: 0.3s; }
+        .close-btn:hover { color: #ef4444; transform: rotate(90deg); }
+        #modalTitle { color: var(--dark-blue); font-weight: 900; margin-top: 0; margin-bottom: 20px; font-size: 1.5rem; line-height: 1.4; border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; }
+        #modalBody { color: #475569; line-height: 1.8; font-size: 1.1rem; background: #f8fafc; padding: 20px; border-radius: 10px; border: 1px dashed #cbd5e0; }
 
         /* --- تنسيق الزر العائم الموحد والاحترافي (FAB) --- */
         .quick-access-btn {
             position: fixed; bottom: 30px; left: 30px;
-            background: var(--main-color); color: white; width: 65px; height: 65px;
+            background: linear-gradient(135deg, var(--main-color), #059669); color: white; width: 70px; height: 70px;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 1.6rem; cursor: pointer; z-index: 8000;
+            font-size: 1.8rem; cursor: pointer; z-index: 8000;
             box-shadow: 0 10px 25px rgba(0,168,132,0.4); 
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .quick-access-btn:hover { transform: scale(1.1) rotate(90deg); background: var(--dark-blue); }
 
         .quick-menu {
-            display: none; position: fixed; bottom: 110px; left: 30px;
-            background: white; border-radius: 20px; width: 260px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2); z-index: 7999;
-            overflow-y: auto; max-height: 70vh; border: 1px solid #eee;
+            display: none; position: fixed; bottom: 120px; left: 30px;
+            background: white; border-radius: 20px; width: 280px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); z-index: 7999;
+            overflow-y: auto; max-height: 70vh; border: 1px solid #e2e8f0;
             animation: slideUpNav 0.4s ease forwards;
         }
-        .quick-menu ul { list-style: none; padding: 10px; margin: 0; }
-        .quick-menu li { border-bottom: 1px solid #f8fafc; }
-        .quick-menu li:last-child { border-bottom: none; }
+        .quick-menu ul { list-style: none; padding: 15px; margin: 0; }
+        .quick-menu li { border-bottom: 1px solid #f8fafc; margin-bottom: 5px; }
+        .quick-menu li:last-child { border-bottom: none; margin-bottom: 0; }
         .quick-menu li a { 
-            display: flex; align-items: center; gap: 12px; padding: 12px 15px; 
-            text-decoration: none; color: #334155; transition: 0.3s; font-weight: 600; 
+            display: flex; align-items: center; gap: 15px; padding: 12px 15px; 
+            text-decoration: none; color: #334155; transition: 0.3s; font-weight: 700; border-radius: 10px; 
         }
-        .quick-menu li a i { color: var(--main-color); width: 20px; text-align: center; }
-        .quick-menu li a:hover { background: #f0fdf4; color: var(--main-color); padding-right: 25px; }
+        .quick-menu li a i { color: var(--main-color); width: 25px; text-align: center; font-size: 1.2rem; }
+        .quick-menu li a:hover { background: #f0fdf4; color: var(--main-color); padding-right: 25px; transform: translateX(-5px); }
 
         @keyframes slideUpNav { 
             from { opacity: 0; transform: translateY(30px) scale(0.9); } 
             to { opacity: 1; transform: translateY(0) scale(1); } 
         }
 
-        .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 40px; }
-        .page-btn { padding: 10px 15px; border: 1px solid var(--main-color); background: white; color: var(--main-color); border-radius: 5px; cursor: pointer; font-family: 'Cairo'; font-weight: bold;}
-        .page-btn.active { background: var(--main-color); color: white; }
-        footer { text-align: center; padding: 20px; background: var(--dark-blue); color: white; margin-top: 40px; }
+        .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 50px; }
+        .page-btn { padding: 10px 18px; border: 2px solid var(--main-color); background: white; color: var(--main-color); border-radius: 10px; cursor: pointer; font-family: 'Cairo'; font-weight: bold; font-size: 1rem; transition: 0.3s; }
+        .page-btn:hover { background: #f0fdf4; }
+        .page-btn.active { background: var(--main-color); color: white; box-shadow: 0 4px 10px rgba(0,168,132,0.3); }
+        footer { text-align: center; padding: 25px; background: var(--dark-blue); color: white; margin-top: 40px; font-weight: bold; font-size: 1.1rem; }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <div class="logo">
-            <i class="fas fa-heart-pulse"></i> شبكة الممرضين <span>السودانيين</span>
-        </div>
+        <a href="index.html" class="logo" style="text-decoration: none;">
+            <i class="fas fa-book-medical" style="font-size: 1.8rem; color: var(--main-color);"></i> شبكة الممرضين <span>السودانيين</span>
+        </a>
         <ul class="nav-links">
             <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
             <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
-            <li><a href="research.html" style="color: var(--main-color);"><i class="fas fa-book-medical"></i> المكتبة والأبحاث</a></li>
+            <li><a href="research.html" style="color: var(--main-color); background: #f0fdf4;"><i class="fas fa-book-medical"></i> المكتبة والأبحاث</a></li>
             <li><a href="index.html#contact"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
         </ul>
     </nav>
 
-    <header class="hero" style="height: 30vh; background: linear-gradient(rgba(30, 39, 46, 0.9), rgba(0, 168, 132, 0.9)), url('https://via.placeholder.com/1200x300'); background-size: cover; background-position: center;">
+    <header class="hero" style="height: 35vh; background: url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center;">
         <div class="hero-content">
             <h1>البحث في <span class="highlight">الأرشيف</span></h1>
             <p>تصفح أكبر قاعدة بيانات للأبحاث التمريضية والإحصائية في السودان.</p>
@@ -119,66 +137,25 @@
         <div class="container" style="max-width: 1000px; margin: auto;">
             
             <div class="search-filters fade-element">
-                <input type="text" placeholder="اكتب عنوان البحث أو اسم الباحث...">
-                <select>
+                <input type="text" id="searchInput" placeholder="اكتب عنوان البحث أو اسم الباحث..." onkeyup="filterResearch()">
+                <select id="categoryFilter" onchange="filterResearch()">
                     <option value="">كل التخصصات</option>
                     <option value="infection">مكافحة العدوى</option>
                     <option value="stats">الإحصاء الحيوي</option>
                     <option value="tech">المعلوماتية الصحية</option>
+                    <option value="emergency">تمريض الطوارئ</option>
                 </select>
-                <button class="btn btn-primary"><i class="fas fa-search"></i> تطبيق الفرز</button>
+                <button class="btn btn-primary" onclick="filterResearch()"><i class="fas fa-search"></i> تطبيق الفرز</button>
             </div>
 
-            <div class="result-card fade-element" data-page="1">
-                <div class="result-info">
-                    <h3>معرفة الممرضين ودورهم في طرق انتقال العدوى والوقاية منها</h3>
-                    <div class="result-meta">
-                        <span><i class="fas fa-user-graduate"></i> الباحث: الرشيد</span>
-                        <span><i class="fas fa-map-marker-alt"></i> مستشفى أم درمان التعليمي</span>
-                    </div>
-                </div>
-                <div class="result-action">
-                    <button class="btn btn-primary" onclick="openSummary('مكافحة العدوى', 'دراسة تقييمية للوعي بخطوط نقل العدوى...')"><i class="fas fa-eye"></i> الملخص</button>
+            <div id="researchContainer">
+                <div style="text-align: center; padding: 50px; color: #64748b;">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i> جاري تحميل الأرشيف...
                 </div>
             </div>
 
-            <div class="result-card fade-element" data-page="1" style="border-right-color: #f39c12;">
-                <div class="result-info">
-                    <h3 style="color: #f39c12;">تصميم نظام إلكتروني (VB.NET) لإدارة وجرد المستلزمات الطبية</h3>
-                    <div class="result-meta"><span><i class="fas fa-laptop-medical"></i> المعلوماتية الصحية</span></div>
+            <div class="pagination fade-element" id="paginationControls">
                 </div>
-                <div class="result-action">
-                    <button class="btn btn-secondary" style="border-color: #f39c12; color: #f39c12;" onclick="openSummary('نظام VB.NET', 'بحث برمجي يوضح كيفية بناء واجهات تطبيق...')"><i class="fas fa-eye"></i> الملخص</button>
-                </div>
-            </div>
-
-            <div class="result-card fade-element" data-page="1" style="border-right-color: var(--dark-blue);">
-                <div class="result-info">
-                    <h3 style="color: var(--dark-blue);">التحليل الإحصائي (SPSS) لرضا المرضى عن الرعاية التمريضية</h3>
-                    <div class="result-meta"><span><i class="fas fa-chart-pie"></i> الإحصاء الحيوي</span></div>
-                </div>
-                <div class="result-action">
-                    <button class="btn btn-secondary" style="border-color: var(--dark-blue); color: var(--dark-blue);" onclick="openSummary('تحليل SPSS', 'استخدام برنامج التحليل الإحصائي SPSS...')"><i class="fas fa-eye"></i> الملخص</button>
-                </div>
-            </div>
-
-            <div class="result-card" data-page="2" style="display: none; border-right-color: #27ae60;">
-                <div class="result-info">
-                    <h3 style="color: #27ae60;">دور التمريض في إدارة الكوارث والطوارئ</h3>
-                    <div class="result-meta"><span><i class="fas fa-ambulance"></i> تمريض الطوارئ</span></div>
-                </div>
-                <div class="result-action">
-                    <button class="btn btn-secondary" style="border-color: #27ae60; color: #27ae60;" onclick="openSummary('إدارة الكوارث', 'تقييم مدى جاهزية أقسام الطوارئ...')"><i class="fas fa-eye"></i> الملخص</button>
-                </div>
-            </div>
-
-            <div class="pagination fade-element">
-                <button class="page-btn" onclick="prevPage()">السابق</button>
-                <button class="page-btn active" id="btn-page-1" onclick="goToPage(1)">1</button>
-                <button class="page-btn" id="btn-page-2" onclick="goToPage(2)">2</button>
-                <button class="page-btn" id="btn-page-3" onclick="goToPage(3)">3</button>
-                <button class="page-btn" onclick="nextPage()">التالي</button>
-            </div>
 
         </div>
     </section>
@@ -222,33 +199,173 @@
 
     <footer><p>جميع الحقوق محفوظة &copy; 2026 - شبكة الممرضين السودانيين</p></footer>
 
-    <script>
-        let currentPage = 1;
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-        function goToPage(page) {
-            currentPage = page;
-            const cards = document.querySelectorAll('.result-card');
-            cards.forEach(card => {
-                card.style.display = (card.getAttribute('data-page') == page) ? 'flex' : 'none';
-            });
-            document.querySelectorAll('.page-btn').forEach(btn => btn.classList.remove('active'));
-            const activeBtn = document.getElementById('btn-page-' + page);
-            if(activeBtn) activeBtn.classList.add('active');
-            window.scrollTo(0, 400);
+        const firebaseConfig = {
+            apiKey: "AIzaSyBltsN_YuPhicWCv4MmbYf7-kSp9u66lBE",
+            authDomain: "sudanse-nursing-network.firebaseapp.com",
+            projectId: "sudanse-nursing-network",
+            storageBucket: "sudanse-nursing-network.firebasestorage.app",
+            messagingSenderId: "577008528931",
+            appId: "1:577008528931:web:febfbc9ce086a07b8ccb96"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // تم تضمين الأبحاث التي كتبتها أنت يدوياً هنا لضمان عدم ضياعها ودمجها مع قاعدة البيانات
+        const hardcodedResearch = [
+            {
+                title: "معرفة الممرضين ودورهم في طرق انتقال العدوى والوقاية منها",
+                category: "infection", categoryName: "مكافحة العدوى", icon: "fa-shield-virus",
+                author: "الرشيد", location: "مستشفى أم درمان التعليمي",
+                summary: "دراسة تقييمية للوعي بخطوط نقل العدوى وكيفية تطبيق المعايير القياسية للوقاية في بيئة العمل السريري.",
+                color: "var(--main-color)"
+            },
+            {
+                title: "تصميم نظام إلكتروني (VB.NET) لإدارة وجرد المستلزمات الطبية",
+                category: "tech", categoryName: "المعلوماتية الصحية", icon: "fa-laptop-medical",
+                author: "باحث مستقل", location: "غير محدد",
+                summary: "بحث برمجي يوضح كيفية بناء واجهات تطبيق بلغة VB.NET لضبط عمليات الصرف وتقليل الهدر في المخزون الطبي.",
+                color: "#f39c12"
+            },
+            {
+                title: "التحليل الإحصائي (SPSS) لرضا المرضى عن الرعاية التمريضية",
+                category: "stats", categoryName: "الإحصاء الحيوي", icon: "fa-chart-pie",
+                author: "باحث مستقل", location: "غير محدد",
+                summary: "استخدام برنامج التحليل الإحصائي SPSS لقياس مؤشرات الجودة ومستوى رضا المرضى بناءً على استبيانات دقيقة.",
+                color: "var(--dark-blue)"
+            },
+            {
+                title: "دور التمريض في إدارة الكوارث والطوارئ",
+                category: "emergency", categoryName: "تمريض الطوارئ", icon: "fa-ambulance",
+                author: "باحث مستقل", location: "غير محدد",
+                summary: "تقييم مدى جاهزية أقسام الطوارئ للتعامل مع التدفق المفاجئ للمرضى في حالات الكوارث والأزمات.",
+                color: "#27ae60"
+            }
+        ];
+
+        window.allResearchData = [];
+        window.currentPage = 1;
+        const itemsPerPage = 5;
+
+        // دالة مساعدة لترجمة التصنيفات للغة العربية
+        function getCatDetails(catCode) {
+            const details = {
+                "infection": { name: "مكافحة العدوى", icon: "fa-shield-virus" },
+                "stats": { name: "الإحصاء الحيوي", icon: "fa-chart-pie" },
+                "tech": { name: "المعلوماتية الصحية", icon: "fa-laptop-medical" },
+                "emergency": { name: "تمريض الطوارئ", icon: "fa-ambulance" },
+                "other": { name: "تخصصات أخرى", icon: "fa-book-medical" }
+            };
+            return details[catCode] || details["other"];
         }
 
-        function nextPage() { if(currentPage < 3) goToPage(currentPage + 1); }
-        function prevPage() { if(currentPage > 1) goToPage(currentPage - 1); }
+        onValue(ref(db, 'research_archive'), (snapshot) => {
+            let firebaseData = [];
+            if(snapshot.exists()) {
+                snapshot.forEach(child => {
+                    const data = child.val();
+                    const catInfo = getCatDetails(data.category);
+                    firebaseData.push({
+                        title: data.title, category: data.category, categoryName: catInfo.name, icon: catInfo.icon,
+                        author: data.author, location: data.location, summary: data.summary, color: data.color || "var(--main-color)"
+                    });
+                });
+            }
+            
+            // دمج الأبحاث الأصلية مع الأبحاث القادمة من الفايربيس (لعرضها معاً)
+            window.allResearchData = [...hardcodedResearch, ...firebaseData.reverse()];
+            renderResearchList();
+        });
 
-        function openSummary(title, text) {
+        window.renderResearchList = function(dataToRender = window.allResearchData) {
+            const container = document.getElementById('researchContainer');
+            container.innerHTML = '';
+
+            if (dataToRender.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding:50px; background:white; border-radius:15px; border:2px dashed #cbd5e0;"><i class="fas fa-search fa-3x" style="color:#cbd5e0; margin-bottom:15px; display:block;"></i><h3 style="color:#64748b;">لم نجد أبحاث تطابق بحثك.</h3></div>';
+                document.getElementById('paginationControls').innerHTML = '';
+                return;
+            }
+
+            // حساب الصفحات
+            const totalPages = Math.ceil(dataToRender.length / itemsPerPage);
+            if (window.currentPage > totalPages) window.currentPage = totalPages;
+            
+            const start = (window.currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const currentData = dataToRender.slice(start, end);
+
+            // رسم الكروت
+            currentData.forEach(item => {
+                // تمرير النصوص بشكل آمن للمودال باستخدام base64 أو استبدال علامات الاقتباس
+                const safeTitle = item.title.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+                const safeSummary = item.summary.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+                
+                container.innerHTML += `
+                <div class="result-card fade-element" style="border-right-color: ${item.color};">
+                    <div class="result-info">
+                        <h3 style="color: ${item.color};">${item.title}</h3>
+                        <div class="result-meta">
+                            <span><i class="fas ${item.icon}"></i> ${item.categoryName}</span>
+                            ${item.author ? `<span><i class="fas fa-user-graduate"></i> الباحث: ${item.author}</span>` : ''}
+                            ${item.location && item.location !== 'غير محدد' ? `<span><i class="fas fa-map-marker-alt"></i> ${item.location}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="result-action">
+                        <button class="btn btn-secondary" style="border-color: ${item.color}; color: ${item.color};" onclick="openSummary('${safeTitle}', '${safeSummary}')">
+                            <i class="fas fa-eye"></i> الملخص
+                        </button>
+                    </div>
+                </div>`;
+            });
+
+            // رسم أزرار الصفحات
+            let pagHtml = `<button class="page-btn" onclick="prevPage()" ${window.currentPage === 1 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>السابق</button>`;
+            for(let i = 1; i <= totalPages; i++) {
+                pagHtml += `<button class="page-btn ${window.currentPage === i ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+            }
+            pagHtml += `<button class="page-btn" onclick="nextPage(${totalPages})" ${window.currentPage === totalPages ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>التالي</button>`;
+            
+            document.getElementById('paginationControls').innerHTML = totalPages > 1 ? pagHtml : '';
+        }
+
+        window.filterResearch = function() {
+            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+            const catVal = document.getElementById('categoryFilter').value;
+            
+            const filtered = window.allResearchData.filter(item => {
+                const matchText = (item.title.toLowerCase().includes(searchVal) || item.author.toLowerCase().includes(searchVal));
+                const matchCat = catVal === "" ? true : item.category === catVal;
+                return matchText && matchCat;
+            });
+            
+            window.currentPage = 1; // إرجاع للصفحة الأولى عند البحث
+            renderResearchList(filtered);
+        }
+
+        window.goToPage = function(page) {
+            window.currentPage = page;
+            window.filterResearch(); // لإعادة الرسم مع الفلتر الحالي
+            window.scrollTo({ top: document.querySelector('.search-filters').offsetTop - 100, behavior: 'smooth' });
+        }
+        window.nextPage = function(max) { if(window.currentPage < max) window.goToPage(window.currentPage + 1); }
+        window.prevPage = function() { if(window.currentPage > 1) window.goToPage(window.currentPage - 1); }
+
+        window.openSummary = function(title, text) {
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('modalBody').innerText = text;
             document.getElementById('summaryModal').style.display = 'block';
         }
 
-        function closeModal() { document.getElementById('summaryModal').style.display = 'none'; }
+        window.closeModal = function() { 
+            document.getElementById('summaryModal').style.display = 'none'; 
+        }
 
-        function toggleQuickMenu() {
+        window.toggleQuickMenu = function() {
             const menu = document.getElementById("quickMenu");
             menu.style.display = (menu.style.display === "block") ? "none" : "block";
         }
@@ -257,12 +374,13 @@
             const menu = document.getElementById('quickMenu');
             const btn = document.querySelector('.quick-access-btn');
             const modal = document.getElementById('summaryModal');
-            if (menu.style.display === 'block') {
+            
+            if (menu && menu.style.display === 'block') {
                 if (event.target !== menu && !menu.contains(event.target) && event.target !== btn && !btn.contains(event.target)) {
                     menu.style.display = 'none';
                 }
             }
-            if (event.target == modal) closeModal();
+            if (event.target == modal) window.closeModal();
         }
     </script>
 </body>
