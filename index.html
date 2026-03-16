@@ -211,6 +211,9 @@
             .quick-access-btn { bottom: 20px; right: 20px; width: 60px; height: 60px; font-size: 24px; }
             .quick-menu { bottom: 90px; right: 20px; width: calc(100vw - 40px); }
             .dev-content { width: 95% !important; margin: 10% auto !important; padding: 20px !important; }
+            
+            /* تنسيق الزر المخصص في الموبايل */
+            #custom-notify-btn { width: 100%; justify-content: center; }
         }
     </style>
     
@@ -254,6 +257,13 @@
                 <a href="research.html" class="btn btn-primary">تصفح الأبحاث</a>
                 <a href="consult.html" class="btn btn-secondary">اطلب استشارة بحثية</a>
             </div>
+            
+            <div style="text-align: center; margin-top: 25px;">
+                <button id="custom-notify-btn" onclick="requestOneSignalPermission()" style="background: #f39c12; color: white; border: none; padding: 12px 25px; border-radius: 50px; font-family: 'Cairo'; font-weight: 900; font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: 0.3s; display: inline-flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-bell"></i> تفعيل إشعارات التطبيق
+                </button>
+            </div>
+            
         </div>
     </header>
 
@@ -565,6 +575,24 @@
                     btn.innerHTML = originalText;
                     btn.disabled = false;
                 });
+            });
+        }
+
+        // 8. برمجة زر إشعارات OneSignal المخصص
+        function requestOneSignalPermission() {
+            window.OneSignalDeferred.push(function(OneSignal) {
+                // طلب الإذن من المستخدم
+                OneSignal.Slidedown.promptPush();
+                
+                // تفاعل الزر عند الضغط عليه
+                const btn = document.getElementById('custom-notify-btn');
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التفعيل...';
+                
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fas fa-check-circle"></i> تم طلب التفعيل';
+                    btn.style.background = '#27ae60';
+                }, 3000);
             });
         }
     </script>
